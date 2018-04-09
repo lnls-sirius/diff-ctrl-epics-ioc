@@ -1,4 +1,4 @@
-# --- DIFF 1 ---
+# --- DIFFERENCE CONTROL 1 ---
 
 DIFF_1_PV_AREA_PREFIX=TEST:                        # Slit/scraper prefix 1
 DIFF_1_PV_DEVICE_PREFIX=DI-DIFF-1:                 # Slit/scraper prefix 2
@@ -7,7 +7,7 @@ DIFF_1_RIGHT_CTRL_PREFIX=TEST-Glob:DI-DMC30017-2:  # Right slit/scraper side con
 DIFF_1_TELNET_PORT_SUFFIX=01                       # ProcServ telnet port suffix
 DIFF_1_EGU=mm                                      # Engineering units used
 
-# --- DIFF XX ---
+# --- DIFFERENCE CONTROL XX ---
 
 DIFF_XX_PV_AREA_PREFIX=
 DIFF_XX_PV_DEVICE_PREFIX=
