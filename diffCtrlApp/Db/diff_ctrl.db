@@ -85,6 +85,8 @@ record(ao, "$(P)$(R)LeftEdgePos-SP"){
   field(DESC, "Left edge position")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
+  field(DRVH, "1000000")                              # Temporary setting, only for startup
+  field(DRVL, "-1000000")                             # Temporary setting, only for startup
   field(OUT, "$(P)$(R)CoordinateConv.A PP")
 }
 
@@ -93,6 +95,8 @@ record(ao, "$(P)$(R)RightEdgePos-SP"){
   field(DESC, "Right edge position")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
+  field(DRVH, "1000000")                              # Temporary setting, only for startup
+  field(DRVL, "-1000000")                             # Temporary setting, only for startup
   field(OUT, "$(P)$(R)CoordinateConv.B PP")
 }
 
@@ -109,6 +113,8 @@ record(ao, "$(P)$(R)Width-SP"){
   field(DESC, "Slit width")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
+  field(DRVH, "500")                                  # High limit is set here only to enable low limit
+  field(DRVL, "0")                                    # Width cannot be negative
   field(OUT, "$(P)$(R)CoordinateConv.D PP")
 }
 
@@ -195,6 +201,29 @@ record(calc, "$(P)$(R)Width-RB"){
   field(INPA, "$(P)$(R)LeftEdgePos-RB")
   field(INPB, "$(P)$(R)RightEdgePos-RB")
   field(CALC, "B-A")
+}
+
+#####################################################################
+# LIMIT PROTECTION
+#
+# Desc: Protect the slit edges from hitting each other.
+
+# Limit left edge motion
+record(calcout, "$(P)$(R)LeftEdgeProtect"){
+  field(DESC, "Auto set protection limit for left edge")
+  field(INPA, "$(P)$(R)RightEdgePos-RB CPP")          # Read right edge position
+  field(CALC, "A")
+  field(OUT, "$(P)$(R)LeftEdgePos-SP.DRVH")           # Set left edge high limit, without processing
+  field(DISV, "0")                                    # Record remains disabled until initialization enables it
+}
+
+# Limit right edge motion
+record(calcout, "$(P)$(R)RightEdgeProtect"){
+  field(DESC, "Auto set protection limit for right edge")
+  field(INPA, "$(P)$(R)LeftEdgePos-RB CPP")           # Read left edge position
+  field(CALC, "A")
+  field(OUT, "$(P)$(R)RightEdgePos-SP.DRVL")          # Set right edge low limit, without processing
+  field(DISV, "0")                                    # Record remains disabled until initialization enables it
 }
 
 #####################################################################
@@ -515,6 +544,21 @@ record(sseq, "$(P)$(R)UpdateCoordConv"){
   field(WAIT3, "Wait")
   field(WAIT4, "Wait")
   field(DLY4, "2")                                    # Wait so that right position is set
+  field(FLNK, "$(P)$(R)EnblProtect")
+}
+
+# Enable limit protection for both edges
+record(seq, "$(P)$(R)EnblProtect"){
+  field(DESC, "Disable limit protection for edges")
+  field(SELM, "All")
+  field(DO1, "1")
+  field(DO2, "1")
+  field(DO3, "1")
+  field(DO4, "1")
+  field(LNK1, "$(P)$(R)LeftEdgeProtect.DISV")         # Enable left edge limit protection
+  field(LNK2, "$(P)$(R)RightEdgeProtect.DISV")        # Enable right edge limit protection
+  field(LNK3, "$(P)$(R)LeftEdgeProtect.PROC PP")      # Process record so it can init limits
+  field(LNK4, "$(P)$(R)RightEdgeProtect.PROC PP")     # Process record so it can init limits
 }
 
 #####################################################################
