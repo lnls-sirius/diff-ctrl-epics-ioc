@@ -13,7 +13,7 @@ cd "${TOP}/iocBoot/${IOC}"
 
 ## Load records
 
-dbLoadRecords("$(TOP)/db/diffCtrl.db", "CTRL_LEFT=$(CTRL_LEFT), CTRL_RIGHT=$(CTRL_RIGHT), P=$(P), R=$(R), PREC=$(PREC), EGU=$(EGU)")
+dbLoadRecords("$(TOP)/db/diff_ctrl.db", "CTRL_LEFT=$(CTRL_LEFT), CTRL_RIGHT=$(CTRL_RIGHT), P=$(P), R=$(R), PREC=$(PREC), EGU=$(EGU)")
 
 < save_restore.cmd
 
