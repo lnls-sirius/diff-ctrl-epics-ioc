@@ -1,0 +1,22 @@
+[Unit]
+Description=Difference Control IOC %p%I
+After=rc-local.service
+Wants=rc-local.service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Source environment
+EnvironmentFile=/etc/sysconfig/diff-ctrl-epics-ioc
+EnvironmentFile=/etc/sysconfig/diff-ctrl-epics-ioc-mapping
+# Execute pre with root
+PermissionsStartOnly=true
+Environment=DIFF_INSTANCE=%i
+ExecStartPre=/bin/mkdir -p /var/log/procServ/%p%i
+ExecStartPre=/bin/mkdir -p /var/run/procServ/%p%i
+WorkingDirectory=/opt/epics/startup/ioc/diff-ctrl-epics-ioc/iocBoot/iocDiffCtrl
+# Run procServ with IOC
+ExecStart="/usr/local/bin/runDiffCtrl.sh"
+
+[Install]
+WantedBy=multi-user.target

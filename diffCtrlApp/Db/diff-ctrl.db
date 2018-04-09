@@ -1,0 +1,546 @@
+######################################################################
+#
+#            Two Motor Application Database
+#
+# Desc: These records provide an abstraction layer for
+# two motor applications such as scrapers and slits.
+#
+#####################################################################
+
+#####################################################################
+# LOW LEVEL IOCs INFO
+#
+# Desc: Records providing information regarding the motion
+# controllers IOCs.
+
+record(stringout, "$(P)$(R)LeftMotionCtrl-Cte"){
+  field(DESC, "Motion controller for left side name")
+  field(VAL, "$(CTRL_LEFT)")
+}
+
+record(stringout, "$(P)$(R)RightMotionCtrl-Cte"){
+  field(DESC, "Motion controller for right side name")
+  field(VAL, "$(CTRL_RIGHT)")
+}
+
+#####################################################################
+# CALIBRATION
+#
+# Desc: Records for slit/scraper position calibration.
+
+# Allow manual adjust of center and width,
+# without moving any edges
+record(bo, "$(P)$(R)SetMode-Sel"){
+  field(DESC, "Set mode for center and width")
+  field(ZNAM, "Move")
+  field(ONAM, "Calibrate")
+  field(FLNK, "$(P)$(R)SetModeSeq")
+}
+
+# Sequence of operations to configure mode
+record(seq, "$(P)$(R)SetModeSeq"){
+  field(DESC, "Setting mode config sequence")
+  field(SELM, "All")
+  field(DOL1, "$(P)$(R)SetMode-Sel")
+  field(DOL2, "$(P)$(R)SetMode-Sel")
+  field(LNK1, "$(CTRL_LEFT)Mtr.SET PP")               # 0 -> Use, 1 -> Set
+  field(LNK2, "$(CTRL_RIGHT)Mtr.SET PP")              # 0 -> Use, 1 -> Set
+  field(FLNK, "$(P)$(R)SetMode-Sts")
+}
+
+# Set mode status
+record(bi, "$(P)$(R)SetMode-Sts"){
+  field(DESC, "Set mode for center and width status")
+  field(ZNAM, "Move")
+  field(ONAM, "Calibrate")
+  field(INP, "$(P)$(R)SetMode-Sel")
+}
+
+# Start homing of both window sides cmd
+record(bo, "$(P)$(R)Home-Cmd"){
+  field(DESC, "Home both edges")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)HomeSeq")
+}
+
+# Slit/Scraper homing sequece
+record(seq, "$(P)$(R)HomeSeq"){
+  field(DESC, "Homing sequence")
+  field(SELM, "All")
+  field(DOL1, "$(P)$(R)Home-Cmd")
+  field(DOL2, "$(P)$(R)Home-Cmd")
+  field(LNK1, "$(CTRL_LEFT)HomeToLimSw-Cmd")
+  field(LNK2, "$(CTRL_RIGHT)HomeToLimSw-Cmd")
+}
+
+#####################################################################
+# SLIT MOTION CONTROL
+#
+# Desc: Slit motion control main parameters.
+
+# Position of slit/scraper left edge
+record(ao, "$(P)$(R)LeftEdgePos-SP"){
+  field(DESC, "Left edge position")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(OUT, "$(P)$(R)CoordinateConv.A PP")
+}
+
+# Position of slit/scraper right edge
+record(ao, "$(P)$(R)RightEdgePos-SP"){
+  field(DESC, "Right edge position")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(OUT, "$(P)$(R)CoordinateConv.B PP")
+}
+
+# Slit center
+record(ao, "$(P)$(R)Center-SP"){
+  field(DESC, "Slit center")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(OUT, "$(P)$(R)CoordinateConv.C PP")
+}
+
+# Slit width
+record(ao, "$(P)$(R)Width-SP"){
+  field(DESC, "Slit width")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(OUT, "$(P)$(R)CoordinateConv.D PP")
+}
+
+# Convert coordinates
+record(transform, "$(P)$(R)CoordinateConv"){
+  field(DESC, "Coordinate converter")
+  field(COPT, "Conditional")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+# ----- Inputs -----
+# Do not use input links, so that it
+# can operate in Conditional mode
+# ----- Create synonyms -----
+  field(CMTA, "$left")
+  field(CMTB, "$right")
+  field(CMTC, "$center")
+  field(CMTD, "$width")
+# ----- Conversion expressions -----
+  field(CLCA, "$center-$width/2")                     # Virtual left edge position
+  field(CLCB, "$center+$width/2")                     # Virtual right edge position
+  field(CLCC, "($left+$right)/2")                     # Center position
+  field(CLCD, "$right-$left")                         # Width of slit/scraper window
+# ----- Outputs -----
+  field(OUTA, "$(CTRL_LEFT)AbsPos-SP")
+  field(FLNK, "$(P)$(R)RevRightPos")                  # Postpone right edge move
+}
+
+# Reverse right edge commanded position
+record(calcout, "$(P)$(R)RevRightPos"){
+  field(DESC, "Reverse right edge commanded pos")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INPA, "$(P)$(R)CoordinateConv.B")             # Get right edge position independently of how it was updated
+  field(CALC, "-A")                                   # Right edge reference frame is reverse
+  field(OUT, "$(CTRL_RIGHT)AbsPos-SP")
+}
+
+# Slit left edge position readback
+record(ai, "$(P)$(R)LeftEdgePos-RB"){
+  field(DESC, "Left edge position RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(CTRL_LEFT)EncPos-Mon CPP")            # Get position from encoder
+  field(FLNK, "$(P)$(R)Center-RB")
+}
+
+# Reverse right edge position readback sign
+record(calc, "$(P)$(R)RevRightPosRB"){
+  field(DESC, "Reverse right edge encoder reading")
+  field(INPA, "$(CTRL_RIGHT)EncPos-Mon CPP")          # Get position from encoder
+  field(CALC, "-A")
+  field(FLNK, "$(P)$(R)RightEdgePos-RB")
+}
+
+# Slit right edge position readback
+record(ai, "$(P)$(R)RightEdgePos-RB"){
+  field(DESC, "Right edge position RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(P)$(R)RevRightPosRB")                 # Get reversed encoder position
+  field(FLNK, "$(P)$(R)Center-RB")
+}
+
+# Slit center readback
+record(calc, "$(P)$(R)Center-RB"){
+  field(DESC, "Slit center RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INPA, "$(P)$(R)LeftEdgePos-RB")
+  field(INPB, "$(P)$(R)RightEdgePos-RB")
+  field(CALC, "(A+B)/2")                              # Calculate center from readback values
+  field(FLNK, "$(P)$(R)Width-RB")
+}
+
+# Slit width readback
+record(calc, "$(P)$(R)Width-RB"){
+  field(DESC, "Slit width RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")  
+  field(INPA, "$(P)$(R)LeftEdgePos-RB")
+  field(INPB, "$(P)$(R)RightEdgePos-RB")
+  field(CALC, "B-A")
+}
+
+#####################################################################
+# POSITION TWEAKING
+#
+# Desc: Records to allow position tweaking. These records make use
+#       of the records defined in the SLIT MOTION CONTROL section.
+
+# Step for right edge pos increment
+record(ao, "$(P)$(R)RightEdgeStep-SP"){
+  field(DESC, "Step for right edge increment")
+  field(PINI, "YES")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(VAL, "1")
+  field(FLNK, "$(P)$(R)RightEdgeStep-RB")
+}
+
+# Step for right edge pos increment RB
+record(ai, "$(P)$(R)RightEdgeStep-RB"){
+  field(DESC, "Step for right edge increment RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(P)$(R)RightEdgeStep-SP")
+}
+
+# Step for left edge pos increment
+record(ao, "$(P)$(R)LeftEdgeStep-SP"){
+  field(DESC, "Step for left edge increment")
+  field(PINI, "YES")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(VAL, "1")
+  field(FLNK, "$(P)$(R)LeftEdgeStep-RB")
+}
+
+# Step for left edge pos increment RB
+record(ai, "$(P)$(R)LeftEdgeStep-RB"){
+  field(DESC, "Step for left edge increment RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(P)$(R)LeftEdgeStep-SP")
+}
+
+# Step for center pos increment
+record(ao, "$(P)$(R)CenterStep-SP"){
+  field(DESC, "Step for center pos increment")
+  field(PINI, "YES")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(VAL, "1")
+  field(FLNK, "$(P)$(R)CenterStep-RB")
+}
+
+# Step for center pos increment RB
+record(ai, "$(P)$(R)CenterStep-RB"){
+  field(DESC, "Step for center pos increment RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(P)$(R)CenterStep-SP")
+}
+
+# Step for width increment
+record(ao, "$(P)$(R)WidthStep-SP"){
+  field(DESC, "Step for width increment")
+  field(PINI, "YES")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(VAL, "1")
+  field(FLNK, "$(P)$(R)WidthStep-RB")
+}
+
+# Step for width increment RB
+record(ai, "$(P)$(R)WidthStep-RB"){
+  field(DESC, "Step for width increment RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(INP, "$(P)$(R)WidthStep-SP")
+}
+
+# Increment right edge pos by step
+record(bo, "$(P)$(R)IncRightEdge-Cmd"){
+  field(DESC, "Increment right edge pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)IncRightEdgeCalc")
+}
+
+# Calc to increment right edge position
+record(calcout, "$(P)$(R)IncRightEdgeCalc"){
+  field(DESC, "Increment right edge by step calc")
+  field(INPA, "$(P)$(R)IncRightEdge-Cmd")
+  field(INPB, "$(P)$(R)RightEdgeStep-RB")
+  field(INPC, "$(P)$(R)RightEdgePos-RB")
+  field(CALC, "A")
+  field(OCAL, "C+B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)RightEdgePos-SP PP")
+}
+
+# Decrement right edge pos by step
+record(bo, "$(P)$(R)DecRightEdge-Cmd"){
+  field(DESC, "Decrement right edge pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)DecRightEdgeCalc")
+}
+
+# Calc to decrement right edge position
+record(calcout, "$(P)$(R)DecRightEdgeCalc"){
+  field(DESC, "Decrement right edge by step calc")
+  field(INPA, "$(P)$(R)DecRightEdge-Cmd")
+  field(INPB, "$(P)$(R)RightEdgeStep-RB")
+  field(INPC, "$(P)$(R)RightEdgePos-RB")
+  field(CALC, "A")
+  field(OCAL, "C-B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)RightEdgePos-SP PP")
+}
+
+# Increment left edge pos by step
+record(bo, "$(P)$(R)IncLeftEdge-Cmd"){
+  field(DESC, "Increment left edge pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)IncLeftEdgeCalc")
+}
+
+# Calc to increment left edge position
+record(calcout, "$(P)$(R)IncLeftEdgeCalc"){
+  field(DESC, "Increment left edge by step calc")
+  field(INPA, "$(P)$(R)IncLeftEdge-Cmd")
+  field(INPB, "$(P)$(R)LeftEdgeStep-RB")
+  field(INPC, "$(P)$(R)LeftEdgePos-RB")
+  field(CALC, "A")
+  field(OCAL, "C+B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)LeftEdgePos-SP PP")
+}
+
+# Decrement left edge pos by step
+record(bo, "$(P)$(R)DecLeftEdge-Cmd"){
+  field(DESC, "Decrement left edge pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)DecLeftEdgeCalc")
+}
+
+# Calc to decrement left edge position
+record(calcout, "$(P)$(R)DecLeftEdgeCalc"){
+  field(DESC, "Decrement left edge by step calc")
+  field(INPA, "$(P)$(R)DecLeftEdge-Cmd")
+  field(INPB, "$(P)$(R)LeftEdgeStep-RB")
+  field(INPC, "$(P)$(R)LeftEdgePos-RB")
+  field(CALC, "A")
+  field(OCAL, "C-B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)LeftEdgePos-SP PP")
+}
+
+# Increment center pos by step
+record(bo, "$(P)$(R)IncCenter-Cmd"){
+  field(DESC, "Increment center pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)IncCenterCalc")
+}
+
+# Calc to increment center position
+record(calcout, "$(P)$(R)IncCenterCalc"){
+  field(DESC, "Increment center pos by step calc")
+  field(INPA, "$(P)$(R)IncCenter-Cmd")
+  field(INPB, "$(P)$(R)CenterStep-RB")
+  field(INPC, "$(P)$(R)Center-RB")
+  field(CALC, "A")
+  field(OCAL, "C+B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)Center-SP PP")
+}
+
+# Decrement center pos by step
+record(bo, "$(P)$(R)DecCenter-Cmd"){
+  field(DESC, "Decrement center pos by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)DecCenterCalc")
+}
+
+# Calc to decrement center position
+record(calcout, "$(P)$(R)DecCenterCalc"){
+  field(DESC, "Decrement center pos by step calc")
+  field(INPA, "$(P)$(R)DecCenter-Cmd")
+  field(INPB, "$(P)$(R)CenterStep-RB")
+  field(INPC, "$(P)$(R)Center-RB")
+  field(CALC, "A")
+  field(OCAL, "C-B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)Center-SP PP")
+}
+
+# Increment width by step
+record(bo, "$(P)$(R)IncWidth-Cmd"){
+  field(DESC, "Increment width by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)IncWidthCalc")
+}
+
+# Calc to increment width
+record(calcout, "$(P)$(R)IncWidthCalc"){
+  field(DESC, "Increment width by step calc")
+  field(INPA, "$(P)$(R)IncWidth-Cmd")
+  field(INPB, "$(P)$(R)WidthStep-RB")
+  field(INPC, "$(P)$(R)Width-RB")
+  field(CALC, "A")
+  field(OCAL, "C+B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)Width-SP PP")
+}
+
+# Decrement width by step
+record(bo, "$(P)$(R)DecWidth-Cmd"){
+  field(DESC, "Decrement width by defined step")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  field(HIGH, "0.5")
+  field(FLNK, "$(P)$(R)DecWidthCalc")
+}
+
+# Calc to decrement width
+record(calcout, "$(P)$(R)DecWidthCalc"){
+  field(DESC, "Decrement width by step calc")
+  field(INPA, "$(P)$(R)DecWidth-Cmd")
+  field(INPB, "$(P)$(R)WidthStep-RB")
+  field(INPC, "$(P)$(R)Width-RB")
+  field(CALC, "A")
+  field(OCAL, "C-B")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)Width-SP PP")
+}
+
+#####################################################################
+# INITIALIZATION
+#
+# Desc: High Level initialization operations.
+
+# One shot operation
+record(calcout, "$(P)$(R)OneShot"){
+  field(DESC, "One shot operation")
+  field(INPA, "1")
+  field(INPB, "$(P)$(R)LeftEdgePos-RB CPP")           # Process when left edge pos changes
+  field(INPC, "$(P)$(R)RightEdgePos-RB CPP")          # Process when right edge pos changes
+  field(CALC, "A;A:=0")                               # Only process whole chain one time
+  field(OOPT, "When Non-zero")
+  field(ODLY, "1")                                    # Wait 1 sec, so that both edges are updated
+  field(OUT, "$(P)$(R)GetLeftEdgeRB.PROC PP")
+}
+
+## Initialize coordinate conversion record with
+## readback values
+
+# Store left edge readback value
+record(ai, "$(P)$(R)GetLeftEdgeRB"){
+  field(DESC, "Get left edge pos RB at init")
+  field(INP, "$(P)$(R)LeftEdgePos-RB")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(FLNK, "$(P)$(R)GetRightEdgeRB")
+}
+
+# Store right edge readback value
+record(ai, "$(P)$(R)GetRightEdgeRB"){
+  field(DESC, "Get right edge pos RB at init")
+  field(INP, "$(P)$(R)RightEdgePos-RB")
+  field(ADEL, "-1")
+  field(MDEL, "-1")
+  field(FLNK, "$(P)$(R)UpdateCoordConv")
+}
+
+# Sequence to update the coordinate conversion
+# record with the position readback values
+record(sseq, "$(P)$(R)UpdateCoordConv"){
+  field(DESC, "Update coordinate conv record fields")
+  field(SELM, "All")
+  field(STR1, "Calibrate")
+  field(DOL2, "$(P)$(R)GetLeftEdgeRB")
+  field(DOL3, "$(P)$(R)GetRightEdgeRB")
+  field(STR4, "Move")
+  field(LNK1, "$(P)$(R)SetMode-Sel CA")
+  field(LNK2, "$(P)$(R)LeftEdgePos-SP CA")
+  field(LNK3, "$(P)$(R)RightEdgePos-SP CA")
+  field(LNK4, "$(P)$(R)SetMode-Sel CA")
+  field(WAIT1, "Wait")
+  field(WAIT2, "Wait")
+  field(WAIT3, "Wait")
+  field(WAIT4, "Wait")
+  field(DLY4, "2")                                    # Wait so that right position is set
+}
+
+#####################################################################
+# MACRO BASED CONFIGURATION
+#
+# Desc: Records used to overwrite settings based on macro values.
+#       Undefined macros DO NOT cause overwriting of the corresponding
+#       parameter.
+
+# Value of amplifier gain macro passed
+# by the user
+#record(stringin, "$(P)<parameter>Macro-Cte"){
+#  field(DESC, "<macro> macro passed by user")
+#  field(VAL, "<macro>")
+#}
+
+# Initialize $(P)AmpGain-Sel if a macro
+# was passed on startup by the user
+#record(scalcout, "$(P)ApplyAmpGainMacro"){
+#  field(DESC, "Initialize amp gain if macro not empty")
+#  field(PINI, "YES")
+#  field(INAA, "$(P)AmpGainMacro-Cte")
+#  field(CALC, "len(AA)=0?0:1")
+#  field(OCAL, "AA")
+#  field(OOPT, "When Non-zero")
+#  field(DOPT, "Use OCAL")
+#  field(ODLY, "2")                                                    # Wait a little bit so that the motor type can be set
+#  field(OUT, "$(P)AmpGain-Sel PP")
+#}

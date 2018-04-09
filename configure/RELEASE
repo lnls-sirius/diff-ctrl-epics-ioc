@@ -1,0 +1,10 @@
+## configure/RELEASE: Location of external products
+# Run "gnumake clean uninstall install" in the application
+# top directory each time this file is changed.
+
+# The path to external modules should be included in a file named RELEASE.local.
+# See $(TOP)/configure/RELEASE.local.example for the variables that need to be
+# configured
+-include $(TOP)/configure/RELEASE.local
+
+TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
