@@ -1,9 +1,10 @@
 ######################################################################
 #
-#            Two Motor Application Database
+#            Position Difference Control App Database
 #
-# Desc: These records provide an abstraction layer for
-# two motor applications such as scrapers and slits.
+# Desc: These records provide an abstraction layer for two
+# motor applications that control the difference between
+# the position of two edges, such as scrapers and slits.
 #
 #####################################################################
 
