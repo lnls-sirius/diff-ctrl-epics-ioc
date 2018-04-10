@@ -226,6 +226,48 @@ record(calcout, "$(P)$(R)RightEdgeProtect"){
   field(DISV, "0")                                    # Record remains disabled until initialization enables it
 }
 
+# Keep the speed of both motors the same
+# so they do not hit each other
+record(calcout, "$(P)$(R)SpeedProtect"){
+  field(DESC, "Keep both motors with same speed")
+  field(PINI, "YES")
+  field(INPA, "$(CTRL_LEFT)Mtr.VELO CPP")
+  field(INPB, "$(CTRL_RIGHT)Mtr.VELO CPP")
+  field(CALC, "B#A")
+  field(OCAL, "A")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(CTRL_RIGHT)Mtr.VELO PP")              # Set right motor speed equal to left motor speed
+}
+
+# Keep the max speed of both motors the same
+# so that their speed can be set automatically
+record(calcout, "$(P)$(R)MaxSpeedProtect"){
+  field(DESC, "Keep both motors with same max speed")
+  field(PINI, "YES")
+  field(INPA, "$(CTRL_LEFT)Mtr.VMAX CPP")
+  field(INPB, "$(CTRL_RIGHT)Mtr.VMAX CPP")
+  field(CALC, "B#A")
+  field(OCAL, "A")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(CTRL_RIGHT)Mtr.VMAX PP")              # Set right motor max speed equal to left motor max speed
+}
+
+# Keep the acceleration of both motors the same
+# so they do not hit each other
+record(calcout, "$(P)$(R)AccProtect"){
+  field(DESC, "Keep both motors with same acceleration")
+  field(PINI, "YES")
+  field(INPA, "$(CTRL_LEFT)Mtr.ACCL CPP")
+  field(INPB, "$(CTRL_RIGHT)Mtr.ACCL CPP")
+  field(CALC, "B#A")
+  field(OCAL, "A")
+  field(OOPT, "When Non-zero")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(CTRL_RIGHT)Mtr.ACCL PP")              # Set right motor acceleration equal to left motor acceleration
+}
+
 #####################################################################
 # POSITION TWEAKING
 #
