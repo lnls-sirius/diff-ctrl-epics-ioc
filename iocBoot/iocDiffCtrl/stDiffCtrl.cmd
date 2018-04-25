@@ -1,6 +1,9 @@
 #!../../bin/linux-x86_64/diffCtrl
 
 < envPaths
+
+epicsEnvSet("TOP", "../..")
+
 < diff_ctrl.config
 
 cd "${TOP}"
