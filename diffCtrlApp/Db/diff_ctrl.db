@@ -620,30 +620,3 @@ record(seq, "$(P)$(R)EnblProtect"){
   field(LNK4, "$(P)$(R)RightEdgeProtect.PROC PP")     # Process record so it can init limits
 }
 
-#####################################################################
-# MACRO BASED CONFIGURATION
-#
-# Desc: Records used to overwrite settings based on macro values.
-#       Undefined macros DO NOT cause overwriting of the corresponding
-#       parameter.
-
-# Value of amplifier gain macro passed
-# by the user
-#record(stringin, "$(P)<parameter>Macro-Cte"){
-#  field(DESC, "<macro> macro passed by user")
-#  field(VAL, "<macro>")
-#}
-
-# Initialize $(P)AmpGain-Sel if a macro
-# was passed on startup by the user
-#record(scalcout, "$(P)ApplyAmpGainMacro"){
-#  field(DESC, "Initialize amp gain if macro not empty")
-#  field(PINI, "YES")
-#  field(INAA, "$(P)AmpGainMacro-Cte")
-#  field(CALC, "len(AA)=0?0:1")
-#  field(OCAL, "AA")
-#  field(OOPT, "When Non-zero")
-#  field(DOPT, "Use OCAL")
-#  field(ODLY, "2")                                                    # Wait a little bit so that the motor type can be set
-#  field(OUT, "$(P)AmpGain-Sel PP")
-#}
