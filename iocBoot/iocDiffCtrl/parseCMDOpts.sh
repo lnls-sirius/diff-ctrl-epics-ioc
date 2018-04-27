@@ -4,7 +4,7 @@ set -e
 
 usage () {
     echo "Usage:" >&2
-    echo "  $1 -t PROCSERV_TELNET_PORT [-P P_VAL] [-R R_VAL] -s SERIAL_NUMBER " >&2
+    echo "  $1 -t PROCSERV_TELNET_PORT [-P P_VAL] [-R R_VAL] -l CTRL_LEFT -r CTRL_RIGHT [-g EGU] " >&2
     echo >&2
     echo " Options:" >&2
     echo "  -t                  Configure procServ telnet port" >&2
