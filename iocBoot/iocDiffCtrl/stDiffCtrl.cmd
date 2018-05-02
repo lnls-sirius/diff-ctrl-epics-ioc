@@ -12,7 +12,7 @@ cd "${TOP}"
 dbLoadDatabase "dbd/diffCtrl.dbd"
 diffCtrl_registerRecordDeviceDriver pdbbase
 
-cd "${TOP}/iocBoot/${IOC}"
+cd "iocBoot/${IOC}"
 
 ## Load records
 
