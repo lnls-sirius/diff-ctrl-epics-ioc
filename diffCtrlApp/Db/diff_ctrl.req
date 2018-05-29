@@ -2,13 +2,13 @@
 
 # Position set points.
 # These records do not process at initialization.
-$(P)$(R)LeftEdgePos-SP
-$(P)$(R)RightEdgePos-SP
+$(P)$(R)NegativeEdgePos-SP
+$(P)$(R)PositiveEdgePos-SP
 $(P)$(R)Center-SP
 $(P)$(R)Width-SP
 
 # Tweak step set points
-$(P)$(R)RightEdgeStep-SP
-$(P)$(R)LeftEdgeStep-SP
+$(P)$(R)PositiveEdgeStep-SP
+$(P)$(R)NegativeEdgeStep-SP
 $(P)$(R)CenterStep-SP
 $(P)$(R)WidthStep-SP

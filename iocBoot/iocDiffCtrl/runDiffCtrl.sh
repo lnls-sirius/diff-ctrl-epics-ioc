@@ -23,18 +23,18 @@ if [ -z "$EGU" ]; then
     EGU="mm"
 fi
 
-if [ -z "$CTRL_LEFT" ]; then
-    echo "Left controller prefix not set. Please use the -l option or set \$CTRL_LEFT environment variable" >&2
+if [ -z "$CTRL_NEG" ]; then
+    echo "Negative controller prefix not set. Please use the -n option or set \$CTRL_NEG environment variable" >&2
     exit 3
 fi
 
-if [ -z "$CTRL_RIGHT" ]; then
-    echo "Right controller prefix not set. Please use the -r option or set \$CTRL_RIGHT environment variable" >&2
+if [ -z "$CTRL_POS" ]; then
+    echo "Positive controller prefix not set. Please use the -p option or set \$CTRL_POS environment variable" >&2
     exit 3
 fi
 
 cd "$IOC_BOOT_DIR"
 
 EPICS_CA_MAX_ARRAY_BYTES="$EPICS_CA_MAX_ARRAY_BYTES" EGU="$EGU" \
-CTRL_LEFT="$CTRL_LEFT" CTRL_RIGHT="$CTRL_RIGHT" P="$P" R="$R" \
+CTRL_NEG="$CTRL_NEG" CTRL_POS="$CTRL_POS" P="$P" R="$R" \
 "$IOC_BIN" stDiffCtrl.cmd

@@ -18,8 +18,8 @@
   <height>800</height>
   <macros>
     <include_parent_macros>true</include_parent_macros>
-    <CTRL_LEFT>dmc1:</CTRL_LEFT>
-    <CTRL_RIGHT>dmc2:</CTRL_RIGHT>
+    <CTRL_NEG>dmc1:</CTRL_NEG>
+    <CTRL_POS>dmc2:</CTRL_POS>
     <P>Glob:</P>
     <R>Scrn1:</R>
   </macros>
@@ -1268,7 +1268,7 @@ $(pv_value)</tooltip>
     <name>Text Update_17</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)RightEdgePos-RB</pv_name>
+    <pv_name>$(P)PositiveEdgePos-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1325,7 +1325,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)RightEdgePos-SP</pv_name>
+    <pv_name>$(P)PositiveEdgePos-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -1379,7 +1379,7 @@ $(pv_value)</tooltip>
     <name>Text Input_5</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)RightEdgeStep-SP</pv_name>
+    <pv_name>$(P)PositiveEdgeStep-SP</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1440,7 +1440,7 @@ $(pv_value)</tooltip>
     <on_label>&gt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)IncRightEdge-Cmd</pv_name>
+    <pv_name>$(P)IncPositiveEdge-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1501,7 +1501,7 @@ $(pv_value)</tooltip>
     <on_label>&lt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)DecRightEdge-Cmd</pv_name>
+    <pv_name>$(P)DecPositiveEdge-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1553,7 +1553,7 @@ $(pv_value)</tooltip>
     <name>Text Update_18</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)RightEdgeStep-RB</pv_name>
+    <pv_name>$(P)PositiveEdgeStep-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1645,7 +1645,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Right Edge</text>
+    <text>Positive Edge</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -1743,7 +1743,7 @@ $(pv_value)</tooltip>
     <name>Text Update_19</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)LeftEdgePos-RB</pv_name>
+    <pv_name>$(P)NegativeEdgePos-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1800,7 +1800,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)LeftEdgePos-SP</pv_name>
+    <pv_name>$(P)NegativeEdgePos-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -1854,7 +1854,7 @@ $(pv_value)</tooltip>
     <name>Text Input_6</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)LeftEdgeStep-SP</pv_name>
+    <pv_name>$(P)NegativeEdgeStep-SP</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1915,7 +1915,7 @@ $(pv_value)</tooltip>
     <on_label>&gt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)IncLeftEdge-Cmd</pv_name>
+    <pv_name>$(P)IncNegativeEdge-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1976,7 +1976,7 @@ $(pv_value)</tooltip>
     <on_label>&lt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)DecLeftEdge-Cmd</pv_name>
+    <pv_name>$(P)DecNegativeEdge-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -2028,7 +2028,7 @@ $(pv_value)</tooltip>
     <name>Text Update_20</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)LeftEdgeStep-RB</pv_name>
+    <pv_name>$(P)NegativeEdgeStep-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -2120,7 +2120,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Left Edge</text>
+    <text>Negative Edge</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -2605,7 +2605,7 @@ $(pv_value)</tooltip>
       <color red="255" green="0" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_LEFT)CommErr-Mon</pv_name>
+    <pv_name>$(CTRL_NEG)CommErr-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -2653,7 +2653,7 @@ $(pv_value)</tooltip>
     <name>Text Update</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTRL_LEFT)ControllerErr-Mon</pv_name>
+    <pv_name>$(CTRL_NEG)ControllerErr-Mon</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -2835,7 +2835,7 @@ $(pv_value)</tooltip>
       <color red="255" green="0" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_RIGHT)CommErr-Mon</pv_name>
+    <pv_name>$(CTRL_POS)CommErr-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -2883,7 +2883,7 @@ $(pv_value)</tooltip>
     <name>Text Update_28</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTRL_RIGHT)ControllerErr-Mon</pv_name>
+    <pv_name>$(CTRL_POS)ControllerErr-Mon</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3047,7 +3047,7 @@ $(pv_value)</tooltip>
     <name>Text Update_29</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)LeftMotionCtrl-Cte</pv_name>
+    <pv_name>$(P)$(R)NegativeMotionCtrl-Cte</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3099,7 +3099,7 @@ $(pv_value)</tooltip>
     <name>Text Update_30</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)RightMotionCtrl-Cte</pv_name>
+    <pv_name>$(P)$(R)PositiveMotionCtrl-Cte</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3201,7 +3201,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_LEFT)DoneMov-Mon</pv_name>
+    <pv_name>$(CTRL_NEG)DoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3299,7 +3299,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_RIGHT)DoneMov-Mon</pv_name>
+    <pv_name>$(CTRL_POS)DoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3427,7 +3427,7 @@ $(pv_value)</tooltip>
     <name>Text Update_31</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTRL_LEFT)Mtr.DIR</pv_name>
+    <pv_name>$(CTRL_NEG)Mtr.DIR</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3519,7 +3519,7 @@ $(pv_value)</tooltip>
     <name>Text Update_32</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTRL_RIGHT)Mtr.DIR</pv_name>
+    <pv_name>$(CTRL_POS)Mtr.DIR</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3621,7 +3621,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_LEFT)HighLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_NEG)HighLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3719,7 +3719,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_LEFT)LowLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_NEG)LowLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3817,7 +3817,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_RIGHT)HighLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_POS)HighLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3915,7 +3915,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_RIGHT)LowLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_POS)LowLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
