@@ -1,11 +1,18 @@
+# PV_AREA_PREFIX:   Slit/scraper prefix 1
+# PV_DEVICE_PREFIX: Slit/scraper prefix 2
+# CTRL_NEG_PREFIX:  Negative slit/scraper edge controller PVs prefix
+# CTRL_POS_PREFIX:  Positive slit/scraper edge controller PVs prefix
+# TELNET_PORT:      ProcServ telnet port to be used
+# EGU:              Engineering units used
+
 # --- DIFFERENCE CONTROL 1 ---
 
-DIFF_1_PV_AREA_PREFIX=TEST:                        # Slit/scraper prefix 1
-DIFF_1_PV_DEVICE_PREFIX=DI-DIFF-1:                 # Slit/scraper prefix 2
-DIFF_1_CTRL_NEG_PREFIX=TEST-Glob:DI-DMC3017-1:     # Negative slit/scraper edge controller PVs prefix
-DIFF_1_CTRL_POS_PREFIX=TEST-Glob:DI-DMC30017-2:    # Positive slit/scraper edge controller PVs prefix
-DIFF_1_TELNET_PORT_SUFFIX=01                       # ProcServ telnet port suffix
-DIFF_1_EGU=mm                                      # Engineering units used
+DIFF_1_PV_AREA_PREFIX=TEST:
+DIFF_1_PV_DEVICE_PREFIX=DI-DIFF-1:
+DIFF_1_CTRL_NEG_PREFIX=TEST-Glob:DI-DMC3017-1:
+DIFF_1_CTRL_POS_PREFIX=TEST-Glob:DI-DMC30017-2:
+DIFF_1_TELNET_PORT=21302
+DIFF_1_EGU=mm
 
 # --- DIFFERENCE CONTROL XX ---
 
@@ -13,5 +20,5 @@ DIFF_XX_PV_AREA_PREFIX=
 DIFF_XX_PV_DEVICE_PREFIX=
 DIFF_XX_CTRL_NEG_PREFIX=
 DIFF_XX_CTRL_POS_PREFIX=
-DIFF_XX_TELNET_PORT_SUFFIX=02
+DIFF_XX_TELNET_PORT=
 DIFF_XX_EGU=
