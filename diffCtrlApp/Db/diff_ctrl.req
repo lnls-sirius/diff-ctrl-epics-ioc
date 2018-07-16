@@ -12,3 +12,8 @@ $(P)$(R)PositiveEdgeStep-SP
 $(P)$(R)NegativeEdgeStep-SP
 $(P)$(R)CenterStep-SP
 $(P)$(R)WidthStep-SP
+
+# Outer limits
+$(P)$(R)HighOuterLim-SP
+$(P)$(R)LowOuterLim-SP
+
