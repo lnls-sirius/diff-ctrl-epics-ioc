@@ -414,6 +414,7 @@ record(ao, "$(P)$(R)LowOuterLim-SP"){
   field(DESC, "Negative edge outer position limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
+  field(VAL, "$(LOW_LIM)")
   field(FLNK, "$(P)$(R)LowOuterLim-RB")
 }
 
@@ -432,6 +433,7 @@ record(ao, "$(P)$(R)HighOuterLim-SP"){
   field(DESC, "Positive edge outer position limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
+  field(VAL, "$(HIGH_LIM)")
   field(FLNK, "$(P)$(R)HighOuterLim-RB")
 }
 

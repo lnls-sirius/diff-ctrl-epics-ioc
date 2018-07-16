@@ -15,6 +15,16 @@ if [ $? -ne 0 ]; then
         exit 1
 fi
 
+if [ -z "$CTRL_NEG" ]; then
+    echo "Negative controller prefix not set. Please use the -n option or set \$CTRL_NEG environment variable" >&2
+    exit 2
+fi
+
+if [ -z "$CTRL_POS" ]; then
+    echo "Positive controller prefix not set. Please use the -p option or set \$CTRL_POS environment variable" >&2
+    exit 3
+fi
+
 if [ -z "$EPICS_CA_MAX_ARRAY_BYTES" ]; then
     EPICS_CA_MAX_ARRAY_BYTES="50000000"
 fi
@@ -23,18 +33,16 @@ if [ -z "$EGU" ]; then
     EGU="mm"
 fi
 
-if [ -z "$CTRL_NEG" ]; then
-    echo "Negative controller prefix not set. Please use the -n option or set \$CTRL_NEG environment variable" >&2
-    exit 3
+if [ -z "$LOW_LIM" ]; then
+    LOW_LIM="-1000000"
 fi
 
-if [ -z "$CTRL_POS" ]; then
-    echo "Positive controller prefix not set. Please use the -p option or set \$CTRL_POS environment variable" >&2
-    exit 3
+if [ -z "$HIGH_LIM" ]; then
+    HIGH_LIM="1000000"
 fi
 
 cd "$IOC_BOOT_DIR"
 
-EPICS_CA_MAX_ARRAY_BYTES="$EPICS_CA_MAX_ARRAY_BYTES" EGU="$EGU" \
+EPICS_CA_MAX_ARRAY_BYTES="$EPICS_CA_MAX_ARRAY_BYTES" EGU="$EGU" LOW_LIM="$LOW_LIM" HIGH_LIM="$HIGH_LIM"  \
 CTRL_NEG="$CTRL_NEG" CTRL_POS="$CTRL_POS" P="$P" R="$R" \
 "$IOC_BIN" stDiffCtrl.cmd

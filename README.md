@@ -31,11 +31,13 @@ $ ./runDiffCtrl.sh -n "CTRL_NEG" -p "CTRL_POS"
 
 where `CTRL_NEG` is the prefix used for the negative slit, or scraper, side's controller
 and `CTRL_POS` is the prefix used for the positive slit, or scraper, side's controller.
-The options that you can specify (after `./runDiffCtrl.sh`) are:
+The other options that you can specify (after `./runDiffCtrl.sh`) are:
 
 - `-P PREFIX1`: the value of the EPICS `$(P)` macro used to prefix the PV names
 - `-R PREFIX2`: the value of the EPICS `$(R)` macro used to prefix the PV names
 - `-g EGU`: the value of the engineering units displayed
+- `-l LOW_LIM`: the low limit for the negative edge position
+- `-h HIGH_LIM`: the high limit for the positive edge position
 
 In some situations it is desired to run the process using procServ,
 which enables the IOC to be controlled by the system. In order to

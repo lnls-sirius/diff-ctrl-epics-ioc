@@ -13,16 +13,20 @@ usage () {
     echo "  -n                  Configure negative controller prefix (required)" >&2
     echo "  -p                  Configure positive controller prefix (required)" >&2
     echo "  -g                  Configure the engineering units displayed" >&2
+    echo "  -l                  Configure the low limit for the negative edge position" >&2
+    echo "  -h                  Configure the high limit for the positive edge position" >&2
 }
 
-while getopts ":t:P:R:n:p:g:" opt; do
+while getopts ":t:P:R:n:p:g:l:h:" opt; do
   case $opt in
     t) DEVICE_TELNET_PORT="$OPTARG" ;;
     P) P="$OPTARG" ;;
     R) R="$OPTARG" ;;
     n) CTRL_NEG="$OPTARG" ;;
     p) CTRL_POS="$OPTARG" ;;
-    g) EGU="$OPTARG" ;; 
+    g) EGU="$OPTARG" ;;
+    l) LOW_LIM="$OPTARG" ;;
+    h) HIGH_LIM="$OPTARG" ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       usage $0
