@@ -24,6 +24,24 @@ record(stringout, "$(P)$(R)PositiveMotionCtrl-Cte"){
   field(VAL, "$(CTRL_POS)")
 }
 
+# Done moving
+
+record(bi, "$(P)$(R)NegativeDoneMov-Mon"){
+  field(DESC, "Negative edge is done moving")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(VAL, "1")
+  field(INP, "$(CTRL_NEG)DoneMov-Mon CPP")
+}
+
+record(bi, "$(P)$(R)PositiveDoneMov-Mon"){
+  field(DESC, "Positive edge is done moving")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(VAL, "1")
+  field(INP, "$(CTRL_POS)DoneMov-Mon CPP")
+}
+
 #####################################################################
 # CALIBRATION
 #
