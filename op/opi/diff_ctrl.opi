@@ -2581,7 +2581,7 @@ $(pv_value)</tooltip>
     <foreground_color>
       <color red="0" green="0" blue="0" />
     </foreground_color>
-    <height>20</height>
+    <height>31</height>
     <horizontal_alignment>0</horizontal_alignment>
     <name>Label</name>
     <rules />
@@ -2591,13 +2591,14 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Motor 1</text>
+    <text>Motor
+Neg Side</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
     <visible>true</visible>
     <widget_type>Label</widget_type>
-    <width>80</width>
+    <width>90</width>
     <wrap_words>false</wrap_words>
     <wuid>6e34871b:162f3391a85:24fc</wuid>
     <x>70</x>
@@ -2811,7 +2812,7 @@ $(pv_value)</tooltip>
     <foreground_color>
       <color red="0" green="0" blue="0" />
     </foreground_color>
-    <height>20</height>
+    <height>31</height>
     <horizontal_alignment>0</horizontal_alignment>
     <name>Label_26</name>
     <rules />
@@ -2821,13 +2822,14 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Motor 2</text>
+    <text>Motor
+Pos Side</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
     <visible>true</visible>
     <widget_type>Label</widget_type>
-    <width>80</width>
+    <width>87</width>
     <wrap_words>false</wrap_words>
     <wuid>6e34871b:162f3391a85:25c1</wuid>
     <x>427</x>
@@ -3317,7 +3319,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_NEG)DoneMov-Mon</pv_name>
+    <pv_name>$(P)$(R)NegativeDoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3415,7 +3417,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTRL_POS)DoneMov-Mon</pv_name>
+    <pv_name>$(P)$(R)PositiveDoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -4290,8 +4292,8 @@ $(pv_value)</tooltip>
     <height>25</height>
     <horizontal_alignment>0</horizontal_alignment>
     <limits_from_pv>false</limits_from_pv>
-    <maximum>Infinity</maximum>
-    <minimum>-Infinity</minimum>
+    <maximum>1.7976931348623157E308</maximum>
+    <minimum>-1.7976931348623157E308</minimum>
     <multiline_input>false</multiline_input>
     <name>Text Input</name>
     <precision>0</precision>
