@@ -469,8 +469,8 @@ record(calcout, "$(P)$(R)HighOuterLim-RB"){
 record(calc, "$(P)$(R)CenterOuterProtect"){
   field(DESC, "Auto set protection limit for center")
   field(INPA, "$(P)$(R)Width-RB CPP")                    # Read width value
-  field(INPB, "$(P)$(R)HighOuterLim-RB-RB CPP")          # Read high outer limit
-  field(INPC, "$(P)$(R)LowOuterLim-RB-RB CPP")           # Read low outer limit
+  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")          # Read high outer limit
+  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")           # Read low outer limit
   field(CALC, "F:=A/2;D:=B-F;E:=C+F;0")
   field(FLNK, "$(P)$(R)CenterOuterProtectSeq")           # Call record to set center high and low limits
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
@@ -489,8 +489,8 @@ record(seq, "$(P)$(R)CenterOuterProtectSeq"){
 record(calcout, "$(P)$(R)MaxWidthProtect"){
   field(DESC, "Auto set max limit for width")
   field(INPA, "$(P)$(R)Center-RB CPP")                   # Read width value
-  field(INPB, "$(P)$(R)HighOuterLim-RB-RB CPP")          # Read high outer limit
-  field(INPC, "$(P)$(R)LowOuterLim-RB-RB CPP")           # Read low outer limit
+  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")          # Read high outer limit
+  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")           # Read low outer limit
   field(CALC, "(A-C)<(B-A)?2*(A-C):2*(B-A)")
   field(OUT, "$(P)$(R)Width-SP.DRVH")                    # Set Width max size without processing
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
