@@ -433,6 +433,8 @@ record(ao, "$(P)$(R)LowOuterLim-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "$(LOW_LIM)")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)LowOuterLim-RB")
 }
 
@@ -452,6 +454,8 @@ record(ao, "$(P)$(R)HighOuterLim-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "$(HIGH_LIM)")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)HighOuterLim-RB")
 }
 
@@ -509,6 +513,8 @@ record(ao, "$(P)$(R)PositiveEdgeStep-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "1")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)PositiveEdgeStep-RB")
 }
 
@@ -529,6 +535,8 @@ record(ao, "$(P)$(R)NegativeEdgeStep-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "1")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)NegativeEdgeStep-RB")
 }
 
@@ -549,6 +557,8 @@ record(ao, "$(P)$(R)CenterStep-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "1")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)CenterStep-RB")
 }
 
@@ -569,6 +579,8 @@ record(ao, "$(P)$(R)WidthStep-SP"){
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "1")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
   field(FLNK, "$(P)$(R)WidthStep-RB")
 }
 
