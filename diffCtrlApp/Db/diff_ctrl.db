@@ -177,8 +177,8 @@ record(calcout, "$(P)$(R)DelayAndUpdate"){
 
 record(bo, "$(P)$(R)ForceComplete-Mon"){
   field(DESC, "Force operation complete flag")
-  field(ZNAM, "Off")
-  field(ONAM, "On")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
   field(VAL, "1")
 }
 
