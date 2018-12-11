@@ -3024,7 +3024,7 @@ $(pv_value)</tooltip>
   <widget typeId="org.csstudio.opibuilder.widgets.ActionButton" version="2.0.0">
     <actions hook="false" hook_all="false">
       <action type="OPEN_DISPLAY">
-        <path>../Galil/dmc30017.opi</path>
+        <path>../galil-dmc30017-epics-ioc/dmc30017.opi</path>
         <macros>
           <include_parent_macros>true</include_parent_macros>
           <P>$(CTRL_NEG_PREFIX)</P>
@@ -3080,7 +3080,7 @@ $(pv_value)</tooltip>
   <widget typeId="org.csstudio.opibuilder.widgets.ActionButton" version="2.0.0">
     <actions hook="false" hook_all="false">
       <action type="OPEN_DISPLAY">
-        <path>../Galil/dmc30017.opi</path>
+        <path>../galil-dmc30017-epics-ioc/dmc30017.opi</path>
         <macros>
           <include_parent_macros>true</include_parent_macros>
           <P>$(CTRL_POS_PREFIX)</P>
