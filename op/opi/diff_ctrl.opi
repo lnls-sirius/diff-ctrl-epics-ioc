@@ -10,7 +10,7 @@
   <background_color>
     <color red="75" green="101" blue="126" />
   </background_color>
-  <boy_version>5.1.0.201711290101</boy_version>
+  <boy_version>5.1.0</boy_version>
   <foreground_color>
     <color red="192" green="192" blue="192" />
   </foreground_color>
@@ -2731,7 +2731,7 @@ Pos Side</text>
       <color red="255" green="0" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_POS_PREFIX)CommErr-Mon</pv_name>
+    <pv_name>$(CTRL_POS_PREFIX)CommErr-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -2779,7 +2779,7 @@ $(pv_value)</tooltip>
     <name>Text Update</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTR_POS_PREFIX)ControllerErr-Mon</pv_name>
+    <pv_name>$(CTRL_POS_PREFIX)ControllerErr-Mon</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -2962,7 +2962,7 @@ Neg Side</text>
       <color red="255" green="0" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_NEG_PREFIX)CommErr-Mon</pv_name>
+    <pv_name>$(CTRL_NEG_PREFIX)CommErr-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3010,7 +3010,7 @@ $(pv_value)</tooltip>
     <name>Text Update_28</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTR_NEG_PREFIX)ControllerErr-Mon</pv_name>
+    <pv_name>$(CTRL_NEG_PREFIX)ControllerErr-Mon</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3041,6 +3041,7 @@ $(pv_value)</tooltip>
         <macros>
           <include_parent_macros>true</include_parent_macros>
           <P>$(CTRL_POS_PREFIX)</P>
+          <R></R>
         </macros>
         <mode>1</mode>
         <description></description>
@@ -3097,6 +3098,7 @@ $(pv_value)</tooltip>
         <macros>
           <include_parent_macros>true</include_parent_macros>
           <P>$(CTRL_NEG_PREFIX)</P>
+          <R></R>
         </macros>
         <mode>1</mode>
         <description></description>
@@ -3514,7 +3516,7 @@ $(pv_value)</tooltip>
     <name>Text Update_31</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTR_POS_PREFIX)Mtr.DIR</pv_name>
+    <pv_name>$(CTRL_POS_PREFIX)Mtr.DIR</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3606,7 +3608,7 @@ $(pv_value)</tooltip>
     <name>Text Update_32</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(CTR_NEG_PREFIX)Mtr.DIR</pv_name>
+    <pv_name>$(CTRL_NEG_PREFIX)Mtr.DIR</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3708,7 +3710,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_POS_PREFIX)HighLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_POS_PREFIX)HighLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3806,7 +3808,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_POS_PREFIX)LowLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_POS_PREFIX)LowLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3904,7 +3906,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_NEG_PREFIX)HighLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_NEG_PREFIX)HighLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -4002,7 +4004,7 @@ $(pv_value)</tooltip>
       <color red="255" green="241" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(CTR_NEG_PREFIX)LowLimSw-Mon</pv_name>
+    <pv_name>$(CTRL_NEG_PREFIX)LowLimSw-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
