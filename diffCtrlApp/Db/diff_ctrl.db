@@ -358,14 +358,52 @@ record(calc, "$(P)$(R)Width-RB"){
 }
 
 #####################################################################
-# LIMIT PROTECTION
+# INNER LIMIT PROTECTION
 #
-# Desc: Protect the slit edges from hitting each other.
+# Desc: Protect the slit edges from hitting each other
+#       or from hitting an inner limit.
+
+record(ao, "$(P)$(R)NegEdgeInnerLim-SP"){
+  field(DESC, "Negative edge inner limit")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
+  field(VAL, "$(NEG_LIM)")
+  field(FLNK, "$(P)$(R)NegEdgeInnerLim-RB")
+}
+
+record(ai, "$(P)$(R)NegEdgeInnerLim-RB"){
+  field(DESC, "Negative edge inner limit RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)NegEdgeInnerLim-SP")
+  field(FLNK, "$(P)$(R)NegativeEdgeProtect")
+}
+
+record(ao, "$(P)$(R)PosEdgeInnerLim-SP"){
+  field(DESC, "Positive edge inner limit")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVH, "1000000")
+  field(DRVL, "-1000000")
+  field(VAL, "$(POS_LIM)")
+  field(FLNK, "$(P)$(R)PosEdgeInnerLim-RB")
+}
+
+record(ai, "$(P)$(R)PosEdgeInnerLim-RB"){
+  field(DESC, "Positive edge inner limit RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)PosEdgeInnerLim-SP")
+  field(FLNK, "$(P)$(R)PositiveEdgeProtect")
+}
 
 # Limit neg edge motion
 record(calcout, "$(P)$(R)NegativeEdgeProtect"){
   field(DESC, "Auto set protection limit for neg edge")
-  field(INPA, "$(P)$(R)PositiveEdgePos-RB CPP")          # Read pos edge position
+#  field(INPA, "$(P)$(R)PositiveEdgePos-RB CPP")          # Read pos edge position
+  field(INPA, "$(P)$(R)NegEdgeInnerLim-RB")              # Neg edge inner limit
   field(CALC, "A")
   field(OUT, "$(P)$(R)NegativeEdgePos-SP.DRVH")          # Set neg edge high limit, without processing
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
@@ -374,7 +412,8 @@ record(calcout, "$(P)$(R)NegativeEdgeProtect"){
 # Limit pos edge motion
 record(calcout, "$(P)$(R)PositiveEdgeProtect"){
   field(DESC, "Auto set protection limit for pos edge")
-  field(INPA, "$(P)$(R)NegativeEdgePos-RB CPP")          # Read neg edge position
+#  field(INPA, "$(P)$(R)NegativeEdgePos-RB CPP")          # Read neg edge position
+  field(INPA, "$(P)$(R)PosEdgeInnerLim-RB")              # Pos edge inner limit
   field(CALC, "A")
   field(OUT, "$(P)$(R)PositiveEdgePos-SP.DRVL")          # Set pos edge low limit, without processing
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
@@ -472,31 +511,68 @@ record(calcout, "$(P)$(R)HighOuterLim-RB"){
 # Limit center position
 record(calc, "$(P)$(R)CenterOuterProtect"){
   field(DESC, "Auto set protection limit for center")
-  field(INPA, "$(P)$(R)Width-RB CPP")                    # Read width value
-  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")          # Read high outer limit
-  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")           # Read low outer limit
+  field(INPA, "$(P)$(R)CoordinateConv.D CPP")            # Read width from virtual coordinates
+  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")             # Read high outer limit
+  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")              # Read low outer limit
   field(CALC, "F:=A/2;D:=B-F;E:=C+F;0")
-  field(FLNK, "$(P)$(R)CenterOuterProtectSeq")           # Call record to set center high and low limits
+  field(FLNK, "$(P)$(R)CenterInnerProtect")              # Call center inner limits protection
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
 }
 
-record(seq, "$(P)$(R)CenterOuterProtectSeq"){
-  field(DESC, "Set center high and low limits")
-  field(SELM, "All")
-  field(DOL1, "$(P)$(R)CenterOuterProtect.D")
-  field(DOL2, "$(P)$(R)CenterOuterProtect.E")
-  field(LNK1, "$(P)$(R)Center-SP.DRVH")                  # Set Center max high position without processing
-  field(LNK2, "$(P)$(R)Center-SP.DRVL")                  # Set Center min low position without processing
+record(calc, "$(P)$(R)CenterInnerProtect"){
+  field(DESC, "Auto set protection limit for center")
+  field(INPA, "$(P)$(R)CoordinateConv.D CPP")            # Read width from virtual coordinates
+  field(INPB, "$(P)$(R)PosEdgeInnerLim-RB CPP")          # Read high inner limit
+  field(INPC, "$(P)$(R)NegEdgeInnerLim-RB CPP")          # Read low inner limit
+  field(CALC, "F:=A/2;D:=C+F;E:=B-F;0")
+  field(FLNK, "$(P)$(R)CenterProtectCalc")               # Call record to select limits to use
 }
 
-# Limit width max value
+record(calcout, "$(P)$(R)CenterProtectCalc"){
+  field(DESC, "Select high limit for center")
+  field(INPA, "$(P)$(R)CenterOuterProtect.D")            # Outer high center limit
+  field(INPB, "$(P)$(R)CenterInnerProtect.D")            # Inner high center limit
+  field(CALC, "A<B?A:B")
+  field(OUT, "$(P)$(R)Center-SP.DRVH")                   # Set Center max high position without processing
+  field(FLNK, "$(P)$(R)CenterProtectCalc2")              # Call record to set center high and low limits
+}
+
+record(calcout, "$(P)$(R)CenterProtectCalc2"){
+  field(DESC, "Select low limit for center")
+  field(INPA, "$(P)$(R)CenterOuterProtect.E")            # Outer low center limit
+  field(INPB, "$(P)$(R)CenterInnerProtect.E")            # Inner low center limit
+  field(CALC, "A>B?A:B")
+  field(OUT, "$(P)$(R)Center-SP.DRVL")                   # Set Center min low position without processing
+  field(FLNK, "$(P)$(R)CenterProtectCalc3")
+}
+
+record(calcout, "$(P)$(R)CenterProtectCalc3"){           # Disable Center-SP if limits are equal or inverted,
+  field(DESC, "Disable center if limits disabled")       # since it would otherwise disable limits
+  field(INPA, "$(P)$(R)CenterProtectCalc")
+  field(INPB, "$(P)$(R)CenterProtectCalc2")
+  field(CALC, "A<=B?1:0")                                # if limits are invalid, disable center setpoint
+  field(OUT, "$(P)$(R)Center-SP.DISP")                   # (invalid limits do not mean they are wrong!)
+}
+
+# Limit max width value
 record(calcout, "$(P)$(R)MaxWidthProtect"){
   field(DESC, "Auto set max limit for width")
-  field(INPA, "$(P)$(R)Center-RB CPP")                   # Read width value
-  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")          # Read high outer limit
-  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")           # Read low outer limit
+  field(INPA, "$(P)$(R)CoordinateConv.C CPP")            # Read center from virtual coordinates
+  field(INPB, "$(P)$(R)HighOuterLim-RB CPP")             # Read high outer limit
+  field(INPC, "$(P)$(R)LowOuterLim-RB CPP")              # Read low outer limit
   field(CALC, "(A-C)<(B-A)?2*(A-C):2*(B-A)")
   field(OUT, "$(P)$(R)Width-SP.DRVH")                    # Set Width max size without processing
+  field(DISV, "0")                                       # Record remains disabled until initialization enables it
+}
+
+# Limit min width value
+record(calcout, "$(P)$(R)MinWidthProtect"){
+  field(DESC, "Auto set min limit for width")
+  field(INPA, "$(P)$(R)CoordinateConv.C CPP")            # Read center from virtual coordinates
+  field(INPB, "$(P)$(R)PosEdgeInnerLim-RB CPP")          # Read high inner limit
+  field(INPC, "$(P)$(R)NegEdgeInnerLim-RB CPP")          # Read low inner limit
+  field(CALC, "(A-C)>(B-A)?2*(A-C):2*(B-A)")
+  field(OUT, "$(P)$(R)Width-SP.DRVL")                    # Set Width min size without processing
   field(DISV, "0")                                       # Record remains disabled until initialization enables it
 }
 
@@ -866,6 +942,11 @@ record(seq, "$(P)$(R)EnblProtect"){
   field(LNK6, "$(P)$(R)PositiveEdgeProtect.PROC PP")     # Process record so it can init limits
   field(LNK7, "$(P)$(R)LowOuterLim-SP.PROC PP")          # Process low outer limit
   field(LNK8, "$(P)$(R)HighOuterLim-SP.PROC PP")         # Process high outer limit
-  field(LNK9, "$(P)$(R)ForceComplete-Mon PP")           # Set force complete flag
+  field(LNK9, "$(P)$(R)ForceComplete-Mon PP")            # Set force complete flag
+  field(FLNK, "$(P)$(R)EnblProtect2")
 }
 
+record(seq, "$(P)$(R)EnblProtect2"){
+  field(DO1, "1")
+  field(LNK1, "$(P)$(R)MinWidthProtect.DISV")            # Enable min width limit protection
+}

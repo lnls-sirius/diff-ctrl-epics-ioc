@@ -13,7 +13,10 @@ $(P)$(R)NegativeEdgeStep-SP
 $(P)$(R)CenterStep-SP
 $(P)$(R)WidthStep-SP
 
+# Inner limits
+$(P)$(R)PosEdgeInnerLim-SP
+$(P)$(R)NegEdgeInnerLim-SP
+
 # Outer limits
 $(P)$(R)HighOuterLim-SP
 $(P)$(R)LowOuterLim-SP
-
