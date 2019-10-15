@@ -7,7 +7,7 @@
 #include "myUtil.h"
 
 /*
-  Short description: Interval Binary Search
+  Short description: Interval Binary Searc for Ascending Order Input Array
 
   Full description:
 
@@ -29,7 +29,7 @@
 
   Arguments:
 
-  epicsFloat64 *arr: sorted input array.
+  epicsFloat64 *arr: sorted input array (ascending order).
   epicsUInt16 lo: lower array bound for search.
   epicsUInt16 up: upper array bound for search.
   epicsFloat64: value to search.
@@ -44,7 +44,7 @@
       idx = -2 : search error (maybe unsorted input array).
 
 */
-epicsInt32 binarySearch(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value)
+epicsInt32 binarySearchAsc(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value)
 {
     epicsUInt16 mid;
     // check if value is out of table range
@@ -65,6 +65,64 @@ epicsInt32 binarySearch(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up,
         else if (value < arr[mid]){
             up = mid - 1;
             if (value > arr[up]){
+                // return interval start idx
+                return up;
+            }
+        }
+        else{
+            // mid value exactly matches search
+            return mid;
+        }
+    }
+    return -2;
+}
+
+/*
+  Short description: Interval Binary Search for Descending Order Input Array
+
+  Full description:
+
+  Performs a binary search for a descending-order ordered input array. 
+
+  Arguments:
+
+  epicsFloat64 *arr: sorted input array (descending order).
+  epicsUInt16 lo: lower array bound for search.
+  epicsUInt16 up: upper array bound for search.
+  epicsFloat64: value to search.
+
+  Return value:
+
+  epicsInt32 idx: interval beginning index.
+  
+      Error status:
+
+      idx = -1 : input value out of array bounds.
+      idx = -2 : search error (maybe unsorted input array).
+
+*/
+
+epicsInt32 binarySearchDesc(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value)
+{
+    epicsUInt16 mid;
+    // check if value is out of table range
+    if (value > arr[lo] || value < arr[up]){
+        return -1;
+    }
+    // find smallest table interval in which the value can be found
+    while (lo < up)
+    {
+        mid = lo + (up - lo)/2;
+        if (value < arr[mid]){
+            lo = mid + 1;
+            if (value >= arr[lo]){
+                // return interval start idx
+                return mid;
+            }
+        }
+        else if (value > arr[mid]){
+            up = mid - 1;
+            if (value < arr[up]){
                 // return interval start idx
                 return up;
             }
@@ -124,16 +182,26 @@ epicsInt32 binarySearch(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up,
 epicsInt8 interpolateFromTable(const epicsFloat64 *arrX, const epicsFloat64 *arrY, 
                                epicsUInt16 arrSize, epicsFloat64* result, epicsFloat64 value)
 {
-
     // variables
     epicsInt32 index;
     epicsFloat64 slope; 
 
     //search index
-    index = binarySearch(arrX, 0, arrSize-1, value);
-    if (index < 0){
-        return index;
+    if (arrX[0] < arrX[arrSize-1]){
+        // ascending order arrX
+        index = binarySearchAsc(arrX, 0, arrSize-1, value);
+        if (index < 0){
+            return index;
+        }
     }
+    else {
+        // descending order arrX
+        index = binarySearchDesc(arrX, 0, arrSize-1, value);
+        if (index < 0){
+            return index;
+        }
+    }
+
     // interpolation slope
     slope = arrX[index+1] - arrX[index]; // denominator
     if (slope == 0){
@@ -141,6 +209,7 @@ epicsInt8 interpolateFromTable(const epicsFloat64 *arrX, const epicsFloat64 *arr
         return -3;
     }
     slope = (arrY[index+1] - arrY[index]) / slope;
+
     // return interpolated value
     *result = slope*(value - arrX[index]) + arrY[index];
 

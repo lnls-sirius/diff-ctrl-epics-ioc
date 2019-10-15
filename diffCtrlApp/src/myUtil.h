@@ -181,7 +181,8 @@ static const epicsFloat64 convTableHScrapIn_Y[convTableHScrapIn_Size] =
 
 /* Functions */
 
-epicsInt32 binarySearch(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value);
+epicsInt32 binarySearchAsc(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value);
+epicsInt32 binarySearchDesc(const epicsFloat64 *arr, epicsUInt16 lo, epicsUInt16 up, epicsFloat64 value);
 epicsInt8 interpolateFromTable(const epicsFloat64 *arrX, const epicsFloat64 *arrY, epicsUInt16 arrSize, epicsFloat64* result, epicsFloat64 value);
 
 #endif
