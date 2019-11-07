@@ -12,7 +12,7 @@ usage () {
     echo "  -R                  Configure value of \$(R) macro" >&2
     echo "  -n                  Configure negative controller prefix (required)" >&2
     echo "  -p                  Configure positive controller prefix (required)" >&2
-    echo "  -d                  Configure the device type used for coordinate conversion: SLIT or SCRAPER." >&2
+    echo "  -d                  Configure the device type used for coordinate conversion: slit, scraper-h or scraper-v." >&2
     echo "  -g                  Configure the engineering units displayed" >&2
     echo "  -l                  Configure the low limit for the negative edge position" >&2
     echo "  -h                  Configure the high limit for the positive edge position" >&2
