@@ -47,6 +47,107 @@ record(bi, "$(P)$(R)PositiveDoneMov-Mon"){
 #
 # Desc: Records for slit/scraper position calibration.
 
+# Device center position in positive and negative
+# edges reference frames
+record(ao, "$(P)$(R)PositiveEdgeCenter-SP"){
+  field(DESC, "Device center in pos edge ref frame")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(FLNK, "$(P)$(R)PositiveEdgeCenter-RB")
+}
+
+record(ai, "$(P)$(R)PositiveEdgeCenter-RB"){
+  field(DESC, "Device center in pos edge ref frame")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)PositiveEdgeCenter-SP")
+  field(FLNK, "$(P)$(R)NotInFirstPass")
+}
+
+record(ao, "$(P)$(R)NegativeEdgeCenter-SP"){
+  field(DESC, "Device center in neg edge ref frame")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(FLNK, "$(P)$(R)NegativeEdgeCenter-RB")
+}
+
+record(ai, "$(P)$(R)NegativeEdgeCenter-RB"){
+  field(DESC, "Device center in neg edge ref frame")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)NegativeEdgeCenter-SP")
+  field(FLNK, "$(P)$(R)NotInFirstPass")
+}
+
+# Positive/Negative Edge Center Reference
+# cannot be updated while motor is moving
+record(calcout, "$(P)$(R)ProtectEdgeCenterConfig1"){
+  field(DESC, "Protect edge center ref configuration")
+  field(INPA, "$(CTRL_NEG)Mtr.DMOV CPP")
+  field(INPB, "$(CTRL_POS)Mtr.DMOV CPP")
+  field(INPC, "$(P)$(R)KeepEdgeCenterLocked CPP")
+  field(CALC, "(A=0||B=0||C=1)?1:0")
+  field(OOPT, "On Change")
+  field(VAL, "10") # init with different value
+  field(OUT, "$(P)$(R)ProtectEdgeCenterConfig2.PROC PP")
+}
+
+record(seq, "$(P)$(R)ProtectEdgeCenterConfig2"){
+  field(DESC, "Protect edge center ref configuration")
+  field(SELM, "All")
+  field(DOL1, "$(P)$(R)ProtectEdgeCenterConfig1.VAL")
+  field(DOL2, "$(P)$(R)ProtectEdgeCenterConfig1.VAL")
+  field(LNK1, "$(P)$(R)NegativeEdgeCenter-SP.DISP")
+  field(LNK2, "$(P)$(R)PositiveEdgeCenter-SP.DISP")
+}
+
+# Transfer Edge Center Reference updated
+# to transform record internal vars
+record(calcout, "$(P)$(R)NotInFirstPass"){
+  field(DESC, "Only proc out link after first pass")
+  field(INPA, "0")
+  field(CALC, "A;A:=1")
+  field(OOPT, "When Non-zero")
+#  field(OUT, "$(P)$(R)UpdateEdgeReference.PROC PP")
+  field(OUT, "$(P)$(R)KeepEdgeCenterLocked.A PP")
+}
+
+# Prevent ProtectEdgeCenterConfig1 from enabling
+# caputs to Edge Center ref. The caputs are enabled
+# at the end of force operation.
+record(calcout, "$(P)$(R)KeepEdgeCenterLocked"){
+  field(DESC, "Prevent Edge Center from being changed")
+  field(INPA, "0")
+  field(CALC, "A")
+  field(VAL, "0")
+  field(OOPT, "When Non-zero")
+  field(OUT, "$(P)$(R)UpdateEdgeReference.PROC PP")
+}
+
+record(sseq, "$(P)$(R)UpdateEdgeReference"){
+  field(DESC, "Update conv chain with center values")
+  field(SELM, "All")
+  # Force only positive edge, since force value chain
+  # is going to automatically set negative edge with RB.
+  field(DO1, "1")
+  field(LNK1, "$(P)$(R)NegativeEdgeCenter-SP.DISP") # disable center ref changes
+  field(DO2, "1")
+  field(LNK2, "$(P)$(R)NegativeEdgeCenter-SP.DISP") # disable center ref changes
+  field(DO3, "1")
+  field(LNK3, "$(P)$(R)NegativeEdgePos-SP.DISP")    # disable movement
+  field(DO4, "1")
+  field(LNK4, "$(P)$(R)PositiveEdgePos-SP.DISP")    # disable movement
+  field(DO5, "1")
+  field(LNK5, "$(P)$(R)Center-SP.DISP")             # disable movement
+  field(DO6, "1")
+  field(LNK6, "$(P)$(R)Width-SP.DISP")              # disable movement
+  # wait for pos RB update in motion section
+  # since center ref changed
+  field(DLY7, "1")
+  field(DOL7, "$(P)$(R)PositiveEdgePos-RB")
+  field(LNK7, "$(P)$(R)ForcePositiveEdgePos-Cmd PP")
+}
+
 # FORCE VIRTUAL POSITION TO NEGATIVE EDGE
 # (useful when using absolute encoders)
 
@@ -73,26 +174,27 @@ record(calcout, "$(P)$(R)ForceNegativePosCheck2"){
   field(INPA, "$(P)$(R)ForceNegativePosCheck1")
   field(CALC, "A=0")
   field(OOPT, "When Non-zero")
-  field(OUT, "$(P)$(R)NegativeOffsetFreeze.PROC PP")
+  field(OUT, "$(P)$(R)ForceNegativeSetVars.PROC PP")
 }
 
-# Freeze User Offset
-record(seq, "$(P)$(R)NegativeOffsetFreeze"){
-  field(DESC, "Freeze negative edge user offset")
+# Set variables before forcing
+# negative edge position
+record(seq, "$(P)$(R)ForceNegativeSetVars"){
+  field(DESC, "Set vars before neg pos forcing")
   field(SELM, "All")
-  field(DO1, "1")
-  field(LNK1, "$(CTRL_NEG)Mtr.FOFF PP")
-  field(FLNK, "$(P)$(R)NegativeOffsetCalc")
-}
-
-# Calc user offset for negative edge
-record(calcout, "$(P)$(R)NegativeOffsetCalc"){
-  field(DESC, "Calc user offset for negative edge")
-  field(INPA, "$(P)$(R)NegativeEdgePos-RB")
-  field(INPB, "$(P)$(R)ForceNegativeEdgePos-Cmd")
-  field(INPC, "$(CTRL_NEG)Mtr.OFF")
-  field(CALC, "B-A+C")
-  field(OUT, "$(CTRL_NEG)Mtr.OFF PP")
+  field(DOL1, "$(P)$(R)ForceNegativeEdgePos-Cmd")
+  field(DOL2, "$(P)$(R)PositiveEdgePos-RB")
+  field(DO3, "1") # disable
+  field(DO4, "1") # disable
+  field(DO5, "1") # disable
+  field(DO6, "1") # disable
+  field(LNK1, "$(P)$(R)UpdateCoordConvVal1 PP")
+  field(LNK2, "$(P)$(R)UpdateCoordConvVal2 PP")
+  field(LNK3, "$(P)$(R)Center-SP.DISP")
+  field(LNK4, "$(P)$(R)Width-SP.DISP")
+  field(LNK5, "$(P)$(R)NegativeEdgePos-SP.DISP")
+  field(LNK6, "$(P)$(R)PositiveEdgePos-SP.DISP")
+  field(DLY6, "0.5")
   field(FLNK, "$(P)$(R)DisableProtect")
 }
 
@@ -122,26 +224,27 @@ record(calcout, "$(P)$(R)ForcePositivePosCheck2"){
   field(INPA, "$(P)$(R)ForcePositivePosCheck1")
   field(CALC, "A=0")
   field(OOPT, "When Non-zero")
-  field(OUT, "$(P)$(R)PositiveOffsetFreeze.PROC PP")
+  field(OUT, "$(P)$(R)ForcePositiveSetVars.PROC PP")
 }
 
-# Freeze User Offset
-record(seq, "$(P)$(R)PositiveOffsetFreeze"){
-  field(DESC, "Freeze positive edge user offset")
+# Set variables before forcing
+# positive edge position
+record(seq, "$(P)$(R)ForcePositiveSetVars"){
+  field(DESC, "Set vars before positive pos forcing")
   field(SELM, "All")
-  field(DO1, "1")
-  field(LNK1, "$(CTRL_POS)Mtr.FOFF PP")
-  field(FLNK, "$(P)$(R)PositiveOffsetCalc")
-}
-
-# Calc user offset for positive edge
-record(calcout, "$(P)$(R)PositiveOffsetCalc"){
-  field(DESC, "Calc user offset for positive edge")
-  field(INPA, "$(P)$(R)PositiveEdgePos-RB")
-  field(INPB, "$(P)$(R)ForcePositiveEdgePos-Cmd")
-  field(INPC, "$(CTRL_POS)Mtr.OFF")
-  field(CALC, "-(B-A)+C")             # offset sign must be flipped because positive edge RB sign is flipped
-  field(OUT, "$(CTRL_POS)Mtr.OFF PP")
+  field(DOL1, "$(P)$(R)NegativeEdgePos-RB")
+  field(DOL2, "$(P)$(R)ForcePositiveEdgePos-Cmd")
+  field(DO3, "1") # disable
+  field(DO4, "1") # disable
+  field(DO5, "1") # disable
+  field(DO6, "1") # disable
+  field(LNK1, "$(P)$(R)UpdateCoordConvVal1 PP")
+  field(LNK2, "$(P)$(R)UpdateCoordConvVal2 PP")
+  field(LNK3, "$(P)$(R)Center-SP.DISP")
+  field(LNK4, "$(P)$(R)Width-SP.DISP")
+  field(LNK5, "$(P)$(R)NegativeEdgePos-SP.DISP")
+  field(LNK6, "$(P)$(R)PositiveEdgePos-SP.DISP")
+  field(DLY6, "0.5")
   field(FLNK, "$(P)$(R)DisableProtect")
 }
 
@@ -172,14 +275,14 @@ record(calcout, "$(P)$(R)DelayAndUpdate"){
   field(DESC, "Delay until motor settings complete")
   field(CALC, "1")
   field(ODLY, "1")
-  field(OUT, "$(P)$(R)GetNegativeEdgeRB.PROC PP")         # Trigger SP and coordinate conversion record update
+  field(OUT, "$(P)$(R)UpdateCoordConv.PROC PP")           # Trigger coordinate conversion update
 }
 
 record(bo, "$(P)$(R)ForceComplete-Mon"){
-  field(DESC, "Force operation complete flag")
+  field(DESC, "Complete flag for force operation")
   field(ZNAM, "No")
   field(ONAM, "Yes")
-  field(VAL, "1")
+  field(VAL, "0")
 }
 
 # Allow manual adjust of center and width,
@@ -219,7 +322,7 @@ record(bo, "$(P)$(R)Home-Cmd"){
   field(FLNK, "$(P)$(R)HomeSeq")
 }
 
-# Slit/Scraper homing sequece
+# Homing sequece
 record(seq, "$(P)$(R)HomeSeq"){
   field(DESC, "Homing sequence")
   field(SELM, "All")
@@ -230,9 +333,9 @@ record(seq, "$(P)$(R)HomeSeq"){
 }
 
 #####################################################################
-# SLIT MOTION CONTROL
+# MOTION CONTROL
 #
-# Desc: Slit motion control main parameters.
+# Desc: Motion control main parameters.
 
 # Position of slit/scraper negative edge
 record(ao, "$(P)$(R)NegativeEdgePos-SP"){
@@ -242,6 +345,7 @@ record(ao, "$(P)$(R)NegativeEdgePos-SP"){
   field(DRVH, "1000000")                              # Temporary setting, only for startup
   field(DRVL, "-1000000")                             # Temporary setting, only for startup
   field(OUT, "$(P)$(R)CoordinateConv.A PP")
+  field(DISP, "1")                                    # record start DISABLED
 }
 
 # Position of slit/scraper pos edge
@@ -252,24 +356,27 @@ record(ao, "$(P)$(R)PositiveEdgePos-SP"){
   field(DRVH, "1000000")                              # Temporary setting, only for startup
   field(DRVL, "-1000000")                             # Temporary setting, only for startup
   field(OUT, "$(P)$(R)CoordinateConv.B PP")
+  field(DISP, "1")                                    # record start DISABLED
 }
 
-# Slit center
+# Center
 record(ao, "$(P)$(R)Center-SP"){
-  field(DESC, "Slit center")
+  field(DESC, "Center set point")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(OUT, "$(P)$(R)CoordinateConv.C PP")
+  field(DISP, "1")                                    # record start DISABLED
 }
 
-# Slit width
+# Width
 record(ao, "$(P)$(R)Width-SP"){
-  field(DESC, "Slit width")
+  field(DESC, "Width set point")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(DRVH, "500")                                  # High limit is set here only to enable low limit
   field(DRVL, "0")                                    # Width cannot be negative
   field(OUT, "$(P)$(R)CoordinateConv.D PP")
+  field(DISP, "1")                                    # record start DISABLED
 }
 
 # Convert coordinates
@@ -289,72 +396,251 @@ record(transform, "$(P)$(R)CoordinateConv"){
 # ----- Conversion expressions -----
   field(CLCA, "$center-$width/2")                     # Virtual neg edge position
   field(CLCB, "$center+$width/2")                     # Virtual pos edge position
-  field(CLCC, "($neg+$pos)/2")                     # Center position
-  field(CLCD, "$pos-$neg")                         # Width of slit/scraper window
+  field(CLCC, "($neg+$pos)/2")                        # Center position
+  field(CLCD, "$pos-$neg")                            # Width of slit/scraper window
 # ----- Outputs -----
-  field(OUTA, "$(CTRL_NEG)AbsPos-SP")
-  field(FLNK, "$(P)$(R)RevPositivePos")                  # Postpone pos edge move
+#  field(OUTA, "$(CTRL_NEG)AbsPos-SP")
+  field(FLNK, "$(P)$(R)DevPositivePos")               # Proc convertion records
 }
 
-# Reverse pos edge commanded position
-record(calcout, "$(P)$(R)RevPositivePos"){
-  field(DESC, "Reverse pos edge commanded pos")
+# Convert position from centroid reference frame
+# to device edge reference frame
+record(calcout, "$(P)$(R)DevPositivePos"){
+  field(DESC, "Pos edge conv ref centroid to edge")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INPA, "$(P)$(R)CoordinateConv.B")             # Get pos edge position independently of how it was updated
-  field(CALC, "-A")                                   # Positive edge reference frame is reverse
-  field(OUT, "$(CTRL_POS)AbsPos-SP")
+  field(INPA, "$(P)$(R)CoordinateConv.B")
+  field(INPB, "$(P)$(R)PositiveEdgeCenter-RB")
+  field(CALC, "B-A")
+  field(FLNK, "$(P)$(R)DevNegativePos")
 }
 
-# Slit neg edge position readback
-record(ai, "$(P)$(R)NegativeEdgePos-RB"){
+record(calcout, "$(P)$(R)DevNegativePos"){
+  field(DESC, "Neg edge conv ref centroid to edge")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INPA, "$(P)$(R)CoordinateConv.A")
+  field(INPB, "$(P)$(R)NegativeEdgeCenter-RB")
+  field(CALC, "A+B")
+  field(FLNK, "$(P)$(R)PositiveEdgeMovConv")
+}
+
+# Convert position from device edge
+# reference frame to stage position
+
+# Positive edge stage
+record(aSub, "$(P)$(R)PositiveEdgeMovConv"){
+  field(DESC, "Pos edge mov conv edge-to-stage")
+  field(SNAM, "$(CONV_FUNC_POS_CMD)")    # movement conversion function
+  field(EFLG, "ALWAYS")
+  field(BRSV, "MAJOR")
+  field(PREC, "15")
+  field(INPA, "$(P)$(R)DevPositivePos")  # desired device position (device-to-stage)
+  field(INPB, "$(CONV_INPB)")
+  field(INPC, "$(CONV_INPC)")
+  field(INPD, "$(CONV_INPD)")
+  field(INPE, "$(CONV_INPE)")
+  field(INPF, "$(CONV_INPF)")
+  field(INPG, "$(CONV_INPG)")
+  field(INPH, "$(CONV_INPH)")
+  field(INPI, "$(CONV_INPI)")
+  field(INPJ, "$(CONV_INPJ)")
+  field(INPK, "$(CONV_INPK)")
+  field(INPL, "$(CONV_INPL)") 
+  field(FTA, "DOUBLE")
+  field(FTB, "DOUBLE")
+  field(FTC, "DOUBLE")
+  field(FTD, "DOUBLE")
+  field(FTE, "DOUBLE")
+  field(FTF, "DOUBLE")
+  field(FTG, "DOUBLE")
+  field(FTH, "DOUBLE")
+  field(FTI, "DOUBLE")
+  field(FTJ, "DOUBLE")
+  field(FTK, "DOUBLE")
+  field(FTL, "DOUBLE")
+  field(OUTA, "$(CTRL_POS)AbsPos-SP PP") # Desired output stage position
+  field(FLNK, "$(P)$(R)NegativeEdgeMovConv")
+}
+
+# Negative edge stage
+record(aSub, "$(P)$(R)NegativeEdgeMovConv"){
+  field(DESC, "Neg edge mov conv edge-to-stage")
+  field(SNAM, "$(CONV_FUNC_NEG_CMD)")    # movement conversion function
+  field(EFLG, "ALWAYS")
+  field(BRSV, "MAJOR")
+  field(PREC, "15")
+  field(INPA, "$(P)$(R)DevNegativePos")  # desired device position (device-to-stage)
+  field(INPB, "$(CONV_INPB)")
+  field(INPC, "$(CONV_INPC)")
+  field(INPD, "$(CONV_INPD)")
+  field(INPE, "$(CONV_INPE)")
+  field(INPF, "$(CONV_INPF)")
+  field(INPG, "$(CONV_INPG)")
+  field(INPH, "$(CONV_INPH)")
+  field(INPI, "$(CONV_INPI)")
+  field(INPJ, "$(CONV_INPJ)")
+  field(INPK, "$(CONV_INPK)")
+  field(INPL, "$(CONV_INPL)")
+  field(FTA, "DOUBLE")
+  field(FTB, "DOUBLE")
+  field(FTC, "DOUBLE")
+  field(FTD, "DOUBLE")
+  field(FTE, "DOUBLE")
+  field(FTF, "DOUBLE")
+  field(FTG, "DOUBLE")
+  field(FTH, "DOUBLE")
+  field(FTI, "DOUBLE")
+  field(FTJ, "DOUBLE")
+  field(FTK, "DOUBLE")
+  field(FTL, "DOUBLE")
+  field(OUTA, "$(CTRL_NEG)AbsPos-SP PP") # Desired output stage position
+}
+
+# Negative edge position readback
+record(aSub, "$(P)$(R)NegativeEdgeMovConvRB"){
+  field(DESC, "Neg edge mov conv edge-to-stage")
+  field(SNAM, "$(CONV_FUNC_NEG_RB)")       # movement conversion function
+  field(EFLG, "ALWAYS")
+  field(BRSV, "MAJOR")
+  field(PREC, "15")
+  field(INPA, "$(CTRL_NEG)EncPos-Mon CPP") # stage position (stage-to-device conv)
+  field(INPB, "$(CONV_INPB)")
+  field(INPC, "$(CONV_INPC)")
+  field(INPD, "$(CONV_INPD)")
+  field(INPE, "$(CONV_INPE)")
+  field(INPF, "$(CONV_INPF)")
+  field(INPG, "$(CONV_INPG)")
+  field(INPH, "$(CONV_INPH)")
+  field(INPI, "$(CONV_INPI)")
+  field(INPJ, "$(CONV_INPJ)")
+  field(INPK, "$(CONV_INPK)")
+  field(INPL, "$(CONV_INPL)")
+  field(FTA, "DOUBLE")
+  field(FTB, "DOUBLE")
+  field(FTC, "DOUBLE")
+  field(FTD, "DOUBLE")
+  field(FTE, "DOUBLE")
+  field(FTF, "DOUBLE")
+  field(FTG, "DOUBLE")
+  field(FTH, "DOUBLE")
+  field(FTI, "DOUBLE")
+  field(FTJ, "DOUBLE")
+  field(FTK, "DOUBLE")
+  field(FTL, "DOUBLE")
+  field(OUTA, "$(P)$(R)NegativeEdgePosRBAux PP")
+}
+
+record(ai, "$(P)$(R)NegativeEdgePosRBAux"){
+  field(DESC, "Auxiliar var for NegativeEdgePos RB")
+  field(PREC, "$(PREC)")
+  field(FLNK, "$(P)$(R)NegativeEdgePos-RB")
+}
+
+record(calc, "$(P)$(R)NegativeEdgePos-RB"){
   field(DESC, "Negative edge position RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(ADEL, "-1")
   field(MDEL, "-1")
-  field(INP, "$(CTRL_NEG)EncPos-Mon CPP")            # Get position from encoder
+  field(INPA, "$(P)$(R)NegativeEdgePosRBAux")      # Device tip position
+  field(INPB, "$(P)$(R)NegativeEdgeCenter-RB CPP") # Negative edge center position !!
+  field(CALC, "A-B")
   field(FLNK, "$(P)$(R)Center-RB")
 }
 
-# Reverse pos edge position readback sign
-record(calc, "$(P)$(R)RevPositivePosRB"){
-  field(DESC, "Reverse pos edge encoder reading")
-  field(INPA, "$(CTRL_POS)EncPos-Mon CPP")          # Get position from encoder
-  field(CALC, "-A")
+# Positive edge position readback
+record(aSub, "$(P)$(R)PositiveEdgeMovConvRB"){
+  field(DESC, "Pos edge mov conv edge-to-stage")
+  field(SNAM, "$(CONV_FUNC_POS_RB)")       # movement conversion function
+  field(EFLG, "ALWAYS")
+  field(BRSV, "MAJOR")
+  field(PREC, "15")
+  field(INPA, "$(CTRL_POS)EncPos-Mon CPP") # stage position (stage-to-device conv)
+  field(INPB, "$(CONV_INPB)")
+  field(INPC, "$(CONV_INPC)")
+  field(INPD, "$(CONV_INPD)")
+  field(INPE, "$(CONV_INPE)")
+  field(INPF, "$(CONV_INPF)")
+  field(INPG, "$(CONV_INPG)")
+  field(INPH, "$(CONV_INPH)")
+  field(INPI, "$(CONV_INPI)")
+  field(INPJ, "$(CONV_INPJ)")
+  field(INPK, "$(CONV_INPK)")
+  field(INPL, "$(CONV_INPL)")
+  field(FTA, "DOUBLE")
+  field(FTB, "DOUBLE")
+  field(FTC, "DOUBLE")
+  field(FTD, "DOUBLE")
+  field(FTE, "DOUBLE")
+  field(FTF, "DOUBLE")
+  field(FTG, "DOUBLE")
+  field(FTH, "DOUBLE")
+  field(FTI, "DOUBLE")
+  field(FTJ, "DOUBLE")
+  field(FTK, "DOUBLE")
+  field(FTL, "DOUBLE")
+  field(OUTA, "$(P)$(R)PositiveEdgePosRBAux PP")
+}
+
+record(ai, "$(P)$(R)PositiveEdgePosRBAux"){
+  field(DESC, "Auxiliar var for PositiveEdgePos RB")
+  field(PREC, "$(PREC)")
   field(FLNK, "$(P)$(R)PositiveEdgePos-RB")
 }
 
-# Slit pos edge position readback
-record(ai, "$(P)$(R)PositiveEdgePos-RB"){
+record(calc, "$(P)$(R)PositiveEdgePos-RB"){
   field(DESC, "Positive edge position RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(ADEL, "-1")
   field(MDEL, "-1")
-  field(INP, "$(P)$(R)RevPositivePosRB")                 # Get reversed encoder position
+  field(INPA, "$(P)$(R)PositiveEdgePosRBAux")      # Device tip position
+  field(INPB, "$(P)$(R)PositiveEdgeCenter-RB CPP") # Positive edge center position
+  field(CALC, "B-A")
   field(FLNK, "$(P)$(R)Center-RB")
 }
 
-# Slit center readback
+# Center readback
 record(calc, "$(P)$(R)Center-RB"){
-  field(DESC, "Slit center RB")
+  field(DESC, "Center RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(INPA, "$(P)$(R)NegativeEdgePos-RB")
   field(INPB, "$(P)$(R)PositiveEdgePos-RB")
-  field(CALC, "(A+B)/2")                              # Calculate center from readback values
+  field(CALC, "(A+B)/2")
   field(FLNK, "$(P)$(R)Width-RB")
 }
 
-# Slit width readback
+# Width readback
 record(calc, "$(P)$(R)Width-RB"){
-  field(DESC, "Slit width RB")
+  field(DESC, "Width RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")  
   field(INPA, "$(P)$(R)NegativeEdgePos-RB")
   field(INPB, "$(P)$(R)PositiveEdgePos-RB")
   field(CALC, "B-A")
+}
+
+# Coordinate conversion status
+record(calc, "$(P)$(R)CoordConvErrCalc"){
+  field(DESC, "Coordinate conversion status calc")
+  field(INPA, "$(P)$(R)PositiveEdgeMovConv.STAT CPP")
+  field(INPB, "$(P)$(R)NegativeEdgeMovConv.STAT CPP")
+  field(INPC, "$(P)$(R)PositiveEdgeMovConvRB.STAT CPP")
+  field(INPD, "$(P)$(R)NegativeEdgeMovConvRB.STAT CPP")
+  field(CALC, "A||B||C||D")
+  field(FLNK, "$(P)$(R)CoordConvErr-Mon")
+}
+
+record(bi, "$(P)$(R)CoordConvErr-Mon"){
+  field(DESC, "Coordinate conversion status")
+  field(ZNAM, "Ok")
+  field(ZSV, "NO_ALARM")
+  field(ONAM, "Error")
+  field(OSV, "MAJOR")
+  field(VAL, "0")
+  field(INP, "$(P)$(R)CoordConvErrCalc")
 }
 
 #####################################################################
@@ -897,27 +1183,76 @@ record(ai, "$(P)$(R)GetPositiveEdgeRB"){
   field(INP, "$(P)$(R)PositiveEdgePos-RB")
   field(ADEL, "-1")
   field(MDEL, "-1")
+  field(FLNK, "$(P)$(R)UpdateCoordVars")
+}
+
+# Update conversion variables
+record(sseq, "$(P)$(R)UpdateCoordVars"){
+  field(DESC, "Update coordinate conv variables")
+  field(SELM, "All")
+  field(DO1, "1")
+  field(DO2, "1")
+  field(DOL3, "$(P)$(R)GetNegativeEdgeRB")
+  field(DOL4, "$(P)$(R)GetPositiveEdgeRB")
+  field(LNK1, "$(P)$(R)PositiveEdgeCenter-SP.PROC PP")
+  field(LNK2, "$(P)$(R)NegativeEdgeCenter-SP.PROC PP")
+  field(LNK3, "$(P)$(R)UpdateCoordConvVal1 PP")
+  field(LNK4, "$(P)$(R)UpdateCoordConvVal2 PP")
+  field(DLY4, "1")
   field(FLNK, "$(P)$(R)UpdateCoordConv")
+}
+
+# Coordinate conversion update variables
+record(ao, "$(P)$(R)UpdateCoordConvVal1"){
+  field(DESC, "Coord conv update edge value 1")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+}
+
+record(ao, "$(P)$(R)UpdateCoordConvVal2"){
+  field(DESC, "Coord conv update edge value 2")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
 }
 
 # Sequence to update the coordinate conversion
 # record with the position readback values
 record(sseq, "$(P)$(R)UpdateCoordConv"){
+  field(DESC, "Prepare motor record for update")
+  field(SELM, "All")
+  field(STR1, "Calibrate")
+  field(STR2, "Frozen")        # Freeze offset and make VAL = DVAL
+  field(STR3, "Frozen")
+  field(DOL4, "$(CTRL_NEG)Mtr.RBV")
+  field(DOL5, "$(CTRL_POS)Mtr.RBV")
+  field(LNK1, "$(P)$(R)SetMode-Sel PP")
+  field(LNK2, "$(CTRL_NEG)Mtr.FOFF PP")
+  field(LNK3, "$(CTRL_POS)Mtr.FOFF PP")
+  field(LNK4, "$(CTRL_NEG)Mtr.VAL PP")
+  field(LNK5, "$(CTRL_POS)Mtr.VAL PP")
+  field(DLY4, "0.5")
+  field(DLY5, "0.5")
+  field(FLNK, "$(P)$(R)UpdateCoordConv2")
+}
+
+record(sseq, "$(P)$(R)UpdateCoordConv2"){
   field(DESC, "Update coordinate conv record fields")
   field(SELM, "All")
   field(STR1, "Calibrate")
-  field(DOL2, "$(P)$(R)GetNegativeEdgeRB")
-  field(DOL3, "$(P)$(R)GetPositiveEdgeRB")
-  field(STR4, "Move")
-  field(LNK1, "$(P)$(R)SetMode-Sel CA")
-  field(LNK2, "$(P)$(R)NegativeEdgePos-SP CA")
-  field(LNK3, "$(P)$(R)PositiveEdgePos-SP CA")
-  field(LNK4, "$(P)$(R)SetMode-Sel CA")
-  field(WAIT1, "Wait")
-  field(WAIT2, "Wait")
-  field(WAIT3, "Wait")
-  field(WAIT4, "Wait")
-  field(DLY4, "2")                                    # Wait so that pos position is set
+  field(STR2, "Variable")        # Unfreeze offset and change it
+  field(STR3, "Variable")        # by setting VAL with converted value
+  field(DOL4, "$(P)$(R)UpdateCoordConvVal1")
+  field(DOL5, "$(P)$(R)UpdateCoordConvVal2")
+  field(STR6, "Move")
+  field(LNK1, "$(P)$(R)SetMode-Sel PP")
+  field(LNK2, "$(CTRL_NEG)Mtr.FOFF PP")
+  field(LNK3, "$(CTRL_POS)Mtr.FOFF PP")
+  field(LNK4, "$(P)$(R)NegativeEdgePos-SP PP")
+  field(LNK5, "$(P)$(R)PositiveEdgePos-SP PP")
+  field(LNK6, "$(P)$(R)SetMode-Sel PP")
+  field(DLY4, "1")
+  field(DLY5, "0.5")
+  field(DLY6, "1")
   field(FLNK, "$(P)$(R)EnblProtect")
 }
 
@@ -933,7 +1268,6 @@ record(seq, "$(P)$(R)EnblProtect"){
   field(DO6, "1")
   field(DO7, "1")
   field(DO8, "1")
-  field(DO9, "1")
   field(LNK1, "$(P)$(R)NegativeEdgeProtect.DISV")        # Enable neg edge limit protection
   field(LNK2, "$(P)$(R)PositiveEdgeProtect.DISV")        # Enable pos edge limit protection
   field(LNK3, "$(P)$(R)CenterOuterProtect.DISV")         # Enable center outer limit protection
@@ -942,11 +1276,26 @@ record(seq, "$(P)$(R)EnblProtect"){
   field(LNK6, "$(P)$(R)PositiveEdgeProtect.PROC PP")     # Process record so it can init limits
   field(LNK7, "$(P)$(R)LowOuterLim-SP.PROC PP")          # Process low outer limit
   field(LNK8, "$(P)$(R)HighOuterLim-SP.PROC PP")         # Process high outer limit
-  field(LNK9, "$(P)$(R)ForceComplete-Mon PP")            # Set force complete flag
   field(FLNK, "$(P)$(R)EnblProtect2")
 }
 
 record(seq, "$(P)$(R)EnblProtect2"){
   field(DO1, "1")
+  field(DO2, "1")
+  field(DO3, "1")
+  field(DO4, "0")  # enable
+  field(DO5, "0")  # enable
+  field(DO6, "0")  # enable
+  field(DO7, "0")  # enable
+  field(DO8, "0")
+  field(DO9, "1")
   field(LNK1, "$(P)$(R)MinWidthProtect.DISV")            # Enable min width limit protection
+  field(LNK2, "$(P)$(R)NegEdgeInnerLim-SP.PROC")         # Process neg edge inner limit
+  field(LNK3, "$(P)$(R)PosEdgeInnerLim-SP.PROC")         # Process pos edge inner limit
+  field(LNK4, "$(P)$(R)NegativeEdgePos-SP.DISP")         # Enable position set point records
+  field(LNK5, "$(P)$(R)PositiveEdgePos-SP.DISP")         # Enable position set point records
+  field(LNK6, "$(P)$(R)Center-SP.DISP")                  # Enable position set point records
+  field(LNK7, "$(P)$(R)Width-SP.DISP")                   # Enable position set point records
+  field(LNK8, "$(P)$(R)KeepEdgeCenterLocked.A PP")       # Unlock edges' center references
+  field(LNK9, "$(P)$(R)ForceComplete-Mon PP")            # Set force complete flag
 }
