@@ -169,7 +169,7 @@ static const epicsFloat64 convTableHScrapOut_X[convTableHScrapOut_Size] =
 // Y values (scraper tip)
 static const epicsFloat64 convTableHScrapOut_Y[convTableHScrapOut_Size] =
 {
- 9.33986415, 5.82888758, 2.41536059, -0.853118372, -3.90224693
+ -9.33986415, -5.82888758, -2.41536059, 0.853118372, 3.90224693
 };
 
 // Horizontal Scraper - Inner Blade - Movement Conversion Table
