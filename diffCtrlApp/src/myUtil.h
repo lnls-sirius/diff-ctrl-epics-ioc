@@ -15,8 +15,8 @@
 
 #define convTableVScrapBottow_Size 303
 #define convTableVScrapTop_Size    302
-#define convTableHScrapOut_Size    5
-#define convTableHScrapIn_Size     5
+#define convTableHScrapOut_Size    7
+#define convTableHScrapIn_Size     7
 
 // Vertical Scraper - Bottow Blade - Movement Conversion Table
 // X values (linear stage)
@@ -164,24 +164,24 @@ static const epicsFloat64 convTableVScrapTop_Y[convTableVScrapTop_Size] =
 // X values (linear stage)
 static const epicsFloat64 convTableHScrapOut_X[convTableHScrapOut_Size] =
 {
- -20.8010500, -18.8291500, -16.8827000, -14.9244000, -12.9682500
+ -21.8010500, -20.8010500, -18.8291500, -16.8827000, -14.9244000, -12.9682500, -11.9682500
 };
 // Y values (scraper tip)
 static const epicsFloat64 convTableHScrapOut_Y[convTableHScrapOut_Size] =
 {
- -9.33986415, -5.82888758, -2.41536059, 0.853118372, 3.90224693
+ -11.1203685, -9.33986415, -5.82888758, -2.41536059, 0.853118372, 3.90224693, 5.46098658
 };
 
 // Horizontal Scraper - Inner Blade - Movement Conversion Table
 // X values (linear stage)
 static const epicsFloat64 convTableHScrapIn_X[convTableHScrapIn_Size] =
 {
- 11.0437500, 13.2912000, 15.5232000, 17.7626500, 20.0014000
+ 10.0437500, 11.0437500, 13.2912000, 15.5232000, 17.7626500, 20.0014000, 21.0014000
 };
 // Y values (scraper tip)
 static const epicsFloat64 convTableHScrapIn_Y[convTableHScrapIn_Size] =
 {
- -14.0216000, -10.3858777, -6.53377562, -2.65536224, 1.21454726
+ -15.6393100, -14.0216000, -10.3858777, -6.53377562, -2.65536224, 1.21454726, 2.94315005
 };
 
 /* Functions */
