@@ -270,7 +270,7 @@ docker rm <CONTAINER_NAME>
     Each IOC instance should add a prefix to the process variables indicating which device it controls.
 
     % Process Variables description table
-    \begin{longtable}{| m{3.0cm} m{4.5cm}  m{7.0cm} |}
+    \begin{longtable}{| m{4.5cm} m{2.5cm}  m{7.0cm} |}
         \caption{Application Process Variables} \\ \hline
         \bfseries Name & \bfseries Data Type & \bfseries Description \label{tab:PV-description} \endfirsthead
         \caption{Application Process Variables} \\ \hline
@@ -288,175 +288,175 @@ docker rm <CONTAINER_NAME>
                 Prefix used for device \emph{positive edge} motion controller..
             \end{tabular} \hypertarget{pv:negative-done-mov-mon}{}\\ \hline
         % --- row ---
-        NegativeDoneMov-Mon &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeDoneMov-Mon & Enum: No (0) Yes (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Indicates when the \emph{negative edge} is done moving, i.e., when it has completely finished its motion.
             \end{tabular} \hypertarget{pv:positive-done-mov-mon}{}\\ \hline
         % --- row ---
-        PositiveDoneMov-Mon &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveDoneMov-Mon & Enum: No (0) Yes (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Indicates when the \emph{positive edge} is done moving, i.e., when it has completely finished its motion.
             \end{tabular} \hypertarget{pv:negative-edge-pos}{}\\ \hline
         % --- row ---
-        NegativeEdgePos-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgePos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 Command the \emph{negative edge} to move to the specified distance, in engineering units, from the \emph{reference axis center}. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current edge position, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegativeEdgePos-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgePos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the \emph{negative edge} distance, in engineering units, from the \emph{reference axis center}. This value is updated whenever the edge encoder registers a movement.
             \end{tabular} \hypertarget{pv:positive-edge-pos}{}\\ \hline
         % --- row ---
-        PositiveEdgePos-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgePos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 Command the \emph{positive edge} to move to the specified distance, in engineering units, from the \emph{reference axis center}. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current edge position, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PositiveEdgePos-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgePos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the \emph{positive edge} distance, in engineering units, from the \emph{reference axis center}. This value is updated whenever the edge encoder registers a movement.
             \end{tabular} \hypertarget{pv:center}{}\\ \hline
         % --- row ---
-        Center-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        Center-SP & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Command both the \emph{positive and negative edges} movement so that the midpoint between them is located at the specified distance, in engineering units, from the \emph{reference axis center}. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current center position, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        Center-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        Center-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the distance of the midpoint between the \emph{positive and negative edges}, in engineering units, from the \emph{reference axis center}. This value is updated whenever the encoder of one of the edges registers a movement.
             \end{tabular} \hypertarget{pv:width}{}\\ \hline
         % --- row ---
-        Width-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        Width-SP & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Command both the \emph{positive and negative edges} movement so that the distance between them is set to the specified value, in engineering units. They edges are moved in such a way that keeps the \emph{Center-RB} position unchanged. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current width between the edges, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        Width-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        Width-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the distance between the \emph{positive and negative edges}, in engineering units. This value is updated whenever the encoder of one of the edges registers a movement.
             \end{tabular} \hypertarget{pv:coord-conv-err-mon}{}\\ \hline
         % --- row ---
-        CoordConvErr-Mon &  & \begin{tabular}{@{}m{6cm}@{}}
+        CoordConvErr-Mon & Enum: Ok (0), Error (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Error status of the coordinate conversion between encoder reading and actual edge position. If the error status is 1, then the conversion function failed for the given commanded position or for the current encoder reading. This can be due to invalid input, for instance, an out of range position, or to some error in the function itself.
             \end{tabular} \hypertarget{pv:neg-edge-inner-lim}{}\\ \hline
         % --- row ---
-        NegEdgeInnerLim-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegEdgeInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The inner limit associated to the \emph{negative edge}, in engineering units. This is the limit position when moving this edge toward the reference center from the retreat position. The \emph{negative edge} retreat position is usually negative, but if the edge keeps advancing, it eventually arrives at a positive position. Thus, if the \emph{negative edge} inner limit is positive, the \emph{negative edge} can move beyond the reference center, until it reaches the specified limit. If it is negative, the edge can move torwards the center until it reaches the specified limit.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegEdgeInnerLim-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegEdgeInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{negative edge} inner limit.
             \end{tabular} \hypertarget{pv:pos-edge-inner-lim}{}\\ \hline
         % --- row ---
-        PosEdgeInnerLim-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        PosEdgeInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The inner limit associated to the \emph{positive edge}, in engineering units. This is the limit position when moving this edge toward the reference center from the retreat position. The \emph{positive edge} retreat position is usually positive, but if the edge keeps advancing, it eventually arrives at a negative position. Thus, if the \emph{positive edge} inner limit is negative, the \emph{positive edge} can move beyond the reference center, until it reaches the specified limit. If it is positive, the edge can move torwards the center until it reaches the specified limit.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PosEdgeInnerLim-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        PosEdgeInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{positive edge} inner limit.
             \end{tabular} \hypertarget{pv:low-outer-lim}{}\\ \hline
         % --- row ---
-        LowOuterLim-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        LowOuterLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The outer limit associated to the \emph{negative edge}, in engineering units. This is the limit retreat position for the \emph{negative edge}, i.e., the most negative position this edge can have.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        LowOuterLim-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        LowOuterLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{negative edge} outer limit.
             \end{tabular} \hypertarget{pv:high-outer-lim}{}\\ \hline
         % --- row ---
-        HighOuterLim-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        HighOuterLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The outer limit associated to the \emph{positive edge}, in engineering units. This is the limit retreat position for the \emph{positive edge}, i.e., the most positive position this edge can have.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        HighOuterLim-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        HighOuterLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{positive edge} outer limit.
             \end{tabular} \hypertarget{pv:positive-edge-center}{}\\ \hline
         % --- row ---
-        PositiveEdgeCenter-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgeCenter-SP & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The distance between the \emph{positive edge} and the reference center. A greater distance value shifts the available positions for the \emph{positive edge} in the positive direction (greater edge position values). Smaller distance values do the opposite, including negative values.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PositiveEdgeCenter-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgeCenter-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the distance between the \emph{positive edge} and the reference center.
             \end{tabular} \hypertarget{pv:negative-edge-center}{}\\ \hline
         % --- row ---
-        NegativeEdgeCenter-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgeCenter-SP & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The distance between the \emph{negative edge} and the reference center. A greater distance value shifts the available positions for the \emph{negative edge} in the negative direction (smaller edge position values). Smaller distance values do the opposite, including negative values.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegativeEdgeCenter-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgeCenter-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the distance between the \emph{negative edge} and the reference center.
             \end{tabular} \hypertarget{pv:force-negative-edge-pos-cmd}{}\\ \hline
         % --- row ---
-        ForceNegativeEdgePos-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
-                Force a given position reading to the \emph{negative edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
+        ForceNegativeEdgePos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
+                Force a given position reading, in engineering units, to the \emph{negative edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
             \end{tabular} \hypertarget{pv:force-positive-edge-pos-cmd}{}\\ \hline
         % --- row ---
-        ForcePositiveEdgePos-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
-                Force a given position reading to the \emph{positive edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
+        ForcePositiveEdgePos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
+                Force a given position reading, in engineering units, to the \emph{positive edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
             \end{tabular} \hypertarget{pv:force-complete-mon}{}\\ \hline
         % --- row ---
-        ForceComplete-Mon &  & \begin{tabular}{@{}m{6cm}@{}}
+        ForceComplete-Mon & Enum: No (0), Yes (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Completion status of the force operation. After a position reading is forced to some of the edges, the IOC takes some time to apply the configuration. When the new offset configuration is finished, this PV goes to 1.
             \end{tabular} \hypertarget{pv:home-cmd}{}\\ \hline
         % --- row ---
-        Home-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        Home-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Command both edges to the retreat position. The \emph{positive edge} moves in the positive direction, until it hits a limit switch, while the \emph{negative edge} moves to the negative direction, until it hits a limit switch.
             \end{tabular} \hypertarget{pv:positive-edge-step}{}\\ \hline
         % --- row ---
-        PositiveEdgeStep-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgeStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The step size, in engineering units, to use \emph{positive edge} when an increment or decrement \emph{positive edge} position command is issued. See \hyperlink{pv:inc-positive-edge-cmd}{IncPositiveEdge-Cmd} and \hyperlink{pv:dec-positive-edge-cmd}{DecPositiveEdge-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PositiveEdgeStep-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveEdgeStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{positive edge} step.
             \end{tabular} \hypertarget{pv:negative-edge-step}{}\\ \hline
         % --- row ---
-        NegativeEdgeStep-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgeStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The step size, in engineering units, to use when an increment or decrement \emph{negative edge} position command is issued. See \hyperlink{pv:inc-negative-edge-cmd}{IncNegativeEdge-Cmd} and \hyperlink{pv:dec-negative-edge-cmd}{DecNegativeEdge-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegativeEdgeStep-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeEdgeStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{negative edge} step.
             \end{tabular} \hypertarget{pv:center-step}{}\\ \hline
         % --- row ---
-        CenterStep-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        CenterStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The step size, in engineering units, to use when an increment or decrement \emph{center} position command is issued. See \hyperlink{pv:inc-center-cmd}{IncCenter-Cmd} and \hyperlink{pv:dec-center-cmd}{DecCenter-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        CenterStep-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        CenterStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{center} step.
             \end{tabular} \hypertarget{pv:width-step}{}\\ \hline
         % --- row ---
-        WidthStep-SP &  & \begin{tabular}{@{}m{6cm}@{}}
+        WidthStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The step size, in engineering units, to use when an increment or decrement \emph{width} command is issued. See \hyperlink{pv:inc-width-cmd}{IncWidth-Cmd} and \hyperlink{pv:dec-width-cmd}{DecWidth-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        WidthStep-RB &  & \begin{tabular}{@{}m{6cm}@{}}
+        WidthStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{width} step.
             \end{tabular} \hypertarget{pv:inc-positive-edge-cmd}{}\\ \hline
         % --- row ---
-        IncPositiveEdge-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        IncPositiveEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Increment the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveEdgeStep-RB}.
             \end{tabular} \hypertarget{pv:dec-positive-edge-cmd}{}\\ \hline
         % --- row ---
-        DecPositiveEdge-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        DecPositiveEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Decrement the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveEdgeStep-RB}.
             \end{tabular} \hypertarget{pv:inc-negative-edge-cmd}{}\\ \hline
         % --- row ---
-        IncNegativeEdge-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        IncNegativeEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Increment the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeEdgeStep-RB}.
             \end{tabular} \hypertarget{pv:dec-negative-edge-cmd}{}\\ \hline
         % --- row ---
-        DecNegativeEdge-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        DecNegativeEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Decrement the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeEdgeStep-RB}.
             \end{tabular} \hypertarget{pv:inc-center-cmd}{}\\ \hline
         % --- row ---
-        IncCenter-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        IncCenter-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Increment the \emph{center} position by the step specified by \hyperlink{pv:center-step}{CenterStep-RB}.
             \end{tabular} \hypertarget{pv:dec-center-cmd}{}\\ \hline
         % --- row ---
-        DecCenter-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        DecCenter-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Decrement the \emph{center} position by the step specified by \hyperlink{pv:center-step}{CenterStep-RB}.
             \end{tabular} \hypertarget{pv:inc-width-cmd}{}\\ \hline
         % --- row ---
-        IncWidth-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        IncWidth-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Increment the \emph{width} by the step specified by \hyperlink{pv:width-step}{WidthStep-RB}.
             \end{tabular} \hypertarget{pv:dec-width-cmd}{}\\ \hline
         % --- row ---
-        DecWidth-Cmd &  & \begin{tabular}{@{}m{6cm}@{}}
+        DecWidth-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Decrement the \emph{width} by the step specified by \hyperlink{pv:width-step}{WidthStep-RB}.
             \end{tabular} \hypertarget{}{}\\ \hline
     \end{longtable}
