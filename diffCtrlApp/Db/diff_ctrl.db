@@ -1161,7 +1161,7 @@ record(calcout, "$(P)$(R)OneShot"){
   field(INPC, "$(P)$(R)PositiveEdgePos-RB CPP")       # Process when pos edge pos changes
   field(CALC, "A;A:=0")                               # Only process whole chain one time
   field(OOPT, "When Non-zero")
-  field(ODLY, "1")                                    # Wait 1 sec, so that both edges are updated
+  field(ODLY, "10")                                    # Wait 10 sec, so that all low level initialization can finish
   field(OUT, "$(P)$(R)GetNegativeEdgeRB.PROC PP")
 }
 
