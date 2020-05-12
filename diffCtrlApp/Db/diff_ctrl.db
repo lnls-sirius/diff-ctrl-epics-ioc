@@ -449,20 +449,44 @@ record(calcout, "$(P)$(R)HomeEndStsCalc"){
   field(CALC, "(A && B && C)?1:2")
   field(OCAL, "0")
   field(DOPT, "Use OCAL")
+  field(VAL, "1")
   field(OUT, "$(P)$(R)HomeStartStsFlag PP")
-  field(FLNK, "$(P)$(R)HomeDone-Mon")
+  field(FLNK, "$(P)$(R)HomeForceNewPos")
+}
+
+# force new position to both edges set points
+#  > This is important because it updates
+#    the transform record 'CoordinateConv'
+#    internal variables. Otherwise, the
+#    next commanded position could be
+#    overwritten by the currently stored
+#    internal variable.
+record(seq, "$(P)$(R)HomeForceNewPos"){
+  field(DESC, "Force position after homing")
+  field(SELM, "All")
+  field(DO1, "1")
+  field(LNK1, "$(P)$(R)OneShot.A PP")
+}
+
+# update home done
+record(calcout, "$(P)$(R)HomeDoneUpdate"){
+  field(DESC, "Update home done status")
+  field(INPA, "$(P)$(R)ForceComplete-Mon CPP")
+  field(INPB, "$(P)$(R)HomeEndStsCalc")
+  field(CALC, "B")
+  field(OUT, "$(P)$(R)HomeDone-Mon PP")
 }
 
 # home done status
 record(mbbi, "$(P)$(R)HomeDone-Mon"){
   field(DESC, "Homing status")
-  field(INP, "$(P)$(R)HomeEndStsCalc.VAL")
   field(ZRVL, "0")
   field(ZRST, "In Progress")
   field(ONVL, "1")
   field(ONST, "Finished")
   field(TWVL, "2")
   field(TWST, "Error")
+  field(VAL, "1")
 }
 
 #####################################################################
