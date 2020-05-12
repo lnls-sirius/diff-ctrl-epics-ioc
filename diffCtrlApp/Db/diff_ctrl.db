@@ -319,17 +319,150 @@ record(bo, "$(P)$(R)Home-Cmd"){
   field(ZNAM, "Off")
   field(ONAM, "On")
   field(HIGH, "0.5")
-  field(FLNK, "$(P)$(R)HomeSeq")
+  field(OUT, "$(P)$(R)HomeValid.A PP")
 }
 
-# Homing sequece
-record(seq, "$(P)$(R)HomeSeq"){
+# validate the home cmd (must be non-zero)
+record(calcout, "$(P)$(R)HomeValid"){
+  field(DESC, "Validate home cmd")
+  field(INPA, "0")
+  field(CALC, "A")
+  field(OOPT, "When Non-zero")
+  field(OUT, "$(P)$(R)HomeCalcNeg.PROC PP")
+}
+
+# choose config based on mtr direction
+record(calc, "$(P)$(R)HomeCalcNeg"){
+  field(DESC, "Home neg edge direction calc")
+  field(INPA, "$(CTRL_NEG)Mtr.DIR")
+  field(CALC, "A=0?3:12")
+  field(FLNK, "$(P)$(R)HomeCalcPos")
+}
+
+# choose config based on mtr direction
+record(calc, "$(P)$(R)HomeCalcPos"){
+  field(DESC, "Home pos edge direction calc")
+  field(INPA, "$(CTRL_POS)Mtr.DIR")
+  field(CALC, "A=0?3:12")
+  field(FLNK, "$(P)$(R)HomeInit")
+}
+
+# Homing sequece for both edges
+record(seq, "$(P)$(R)HomeInit"){
   field(DESC, "Homing sequence")
   field(SELM, "All")
-  field(DOL1, "$(P)$(R)Home-Cmd")
-  field(DOL2, "$(P)$(R)Home-Cmd")
-  field(LNK1, "$(CTRL_NEG)HomeToLimSw-Cmd")
-  field(LNK2, "$(CTRL_POS)HomeToLimSw-Cmd")
+  field(DO1, "0")
+  field(LNK1, "$(P)$(R)HomeDone-Mon")
+  # Use limit switch as home switch - neg edge
+  field(DLY2, "1")
+  field(DO2, "1")
+  field(LNK2, "$(CTRL_NEG)UseSw-Sel PP")
+  # Use limit switch as home switch - pos edge
+  field(DO3, "1")
+  field(LNK3, "$(CTRL_POS)UseSw-Sel PP")
+  field(FLNK, "$(P)$(R)HomeNeg")
+}
+
+# home negative edge
+record(seq, "$(P)$(R)HomeNeg"){
+  field(DESC, "Home negative edge")
+  field(SELM, "Mask")
+  field(SELL, "$(P)$(R)HomeCalcNeg")
+  # enable forward homing
+  field(DO1, "2")
+  field(LNK1, "$(CTRL_NEG)HomeEnblDir-Sel PP")
+  # delay homing until config is set
+  field(DLY2, "1")
+  # home forward
+  field(DO2, "1")
+  field(LNK2, "$(CTRL_NEG)Mtr.HOMF PP")
+  # enable reverse homing
+  field(DO3, "1")
+  field(LNK3, "$(CTRL_NEG)HomeEnblDir-Sel PP")
+  # delay homing until config is set
+  field(DLY4, "1")
+  # home reverse
+  field(DO4, "1")
+  field(LNK4, "$(CTRL_NEG)Mtr.HOMR PP")
+  field(FLNK, "$(P)$(R)HomePos")
+}
+
+# home positive edge
+record(seq, "$(P)$(R)HomePos"){
+  field(DESC, "Home positive edge")
+  field(SELM, "Mask")
+  field(SELL, "$(P)$(R)HomeCalcPos")
+  # enable forward homing
+  field(DO1, "2")
+  field(LNK1, "$(CTRL_POS)HomeEnblDir-Sel PP")
+  # delay homing until config is set
+  field(DLY2, "1")
+  # home forward
+  field(DO2, "1")
+  field(LNK2, "$(CTRL_POS)Mtr.HOMF PP")
+  # enable reverse homing
+  field(DO3, "1")
+  field(LNK3, "$(CTRL_POS)HomeEnblDir-Sel PP")
+  # delay homing until config is set
+  field(DLY4, "1")
+  # home reverse
+  field(DO4, "1")
+  field(LNK4, "$(CTRL_POS)Mtr.HOMR PP")
+}
+
+# set flag when homing starts
+record(calcout, "$(P)$(R)HomeStartStsCalc"){
+  field(DESC, "Homing start status calc")
+  field(INPA, "$(CTRL_NEG)Mtr.DMOV")
+  field(INPB, "$(CTRL_POS)Mtr.DMOV")
+  field(INPC, "$(P)$(R)HomeDone-Mon CPP")
+  field(CALC, "(C=0)&&(A=0)&&(B=0)")
+  field(OOPT, "When Non-zero")
+  field(OUT, "$(P)$(R)HomeStartStsFlag PP")
+}
+
+# homing start flag
+record(bi, "$(P)$(R)HomeStartStsFlag PP"){
+  field(DESC, "Home start status flag")
+}
+
+# monitor motors 'done moving' field
+record(calcout, "$(P)$(R)HomeDoneMoving"){
+  field(DESC, "Monitor when motors are done moving")
+  field(INPA, "$(CTRL_NEG)Mtr.DMOV CPP")
+  field(INPB, "$(CTRL_POS)Mtr.DMOV CPP")
+  field(INPC, "$(P)$(R)HomeStartStsFlag")
+  field(CALC, "A && B && C")
+  field(OOPT, "When Non-zero")
+  # delay until 'at home' field is set for sure
+  field(ODLY, "1")
+  field(OUT, "$(P)$(R)HomeEndStsCalc.PROC PP")
+}
+
+# check that motor is at limit switch
+# after homing is finished
+record(calcout, "$(P)$(R)HomeEndStsCalc"){
+  field(DESC, "Homing end status calc")
+  field(INPA, "$(CTRL_NEG)Mtr.ATHM")
+  field(INPB, "$(CTRL_POS)Mtr.ATHM")
+  field(INPC, "$(P)$(R)HomeDoneMoving")
+  field(CALC, "(A && B && C)?1:2")
+  field(OCAL, "0")
+  field(DOPT, "Use OCAL")
+  field(OUT, "$(P)$(R)HomeStartStsFlag PP")
+  field(FLNK, "$(P)$(R)HomeDone-Mon")
+}
+
+# home done status
+record(mbbi, "$(P)$(R)HomeDone-Mon"){
+  field(DESC, "Homing status")
+  field(INP, "$(P)$(R)HomeEndStsCalc.VAL")
+  field(ZRVL, "0")
+  field(ZRST, "In Progress")
+  field(ONVL, "1")
+  field(ONST, "Finished")
+  field(TWVL, "2")
+  field(TWST, "Error")
 }
 
 #####################################################################
