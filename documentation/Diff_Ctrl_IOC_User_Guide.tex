@@ -394,6 +394,10 @@ docker rm <CONTAINER_NAME>
         % --- row ---
         Home-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
                 Command both edges to the retreat position. The \emph{positive edge} moves in the positive direction, until it hits a limit switch, while the \emph{negative edge} moves to the negative direction, until it hits a limit switch.
+            \end{tabular} \hypertarget{pv:home-done-mon}{}\\ \hline
+        % --- row ---
+        HomeDone-Mon & Enum: In Progress (0), Finished (1), Error (2) & \begin{tabular}{@{}m{6cm}@{}}
+                Homing procedure status. Indicates when the homing procedure is finished. If the procedure stops before both edges hit the home position, the PV indicates \emph{Error}.
             \end{tabular} \hypertarget{pv:positive-edge-step}{}\\ \hline
         % --- row ---
         PositiveEdgeStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
