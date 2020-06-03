@@ -250,7 +250,6 @@ docker rm <CONTAINER_NAME>
     \end{figure}
     \FloatBarrier
 
-
 %--- Section: Edge Control Overview ---
 \section{Edge Control Overview}
 
@@ -340,15 +339,114 @@ docker rm <CONTAINER_NAME>
     \end{figure}
     \FloatBarrier
 
-%--- Section: Reference Frame Conversion ---
+%--- Section: Motor vs Blade Reference Frame Conversion ---
 \section{Motor vs Blade Reference Frame Conversion}\label{sec:ref-frame-conv}
 
-    This document is still under development.
+    \paragraph{} In order to support a wider variety of motion types, the commanded position for a device blade is converted into a motor controller set point position by a custom conversion function associated to an EPICS Array Subroutine record (aSub).
 
-%--- Section: How to Add a New Conversion Type ---
-\section{How to Add a New Conversion Type}
+    \paragraph{} Different functions can be used for each blade, and for set point and readback conversion.
 
-    This document is still under development.
+    \paragraph{} Currently, there are 3 sets of functions available, each associated to a device type that can be selected at IOC startup. For each device type, the startup script selects a different set of functions and argument values:
+
+    \begin{enumerate}
+        \item slit: Uses a dummy conversion for both set points and readbacks. The blade position is the same as the "motor" position.
+        \item scraper-h: Uses interpolation of a table specific to the Sirius Horizontal scraper to map blade and "motor" positions. The table contains a limited range of encoder readings/ motor set points. Values outside range are not converted.
+        \item scraper-v: Uses interpolation of a table specific to the Sirius Vertical scraper to map blade and "motor" positions. The table contains a limited range of encoder readings/ motor set points. Values outside range are not converted.
+    \end{enumerate}
+
+%--- Section: How to Add a New Device Type ---
+\section{How to Add a New Device Type}
+
+    \paragraph{} This section explains how to create a new device type and configure its own conversion functions (see also \nameref{sec:ref-frame-conv}).
+
+    \subsection{The conversion function signature}
+
+        \paragraph{} The conversion functions employed are run by subroutine records in the IOC record database. Therefore, the conversion subroutines should follow the structure required by the aSub record, that is, its input arguments and output values should be read/written from/to the record.
+
+        \paragraph{} The record \emph{Input A} contains the position value to be processed:
+
+        \begin{itemize}
+            \item For command conversion: the input is the device blade position. This value should be converted to a motor position to be sent to the controller IOC.
+            \item For readback conversion: the input is the encoder reading. This value should be converted to a device blade position.
+        \end{itemize}
+
+        \paragraph{} The converted value should be written to the record \emph{VALA} field (value A).
+
+        \paragraph{} If the conversion fails, the subroutine should return a value different from zero.
+        
+        \paragraph{} The record inputs B - L can be used for passing parameters to the functions at startup.
+
+    \subsection{Add the new conversion function(s)}
+
+        \begin{enumerate}
+            \item At the \emph{$<$TOP$>$/diffCtrlApp/src/convFnc.c} file:
+            \begin{enumerate}
+                \item Add the new function definition to it.
+                \item At the end of the file, add the line:
+                \vspace{1mm}
+                \begin{code}
+epicsRegisterFunction(<function name>);
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+            \item Alternatively, a different source file can be created, but then it must be added to the \emph{src/} directory \emph{Makefile}. Likewise, if additional header and source files are needed, they must be added to the \emph{Makefile}.
+            \item At the \emph{$<$TOP$>$/diffCtrlApp/src/convFnc.dbd} file:
+            \begin{enumerate}
+                \item For each convertion function created, add the following line:
+                \vspace{1mm}
+                \begin{code}
+function(<function name>)
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+        \end{enumerate}
+
+    \subsection{Add a new device type}
+
+        \begin{enumerate}
+            \item To add a new device type option at IOC startup, edit the \emph{$<$TOP$>$ /iocBoot/iocDiffCtrl/parseCMDOpts.sh} file:
+            \begin{enumerate}
+                \item Add the new device for the \emph{d} option, as in the example.
+                \vspace{1mm}
+                \begin{code}
+"slit") DEVICE="SLIT" ;;
+<new device option>) DEVICE=<some device string> ;;
+...
+                \end{code}
+                \vspace{1mm}
+                \item Add the new device type in the \emph{usage} message, so people know it is available.
+            \end{enumerate}
+        \end{enumerate}
+
+    \subsection{Associate the new device and convertion functions}
+
+        \begin{enumerate}
+            \item To associate the new device type to the new convertion functions, edit the \emph{$<$TOP$>$ /iocBoot/iocDiffCtrl/runDiffCtrl.sh} file:
+            \begin{enumerate}
+                \item Add the convertion functions that should be used for each device blade, for conversion of the commanded blade position to "motor" position and from encoder value to blade position readback. In addition, there are 11 optional parameters that can be passed to the conversion functions at IOC startup: from CONV\_INPB to CONV\_INPL. The parameter values are passed to all 4 functions. The following example shows a new device being added after the Slit device configuration:
+                \vspace{1mm}
+                \begin{code}
+    SLIT)
+        CONV_FUNC_NEG_CMD="slitConvFnc";
+        CONV_FUNC_NEG_RB="slitConvFnc";
+        CONV_FUNC_POS_CMD="slitConvFnc";
+        CONV_FUNC_POS_RB="slitConvFnc";
+        ;;
+
+    <some device string>)
+        CONV_FUNC_NEG_CMD=<cmd function for negative edge>;
+        CONV_FUNC_NEG_RB=<RB function for negative edge>;
+        CONV_FUNC_POS_CMD=<cmd function for positive edge>;
+        CONV_FUNC_POS_RB=<RB function for positive edge>;
+        CONV_INPB=<parameter 1>
+        CONV_INPC=<parameter 2>
+        ...
+        ;;
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+            \item When appropriate, add the new device type to the \emph{README.md} and \emph{documentation}.
+        \end{enumerate}
 
 \newpage
 \section{Process Variables Description}\label{sec:process-variables}
