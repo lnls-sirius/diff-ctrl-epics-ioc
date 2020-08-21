@@ -1,7 +1,6 @@
 \documentclass[openany]{article}
 \usepackage[a4paper,margin=1in,bottom=1.5in]{geometry} % define margins. Bottom margin is used to lift a little bit the page number.
 \usepackage[english]{babel} % document language is english
-\usepackage{tikz} % for drawing (currently not used).
 \usepackage{graphicx} % for including images
 \usepackage[export]{adjustbox}
 \usepackage{fancyhdr} % used for creating headers and footers. only used in title page in this document.
@@ -12,7 +11,8 @@
 \usepackage{hyperref} % allow hiperlinks (links to other document parts and extern links)
 \usepackage{etoc} % used for generation of section local table of contents
 \usepackage{placeins} % defines the \FloatBarrier command
-\usepackage{xcolor} % for modifying box color
+\usepackage[dvipsnames]{xcolor} % for modifying box color
+\usepackage{tikz} % for drawing (currently not used).
 \usepackage{adjustbox} % for modifying box parameters
 \usepackage{textcomp} % for having the degree symbol
 \usepackage{listings} % for code snippets
@@ -66,8 +66,8 @@
 \topskip0pt % perfectly centered
 \vspace*{\fill}
 \textbf{\Huge Diff Ctrl EPICS IOC User Guide}\\[20pt]
-\textbf{\Huge Version 1.0}\\[20pt]
-\textbf{\Huge May/2020}
+\textbf{\Huge Version 2.0}\\[20pt]
+\textbf{\Huge August/2020}
 \vspace*{\fill}
 
 % footer of title page
@@ -232,37 +232,221 @@ docker rm <CONTAINER_NAME>
 %--- Section: Device Reference Frame ---
 \section{Device Reference Frame}\label{sec:dev-reference-frame}
 
-    This document is still under development.
+    \paragraph{} The IOC control follows the beam coordinate system. This means the X axis increments in value from right to left (greater beam energy) and the Y axis increments in value from bottom to top.
+
+    \paragraph{} The origin of the X and Y axis is considered to be at the device center. If the beam passes through the 0 position, this means it is perfectly centered with respect to the device.
+
+    \paragraph{} The device blade, or edge, that when retreated is positioned in the negative region of the X axis (or Y axis) is refered to as the \emph{Negative Edge}.
+
+    \paragraph{} The device blade, or edge, that when retreated is positioned in the positive region of the X axis (or Y axis) is refered to as the \emph{Positive Edge}.
+
+    \paragraph{} The figure \ref{fig:ref-frame} illustrates the positioning of the blades (edges) considering some coordinates.
+
+    \begin{figure}[!h]
+        \caption{Device reference frame overview}
+        \label{fig:ref-frame}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_ref_frame}
+    \end{figure}
+    \FloatBarrier
 
 %--- Section: Edge Control Overview ---
 \section{Edge Control Overview}
 
-    This document is still under development.
+    \paragraph{} Following a common way of implementing Slit control, the user can control the device by either specifying each blade position (in the device reference frame) or provide the slit center position and width. Figure \ref{fig:ref-frame} illustrates these parameters.
+
+    \paragraph{} Figure \ref{fig:opi-overview} shows the Diff-Ctrl CS-Studio OPI with the main features circled. The green circles show where the \emph{Negative} and \emph{Positive} edge positions can be specified. The red circles show where the gap center and width should be specified.
+
+    \begin{figure}[!h]
+        \caption{OPI overview}
+        \label{fig:opi-overview}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_OPI}
+    \end{figure}
+    \FloatBarrier
 
 %--- Section: Edge Position Calibration ---
-\section{Edge Position Calibration}
+\section{Edge Position Calibration}\label{sec:edge-pos-cal}
 
-    This document is still under development.
+    \paragraph{} The readback position of the blades can be calibrated to account for encoder offsets. The yellow circle in Figure \ref{fig:opi-overview} shows the \emph{Force Position} fields. These fields allow the user to force a desired readback position to a blade (or edge). When a value is set, the \emph{Force Complete} LED turns off while the force operation is in progress. When the force operation is complete, the LED turns on again. Only one edge position can be forced at a time. The value should be specified in engineering units.
+
+    \bigskip
+    \noindent\adjustbox{minipage=\textwidth,cfbox=red 1.0pt 2ex}{
+        The \emph{Force Position} command can only compensate offsets to the encoder values. It cannot compensate for deviations in the device motion, since this is encoded in the motor-edge conversion function applied for each edge. To understand how to compensate for fixed offsets in edge position, see section \nameref{sec:ref-center-cal}.
+    }
 
 %--- Section: Configuring Software Limits ---
 \section{Configuring Software Limits}
 
-    This document is still under development.
+    \paragraph{} This IOC should control a device with 2 actuators. This means there can be 4 limits to the device motion, that is, 2 for each blade.
+
+    \paragraph{} The limits to the blade retreat motion are referred to as \emph{Outer Limits}, since they are associated with limiting the opening of the device gap. The limits to the blades "advance" motion are referred to as \emph{Inner Limits}, since they refer to limits for the gap closing. The "retreat" and "advance" terms refer only to the motion of parts that can interact with the beam, that is, the blades themselves. Any coordinate conversion between motors and blade position should not be considered here.
+
+    \paragraph{} The Figure \ref{fig:outer-limits} illustrates how the outer limits configuration affects motion.
+
+    \begin{figure}[!h]
+        \caption{Outer limits}
+        \label{fig:outer-limits}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_outer_limits}
+    \end{figure}
+    \FloatBarrier
+
+    \paragraph{} The Figure \ref{fig:inner-limits} illustrates how the inner limits configuration affects motion.
+
+    \begin{figure}[!h]
+        \caption{Inner limits}
+        \label{fig:inner-limits}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_inner_limits}
+    \end{figure}
+    \FloatBarrier
+
+    \paragraph{} In Figure \ref{fig:opi-overview}, the \emph{Outer Limits} configuration fields are circled in purple, while the \emph{Inner Limits} configuration fields are circled in brown.
 
 %--- Section: Reference Center Calibration ---
-\section{Reference Center Calibration}
+\section{Reference Center Calibration}\label{sec:ref-center-cal}
 
-    This document is still under development.
+    \paragraph{} In addition to the \hyperref[sec:edge-pos-cal]{calibration of the offset of encoder readings}, it is also possible to configure an additional offset for edge position. When a position is forced for encoder calibration, the resulting encoder offset is considered when converting the motor position into the blade position through the selected \hyperref[sec:ref-frame-conv]{coordinate conversion function}. The \emph{Center Offset} can be used to shift the blade position reading, ignoring the underlying conversion function between motor and blade coordinates.
 
-%--- Section: Reference Frame Conversion ---
-\section{Reference Frame Conversion}
+    \paragraph{} The Figure \ref{fig:offset-cal} shows the difference between the \emph{Reference Center Offset} and the \emph{Encoder Offset}. While the \emph{Encoder Offset} shifts the position along the conversion function curve, the \emph{Reference Center Offset} shifts the blade position directly away or towards the device center position, while keeping the encoder readback unchanged. This means that each blade coordinate conversion function input is kept unchanged.
 
-    This document is still under development.
+    \paragraph{} The \emph{Center Offset} is useful for compensating offsets due to device misalignment (the device center does not match the vacuum chamber center) without the need to modify the conversion functions code.
 
-%--- Section: How to Add a New Conversion Type ---
-\section{How to Add a New Conversion Type}
+    \begin{figure}[!h]
+        \caption{Offset types}
+        \label{fig:offset-cal}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_offset_cal}
+    \end{figure}
+    \FloatBarrier
 
-    This document is still under development.
+    \paragraph{} The Figures \ref{fig:reference-center-1} and \ref{fig:reference-center-2} illustrate how the \emph{Center Offset} value affects the position values. Greater offset values virtually "retreat" the edge with respect to the device center. Figure \ref{fig:reference-center-2} shows offsets configured for blades that have moved beyond the center position (the effect is the same, but retreating puts the edge closer to the center). Negative offset values do the opposite, "moving" the blades in the advancing direction.
+
+    \begin{figure}[!h]
+        \caption{Reference Center Example - blades retreated}
+        \label{fig:reference-center-1}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_reference_center_1}
+    \end{figure}
+    \FloatBarrier
+
+    \begin{figure}[!h]
+        \caption{Reference Center Example - blades advanced past center}
+        \label{fig:reference-center-2}
+        \centering
+        \includegraphics[width=1.0\textwidth]{diff_ctrl_reference_center_2}
+    \end{figure}
+    \FloatBarrier
+
+%--- Section: Motor vs Blade Reference Frame Conversion ---
+\section{Motor vs Blade Reference Frame Conversion}\label{sec:ref-frame-conv}
+
+    \paragraph{} In order to support a wider variety of motion types, the commanded position for a device blade is converted into a motor controller set point position by a custom conversion function associated to an EPICS Array Subroutine record (aSub).
+
+    \paragraph{} Different functions can be used for each blade, and for set point and readback conversion.
+
+    \paragraph{} Currently, there are 3 sets of functions available, each associated to a device type that can be selected at IOC startup. For each device type, the startup script selects a different set of functions and argument values:
+
+    \begin{enumerate}
+        \item slit: Uses a dummy conversion for both set points and readbacks. The blade position is the same as the "motor" position.
+        \item scraper-h: Uses interpolation of a table specific to the Sirius Horizontal scraper to map blade and "motor" positions. The table contains a limited range of encoder readings/ motor set points. Values outside range are not converted.
+        \item scraper-v: Uses interpolation of a table specific to the Sirius Vertical scraper to map blade and "motor" positions. The table contains a limited range of encoder readings/ motor set points. Values outside range are not converted.
+    \end{enumerate}
+
+%--- Section: How to Add a New Device Type ---
+\section{How to Add a New Device Type}
+
+    \paragraph{} This section explains how to create a new device type and configure its own conversion functions (see also \nameref{sec:ref-frame-conv}).
+
+    \subsection{The conversion function signature}
+
+        \paragraph{} The conversion functions employed are run by subroutine records in the IOC record database. Therefore, the conversion subroutines should follow the structure required by the aSub record, that is, its input arguments and output values should be read/written from/to the record.
+
+        \paragraph{} The record \emph{Input A} contains the position value to be processed:
+
+        \begin{itemize}
+            \item For command conversion: the input is the device blade position. This value should be converted to a motor position to be sent to the controller IOC.
+            \item For readback conversion: the input is the encoder reading. This value should be converted to a device blade position.
+        \end{itemize}
+
+        \paragraph{} The converted value should be written to the record \emph{VALA} field (value A).
+
+        \paragraph{} If the conversion fails, the subroutine should return a value different from zero.
+        
+        \paragraph{} The record inputs B - L can be used for passing parameters to the functions at startup.
+
+    \subsection{Add the new conversion function(s)}
+
+        \begin{enumerate}
+            \item At the \emph{$<$TOP$>$/diffCtrlApp/src/convFnc.c} file:
+            \begin{enumerate}
+                \item Add the new function definition to it.
+                \item At the end of the file, add the line:
+                \vspace{1mm}
+                \begin{code}
+epicsRegisterFunction(<function name>);
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+            \item Alternatively, a different source file can be created, but then it must be added to the \emph{src/} directory \emph{Makefile}. Likewise, if additional header and source files are needed, they must be added to the \emph{Makefile}.
+            \item At the \emph{$<$TOP$>$/diffCtrlApp/src/convFnc.dbd} file:
+            \begin{enumerate}
+                \item For each convertion function created, add the following line:
+                \vspace{1mm}
+                \begin{code}
+function(<function name>)
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+        \end{enumerate}
+
+    \subsection{Add a new device type}
+
+        \begin{enumerate}
+            \item To add a new device type option at IOC startup, edit the \emph{$<$TOP$>$ /iocBoot/iocDiffCtrl/parseCMDOpts.sh} file:
+            \begin{enumerate}
+                \item Add the new device for the \emph{d} option, as in the example.
+                \vspace{1mm}
+                \begin{code}
+"slit") DEVICE="SLIT" ;;
+<new device option>) DEVICE=<some device string> ;;
+...
+                \end{code}
+                \vspace{1mm}
+                \item Add the new device type in the \emph{usage} message, so people know it is available.
+            \end{enumerate}
+        \end{enumerate}
+
+    \subsection{Associate the new device and convertion functions}
+
+        \begin{enumerate}
+            \item To associate the new device type to the new convertion functions, edit the \emph{$<$TOP$>$ /iocBoot/iocDiffCtrl/runDiffCtrl.sh} file:
+            \begin{enumerate}
+                \item Add the convertion functions that should be used for each device blade, for conversion of the commanded blade position to "motor" position and from encoder value to blade position readback. In addition, there are 11 optional parameters that can be passed to the conversion functions at IOC startup: from CONV\_INPB to CONV\_INPL. The parameter values are passed to all 4 functions. The following example shows a new device being added after the Slit device configuration:
+                \vspace{1mm}
+                \begin{code}
+    SLIT)
+        CONV_FUNC_NEG_CMD="slitConvFnc";
+        CONV_FUNC_NEG_RB="slitConvFnc";
+        CONV_FUNC_POS_CMD="slitConvFnc";
+        CONV_FUNC_POS_RB="slitConvFnc";
+        ;;
+
+    <some device string>)
+        CONV_FUNC_NEG_CMD=<cmd function for negative edge>;
+        CONV_FUNC_NEG_RB=<RB function for negative edge>;
+        CONV_FUNC_POS_CMD=<cmd function for positive edge>;
+        CONV_FUNC_POS_RB=<RB function for positive edge>;
+        CONV_INPB=<parameter 1>
+        CONV_INPC=<parameter 2>
+        ...
+        ;;
+                \end{code}
+                \vspace{1mm}
+            \end{enumerate}
+            \item When appropriate, add the new device type to the \emph{README.md} and \emph{documentation}.
+        \end{enumerate}
 
 \newpage
 \section{Process Variables Description}\label{sec:process-variables}
