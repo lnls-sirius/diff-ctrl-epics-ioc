@@ -6,9 +6,9 @@ set +u
 # Parse command-line options
 . ./parseCMDOpts.sh "$@"
 
-# Use defaults if not set
+UNIX_SOCKET=""
 if [ -z "${DEVICE_TELNET_PORT}" ]; then
-   DEVICE_TELNET_PORT="20000"
+    UNIX_SOCKET="true"
 fi
 
 if [ -z "${DIFF_INSTANCE}" ]; then
@@ -18,4 +18,8 @@ fi
 set -u
 
 # Run run*.sh scripts with procServ
-/usr/local/bin/procServ -f -n diffCtrl_${DIFF_INSTANCE} -i ^C^D ${DEVICE_TELNET_PORT} ./runDiffCtrl.sh "$@"
+if [ "${UNIX_SOCKET}" ]; then
+    /usr/local/bin/procServ -f -n diffCtrl_${DIFF_INSTANCE} -i ^C^D unix:./procserv.sock ./runDiffCtrl.sh "$@"
+else
+    /usr/local/bin/procServ -f -n diffCtrl_${DIFF_INSTANCE} -i ^C^D ${DEVICE_TELNET_PORT} ./runDiffCtrl.sh "$@"
+fi
