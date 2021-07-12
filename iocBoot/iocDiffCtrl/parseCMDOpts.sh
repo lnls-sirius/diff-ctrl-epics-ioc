@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -e 
+set -x
+set -e
 
 usage () {
     echo "Usage:" >&2
