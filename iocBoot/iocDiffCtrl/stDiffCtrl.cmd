@@ -22,6 +22,9 @@ dbLoadRecords("$(TOP)/db/diff_ctrl.db", "CTRL_NEG=$(CTRL_NEG), CTRL_POS=$(CTRL_P
 
 iocInit
 
+## Start any sequence programs
+seq sncDiffCtrl, "P=$(P), R=$(R), CTRL_NEG=$(CTRL_NEG), CTRL_POS=$(CTRL_POS)"
+
 # save things every 5 seconds
 create_monitor_set("auto_settings_diff_ctrl.req", 5,"P=$(P), R=$(R)")
 # The following line is necessary because of the save file name used in save_restore.cmd

@@ -20,3 +20,7 @@ $(P)$(R)NegEdgeInnerLim-SP
 # Outer limits
 $(P)$(R)HighOuterLim-SP
 $(P)$(R)LowOuterLim-SP
+
+# High level backlash compensation
+$(P)$(R)NegativeEdgeBacklashDist-SP
+$(P)$(R)PositiveEdgeBacklashDist-SP

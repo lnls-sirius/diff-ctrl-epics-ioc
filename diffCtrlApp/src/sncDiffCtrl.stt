@@ -1,0 +1,635 @@
+program sncDiffCtrl
+
+%%//----------------------------------------
+%%// 	      Variables
+%%//----------------------------------------
+
+float var_stored_negative_pos;
+float var_stored_positive_pos;
+
+
+%%//----------------------------------------
+%%// 	      Monitored PVs
+%%//----------------------------------------
+
+float negative_edge_pos_rb;
+assign negative_edge_pos_rb to "{P}{R}NegativeEdgePos-RB";
+monitor negative_edge_pos_rb;
+evflag negative_edge_pos_rb_flg;
+sync negative_edge_pos_rb negative_edge_pos_rb_flg;
+
+float positive_edge_pos_rb;
+assign positive_edge_pos_rb to "{P}{R}PositiveEdgePos-RB";
+monitor positive_edge_pos_rb;
+evflag positive_edge_pos_rb_flg;
+sync positive_edge_pos_rb positive_edge_pos_rb_flg;
+
+float center_rb;
+assign center_rb to "{P}{R}Center-RB";
+monitor center_rb;
+evflag center_rb_flg;
+sync center_rb center_rb_flg;
+
+float width_rb;
+assign width_rb to "{P}{R}Width-RB";
+monitor width_rb;
+evflag width_rb_flg;
+sync width_rb width_rb_flg;
+
+float negative_edge_pos_sp;
+assign negative_edge_pos_sp to "{P}{R}NegativeEdgePos-SP";
+monitor negative_edge_pos_sp;
+evflag negative_edge_pos_sp_flg;
+sync negative_edge_pos_sp negative_edge_pos_sp_flg;
+
+float positive_edge_pos_sp;
+assign positive_edge_pos_sp to "{P}{R}PositiveEdgePos-SP";
+monitor positive_edge_pos_sp;
+evflag positive_edge_pos_sp_flg;
+sync positive_edge_pos_sp positive_edge_pos_sp_flg;
+
+float center_sp;
+assign center_sp to "{P}{R}Center-SP";
+monitor center_sp;
+evflag center_sp_flg;
+sync center_sp center_sp_flg;
+
+float width_sp;
+assign width_sp to "{P}{R}Width-SP";
+monitor width_sp;
+evflag width_sp_flg;
+sync width_sp width_sp_flg;
+
+float negative_edge_pos_sp_disp;
+assign negative_edge_pos_sp_disp to "{P}{R}NegativeEdgePos-SP.DISP";
+monitor negative_edge_pos_sp_disp;
+evflag negative_edge_pos_sp_disp_flg;
+sync negative_edge_pos_sp_disp negative_edge_pos_sp_disp_flg;
+
+float positive_edge_pos_sp_disp;
+assign positive_edge_pos_sp_disp to "{P}{R}PositiveEdgePos-SP.DISP";
+monitor positive_edge_pos_sp_disp;
+evflag positive_edge_pos_sp_disp_flg;
+sync positive_edge_pos_sp_disp positive_edge_pos_sp_disp_flg;
+
+float center_sp_disp;
+assign center_sp_disp to "{P}{R}Center-SP.DISP";
+monitor center_sp_disp;
+evflag center_sp_disp_flg;
+sync center_sp_disp center_sp_disp_flg;
+
+float width_sp_disp;
+assign width_sp_disp to "{P}{R}Width-SP.DISP";
+monitor width_sp_disp;
+evflag width_sp_disp_flg;
+sync width_sp_disp width_sp_disp_flg;
+
+float negative_edge_pos_sp_drvh;
+assign negative_edge_pos_sp_drvh to "{P}{R}NegativeEdgePos-SP.DRVH";
+monitor negative_edge_pos_sp_drvh;
+evflag negative_edge_pos_sp_drvh_flg;
+sync negative_edge_pos_sp_drvh negative_edge_pos_sp_drvh_flg;
+
+float positive_edge_pos_sp_drvh;
+assign positive_edge_pos_sp_drvh to "{P}{R}PositiveEdgePos-SP.DRVH";
+monitor positive_edge_pos_sp_drvh;
+evflag positive_edge_pos_sp_drvh_flg;
+sync positive_edge_pos_sp_drvh positive_edge_pos_sp_drvh_flg;
+
+float center_sp_drvh;
+assign center_sp_drvh to "{P}{R}Center-SP.DRVH";
+monitor center_sp_drvh;
+evflag center_sp_drvh_flg;
+sync center_sp_drvh center_sp_drvh_flg;
+
+float width_sp_drvh;
+assign width_sp_drvh to "{P}{R}Width-SP.DRVH";
+monitor width_sp_drvh;
+evflag width_sp_drvh_flg;
+sync width_sp_drvh width_sp_drvh_flg;
+
+float negative_edge_pos_sp_drvl;
+assign negative_edge_pos_sp_drvl to "{P}{R}NegativeEdgePos-SP.DRVL";
+monitor negative_edge_pos_sp_drvl;
+evflag negative_edge_pos_sp_drvl_flg;
+sync negative_edge_pos_sp_drvl negative_edge_pos_sp_drvl_flg;
+
+float positive_edge_pos_sp_drvl;
+assign positive_edge_pos_sp_drvl to "{P}{R}PositiveEdgePos-SP.DRVL";
+monitor positive_edge_pos_sp_drvl;
+evflag positive_edge_pos_sp_drvl_flg;
+sync positive_edge_pos_sp_drvl positive_edge_pos_sp_drvl_flg;
+
+float center_sp_drvl;
+assign center_sp_drvl to "{P}{R}Center-SP.DRVL";
+monitor center_sp_drvl;
+evflag center_sp_drvl_flg;
+sync center_sp_drvl center_sp_drvl_flg;
+
+float width_sp_drvl;
+assign width_sp_drvl to "{P}{R}Width-SP.DRVL";
+monitor width_sp_drvl;
+evflag width_sp_drvl_flg;
+sync width_sp_drvl width_sp_drvl_flg;
+
+float negative_edge_dmov_mon;
+assign negative_edge_dmov_mon to "{CTRL_NEG}Mtr.DMOV";
+monitor negative_edge_dmov_mon;
+evflag negative_edge_dmov_mon_flg;
+sync negative_edge_dmov_mon negative_edge_dmov_mon_flg;
+
+float positive_edge_dmov_mon;
+assign positive_edge_dmov_mon to "{CTRL_POS}Mtr.DMOV";
+monitor positive_edge_dmov_mon;
+evflag positive_edge_dmov_mon_flg;
+sync positive_edge_dmov_mon positive_edge_dmov_mon_flg;
+
+int enbl_backlash_comp_sel;
+assign enbl_backlash_comp_sel to "{P}{R}EnblBacklashComp-Sel";
+monitor enbl_backlash_comp_sel;
+evflag enbl_backlash_comp_sel_flg;
+sync enbl_backlash_comp_sel enbl_backlash_comp_sel_flg;
+
+float negative_edge_backlash_dist_sp;
+assign negative_edge_backlash_dist_sp to "{P}{R}NegativeEdgeBacklashDist-SP";
+monitor negative_edge_backlash_dist_sp;
+evflag negative_edge_backlash_dist_sp_flg;
+sync negative_edge_backlash_dist_sp negative_edge_backlash_dist_sp_flg;
+
+float positive_edge_backlash_dist_sp;
+assign positive_edge_backlash_dist_sp to "{P}{R}PositiveEdgeBacklashDist-SP";
+monitor positive_edge_backlash_dist_sp;
+evflag positive_edge_backlash_dist_sp_flg;
+sync positive_edge_backlash_dist_sp positive_edge_backlash_dist_sp_flg;
+
+float negative_edge_pos_aux;
+assign negative_edge_pos_aux to "{P}{R}NegativeEdgePosAux";
+
+float positive_edge_pos_aux;
+assign positive_edge_pos_aux to "{P}{R}PositiveEdgePosAux";
+
+float center_aux;
+assign center_aux to "{P}{R}CenterAux";
+
+float width_aux;
+assign width_aux to "{P}{R}WidthAux";
+
+
+%%//----------------------------------------
+%%//        Escaped C Code
+%%//----------------------------------------
+
+%%#include <unistd.h>
+%%#include <string.h>
+
+%%#define BACKLASH_COMPENSATION_DELAY 1.0
+%%#define FALSE 0
+%%#define TRUE 1
+%%#define WAIT_TIMEOUT 30.0
+
+
+%%//----------------------------------------
+%%//        State Notation Language
+%%//----------------------------------------
+
+ss initialization {
+    state init {
+	    when () {
+            printf("[sncDiffCtrl] State machine initialization start\n");
+	        printf("[sncDiffCtrl] State machine initialization finished\n");
+	    } state wait_for_cmd
+    }
+
+    state wait_for_cmd {
+        entry {
+            /* Clear event flags to avoid unwanted motion */
+            efClear(negative_edge_pos_sp_flg);
+            efClear(positive_edge_pos_sp_flg);
+            efClear(center_sp_flg);
+            efClear(width_sp_flg);
+        }
+
+        when (efTestAndClear(negative_edge_pos_sp_flg)){
+            // process negative edge position command
+        } state move_negative_edge_step1
+
+        when (efTestAndClear(positive_edge_pos_sp_flg)){
+            // process positive edge position command
+        } state move_positive_edge_step1
+
+        when (efTestAndClear(center_sp_flg)){
+            // process center position command
+        } state move_center_step1
+
+        when (efTestAndClear(width_sp_flg)){
+            // process width size command
+        } state move_width_step1
+    }
+
+    state move_negative_edge_step1 {
+        when (enbl_backlash_comp_sel != TRUE
+              || negative_edge_backlash_dist_sp == 0
+              || (negative_edge_pos_sp - negative_edge_pos_rb > 0
+                  && negative_edge_backlash_dist_sp < 0)
+              || (negative_edge_pos_sp - negative_edge_pos_rb < 0
+                  && negative_edge_backlash_dist_sp > 0)
+             ) {
+            /* if backlash compensation is disabled */
+            // go to target position
+            negative_edge_pos_aux = negative_edge_pos_sp;
+            // apply limits to compensated position
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            // update pv
+            pvPut(negative_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when () {
+            /* if backlash compensation is enabled,
+               go to position + compensation distance */
+            // block writes to set point
+            negative_edge_pos_sp_disp = TRUE;
+            positive_edge_pos_sp_disp = TRUE;
+            center_sp_disp = TRUE;
+            width_sp_disp = TRUE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+            // store target position
+            var_stored_negative_pos = negative_edge_pos_sp;
+            negative_edge_pos_aux = negative_edge_pos_sp + negative_edge_backlash_dist_sp;
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            // clear flag
+            efClear(negative_edge_dmov_mon_flg);
+            // update pv
+            pvPut(negative_edge_pos_aux, ASYNC);
+        } state move_negative_edge_step2
+    }
+
+    state move_negative_edge_step2 {
+        when (delay(BACKLASH_COMPENSATION_DELAY)) {
+            /* wait enough for motion to start before
+               proceesing */
+        } state move_negative_edge_step3
+    }
+
+    state move_negative_edge_step3 {
+        when (efTestAndClear(negative_edge_dmov_mon_flg)
+              && negative_edge_dmov_mon == TRUE
+             ) {
+            /* go to target position after compensation */
+            negative_edge_pos_aux = var_stored_negative_pos;
+            pvPut(negative_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when (delay(WAIT_TIMEOUT)) {
+            /* timeout to avoid freezing program */
+        } state timeout
+    }
+
+    state move_positive_edge_step1 {
+        when (enbl_backlash_comp_sel != TRUE
+              || positive_edge_backlash_dist_sp == 0
+              || (positive_edge_pos_sp - positive_edge_pos_rb > 0
+                  && positive_edge_backlash_dist_sp < 0)
+              || (positive_edge_pos_sp - positive_edge_pos_rb < 0
+                  && positive_edge_backlash_dist_sp > 0)
+             ) {
+            /* if backlash compensation is disabled */
+            // go to target position
+            positive_edge_pos_aux = positive_edge_pos_sp;
+            // apply limits to compensated position
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // update pv
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when () {
+            /* if backlash compensation is enabled,
+               go to position + compensation distance */
+            // block writes to set point
+            negative_edge_pos_sp_disp = TRUE;
+            positive_edge_pos_sp_disp = TRUE;
+            center_sp_disp = TRUE;
+            width_sp_disp = TRUE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+            // store target position
+            var_stored_positive_pos = positive_edge_pos_sp;
+            positive_edge_pos_aux = positive_edge_pos_sp + positive_edge_backlash_dist_sp;
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // clear flag
+            efClear(positive_edge_dmov_mon_flg);
+            // update pv
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state move_positive_edge_step2
+    }
+
+    state move_positive_edge_step2 {
+        when (delay(BACKLASH_COMPENSATION_DELAY)) {
+            /* wait enough for motion to start before
+               proceesing */
+        } state move_positive_edge_step3
+    }
+
+    state move_positive_edge_step3 {
+        when (efTestAndClear(positive_edge_dmov_mon_flg)
+              && positive_edge_dmov_mon == TRUE
+             ) {
+            /* go to target position after compensation */
+            positive_edge_pos_aux = var_stored_positive_pos;
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when (delay(WAIT_TIMEOUT)) {
+            /* timeout to avoid freezing program */
+        } state timeout
+    }
+
+    state move_center_step1 {
+        when (enbl_backlash_comp_sel != TRUE
+              || (negative_edge_backlash_dist_sp == 0
+                  && positive_edge_backlash_dist_sp == 0)
+             ) {
+            /* if backlash compensation is disabled */
+            // got to target position
+            negative_edge_pos_aux = center_sp - width_rb/2.0;
+            positive_edge_pos_aux = center_sp + width_rb/2.0;
+            // apply limits to compensated position
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // update pvs
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when () {
+            /* if backlash compensation is enabled,
+               go to position + compensation distance */
+            // block writes to set point
+            negative_edge_pos_sp_disp = TRUE;
+            positive_edge_pos_sp_disp = TRUE;
+            center_sp_disp = TRUE;
+            width_sp_disp = TRUE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+            // store target position
+            negative_edge_pos_aux = center_sp - width_rb/2.0;
+            positive_edge_pos_aux = center_sp + width_rb/2.0;
+            var_stored_negative_pos = negative_edge_pos_aux;
+            var_stored_positive_pos = positive_edge_pos_aux;
+            // apply compensation for neg edge if necessary
+            if (!(
+                (negative_edge_pos_aux - negative_edge_pos_rb > 0
+                && negative_edge_backlash_dist_sp < 0)
+                || (negative_edge_pos_aux - negative_edge_pos_rb < 0
+                    && negative_edge_backlash_dist_sp > 0)
+                    ))
+            {
+                negative_edge_pos_aux += negative_edge_backlash_dist_sp;
+            }
+            // apply compensation for pos edge if necessary
+            if (!(
+                (positive_edge_pos_aux - positive_edge_pos_rb > 0
+                && positive_edge_backlash_dist_sp < 0)
+                || (positive_edge_pos_aux - positive_edge_pos_rb < 0
+                    && positive_edge_backlash_dist_sp > 0)
+                    ))
+            {
+                positive_edge_pos_aux += positive_edge_backlash_dist_sp;
+            }
+            // apply limits to compensated position
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // clear flags
+            efClear(negative_edge_dmov_mon_flg);
+            efClear(positive_edge_dmov_mon_flg);
+            // update pvs
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state move_center_step2
+    }
+
+    state move_center_step2 {
+        when (delay(BACKLASH_COMPENSATION_DELAY)) {
+            /* wait enough for motion to start before
+               proceesing */
+        } state move_center_step3
+    }
+
+    state move_center_step3 {
+        when (efTest(negative_edge_dmov_mon_flg)
+              && efTest(positive_edge_dmov_mon_flg)
+              && negative_edge_dmov_mon == TRUE
+              && positive_edge_dmov_mon == TRUE
+             ) {
+            /* go to target position after compensation */
+            // clear flags
+            efClear(negative_edge_dmov_mon_flg);
+            efClear(positive_edge_dmov_mon_flg);
+            // go to target position
+            negative_edge_pos_aux = var_stored_negative_pos;
+            positive_edge_pos_aux = var_stored_positive_pos;
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when (delay(WAIT_TIMEOUT)) {
+            /* timeout to avoid freezing program */
+        } state timeout
+    }
+
+    state move_width_step1 {
+        when (enbl_backlash_comp_sel != TRUE
+              || (negative_edge_backlash_dist_sp == 0
+                  && positive_edge_backlash_dist_sp == 0)
+             ) {
+            /* if backlash compensation is disabled */
+            // go to target position
+            negative_edge_pos_aux = center_rb - width_sp/2.0;
+            positive_edge_pos_aux = center_rb + width_sp/2.0;
+            // apply limits to compensated position
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // update pvs
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when () {
+            /* if backlash compensation is enabled,
+               go to position + compensation distance */
+            // block writes to set point
+            negative_edge_pos_sp_disp = TRUE;
+            positive_edge_pos_sp_disp = TRUE;
+            center_sp_disp = TRUE;
+            width_sp_disp = TRUE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+            // store target position
+            negative_edge_pos_aux = center_rb - width_sp/2.0;
+            positive_edge_pos_aux = center_rb + width_sp/2.0;
+            var_stored_negative_pos = negative_edge_pos_aux;
+            var_stored_positive_pos = positive_edge_pos_aux;
+            // apply compensation for neg edge if necessary
+            if (!(
+                (negative_edge_pos_aux - negative_edge_pos_rb > 0
+                && negative_edge_backlash_dist_sp < 0)
+                || (negative_edge_pos_aux - negative_edge_pos_rb < 0
+                    && negative_edge_backlash_dist_sp > 0)
+                    ))
+            {
+                negative_edge_pos_aux += negative_edge_backlash_dist_sp;
+            }
+            // apply compensation for pos edge if necessary
+            if (!(
+                (positive_edge_pos_aux - positive_edge_pos_rb > 0
+                && positive_edge_backlash_dist_sp < 0)
+                || (positive_edge_pos_aux - positive_edge_pos_rb < 0
+                    && positive_edge_backlash_dist_sp > 0)
+                    ))
+            {
+                positive_edge_pos_aux += positive_edge_backlash_dist_sp;
+            }
+            // apply limits to compensated position
+            if (negative_edge_pos_aux > negative_edge_pos_sp_drvh){
+                negative_edge_pos_aux = negative_edge_pos_sp_drvh;
+            }
+            else if (negative_edge_pos_aux < negative_edge_pos_sp_drvl) {
+                negative_edge_pos_aux = negative_edge_pos_sp_drvl;
+            }
+            if (positive_edge_pos_aux > positive_edge_pos_sp_drvh){
+                positive_edge_pos_aux = positive_edge_pos_sp_drvh;
+            }
+            else if (positive_edge_pos_aux < positive_edge_pos_sp_drvl) {
+                positive_edge_pos_aux = positive_edge_pos_sp_drvl;
+            }
+            // clear flags
+            efClear(negative_edge_dmov_mon_flg);
+            efClear(positive_edge_dmov_mon_flg);
+            // update pvs
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state move_width_step2
+    }
+
+    state move_width_step2 {
+        when (delay(BACKLASH_COMPENSATION_DELAY)) {
+            /* wait enough for motion to start before
+               proceesing */
+        } state move_width_step3
+    }
+
+    state move_width_step3 {
+        when (efTest(negative_edge_dmov_mon_flg)
+              && efTest(positive_edge_dmov_mon_flg)
+              && negative_edge_dmov_mon == TRUE
+              && positive_edge_dmov_mon == TRUE
+             ) {
+            /* go to target position after compensation */
+            // clear flags
+            efClear(negative_edge_dmov_mon_flg);
+            efClear(positive_edge_dmov_mon_flg);
+            // go to target position
+            negative_edge_pos_aux = var_stored_negative_pos;
+            positive_edge_pos_aux = var_stored_positive_pos;
+            pvPut(negative_edge_pos_aux, ASYNC);
+            pvPut(positive_edge_pos_aux, ASYNC);
+        } state wait_completion
+
+        when (delay(WAIT_TIMEOUT)) {
+            /* timeout to avoid freezing program */
+        } state timeout
+    }
+
+    state wait_completion {
+        when (pvPutComplete(negative_edge_pos_aux)
+              && pvPutComplete(positive_edge_pos_aux)) {
+            // unlock writes to set point
+            negative_edge_pos_sp_disp = FALSE;
+            positive_edge_pos_sp_disp = FALSE;
+            center_sp_disp = FALSE;
+            width_sp_disp = FALSE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+        } state wait_for_cmd
+
+        when (delay(WAIT_TIMEOUT)) {
+            /* timeout to avoid freezing program */
+        } state timeout
+    }
+
+    state timeout {
+        when () {
+            // unlock writes to set point
+            negative_edge_pos_sp_disp = FALSE;
+            positive_edge_pos_sp_disp = FALSE;
+            center_sp_disp = FALSE;
+            width_sp_disp = FALSE;
+            pvPut(negative_edge_pos_sp_disp, SYNC);
+            pvPut(positive_edge_pos_sp_disp, SYNC);
+            pvPut(center_sp_disp, SYNC);
+            pvPut(width_sp_disp, SYNC);
+        } state wait_for_cmd
+    }
+
+}
+

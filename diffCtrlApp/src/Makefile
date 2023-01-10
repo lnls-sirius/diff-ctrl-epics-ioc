@@ -37,6 +37,24 @@ diffCtrl_SRCS += diffCtrl_registerRecordDeviceDriver.cpp
 diffCtrl_SRCS_DEFAULT += diffCtrlMain.cpp
 diffCtrl_SRCS_vxWorks += -nil-
 
+# To build SNL programs, SNCSEQ must be defined
+# in the <top>/configure/RELEASE file
+ifneq ($(SNCSEQ),)
+    # Build sncDiffCtrl into diffCtrlSupport
+    sncDiffCtrl_SNCFLAGS += +r
+    diffCtrl_DBD += sncDiffCtrl.dbd
+    diffCtrlSupport_SRCS += sncDiffCtrl.stt
+    diffCtrlSupport_LIBS += seq pv
+    diffCtrl_LIBS += seq pv
+
+    # Build sncDiffCtrlProgram as a standalone program
+    PROD_HOST += sncDiffCtrlProgram
+    sncDiffCtrlProgram_SNCFLAGS += +m
+    sncDiffCtrlProgram_SRCS += sncDiffCtrlProgram.st
+    sncDiffCtrlProgram_LIBS += seq pv
+    sncDiffCtrlProgram_LIBS += $(EPICS_BASE_HOST_LIBS)
+endif
+
 # Link in the code from our support library
 diffCtrl_LIBS += diffCtrlSupport
 

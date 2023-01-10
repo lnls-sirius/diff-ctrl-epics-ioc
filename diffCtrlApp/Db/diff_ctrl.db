@@ -344,7 +344,7 @@ record(ao, "$(P)$(R)NegativeEdgePos-SP"){
   field(EGU, "$(EGU)")
   field(DRVH, "1000000")                              # Temporary setting, only for startup
   field(DRVL, "-1000000")                             # Temporary setting, only for startup
-  field(OUT, "$(P)$(R)CoordinateConv.A PP")
+  field(MDEL, "-1")                                   # send monitor always
   field(DISP, "1")                                    # record start DISABLED
 }
 
@@ -355,7 +355,7 @@ record(ao, "$(P)$(R)PositiveEdgePos-SP"){
   field(EGU, "$(EGU)")
   field(DRVH, "1000000")                              # Temporary setting, only for startup
   field(DRVL, "-1000000")                             # Temporary setting, only for startup
-  field(OUT, "$(P)$(R)CoordinateConv.B PP")
+  field(MDEL, "-1")                                   # send monitor always
   field(DISP, "1")                                    # record start DISABLED
 }
 
@@ -364,7 +364,7 @@ record(ao, "$(P)$(R)Center-SP"){
   field(DESC, "Center set point")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(OUT, "$(P)$(R)CoordinateConv.C PP")
+  field(MDEL, "-1")                                   # send monitor always
   field(DISP, "1")                                    # record start DISABLED
 }
 
@@ -375,8 +375,46 @@ record(ao, "$(P)$(R)Width-SP"){
   field(EGU, "$(EGU)")
   field(DRVH, "500")                                  # High limit is set here only to enable low limit
   field(DRVL, "0")                                    # Width cannot be negative
-  field(OUT, "$(P)$(R)CoordinateConv.D PP")
+  field(MDEL, "-1")                                   # send monitor always
   field(DISP, "1")                                    # record start DISABLED
+}
+
+# Variable to change position of negative edge
+record(ao, "$(P)$(R)NegativeEdgePosAux"){
+  field(DESC, "Negative edge position")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVH, "1000000")                              # Temporary setting, only for startup
+  field(DRVL, "-1000000")                             # Temporary setting, only for startup
+  field(OUT, "$(P)$(R)CoordinateConv.A PP")
+}
+
+# Variable to change position of positive edge
+record(ao, "$(P)$(R)PositiveEdgePosAux"){
+  field(DESC, "Positive edge position")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVH, "1000000")                              # Temporary setting, only for startup
+  field(DRVL, "-1000000")                             # Temporary setting, only for startup
+  field(OUT, "$(P)$(R)CoordinateConv.B PP")
+}
+
+# Variable to change Center position
+record(ao, "$(P)$(R)CenterAux"){
+  field(DESC, "Center set point")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(OUT, "$(P)$(R)CoordinateConv.C PP")
+}
+
+# Variable to change Width
+record(ao, "$(P)$(R)WidthAux"){
+  field(DESC, "Width set point")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVH, "500")                                  # High limit is set here only to enable low limit
+  field(DRVL, "0")                                    # Width cannot be negative
+  field(OUT, "$(P)$(R)CoordinateConv.D PP")
 }
 
 # Convert coordinates
@@ -1220,18 +1258,20 @@ record(ao, "$(P)$(R)UpdateCoordConvVal2"){
 record(sseq, "$(P)$(R)UpdateCoordConv"){
   field(DESC, "Prepare motor record for update")
   field(SELM, "All")
-  field(STR1, "Calibrate")
-  field(STR2, "Frozen")        # Freeze offset and make VAL = DVAL
-  field(STR3, "Frozen")
-  field(DOL4, "$(CTRL_NEG)Mtr.RBV")
-  field(DOL5, "$(CTRL_POS)Mtr.RBV")
-  field(LNK1, "$(P)$(R)SetMode-Sel PP")
-  field(LNK2, "$(CTRL_NEG)Mtr.FOFF PP")
-  field(LNK3, "$(CTRL_POS)Mtr.FOFF PP")
-  field(LNK4, "$(CTRL_NEG)Mtr.VAL PP")
-  field(LNK5, "$(CTRL_POS)Mtr.VAL PP")
-  field(DLY4, "0.5")
+  field(STR1, "No")
+  field(STR2, "Calibrate")
+  field(STR3, "Frozen")        # Freeze offset and make VAL = DVAL
+  field(STR4, "Frozen")
+  field(DOL5, "$(CTRL_NEG)Mtr.RBV")
+  field(DOL6, "$(CTRL_POS)Mtr.RBV")
+  field(LNK1, "$(P)$(R)EnblBacklashComp-Sel PP")
+  field(LNK2, "$(P)$(R)SetMode-Sel PP")
+  field(LNK3, "$(CTRL_NEG)Mtr.FOFF PP")
+  field(LNK4, "$(CTRL_POS)Mtr.FOFF PP")
+  field(LNK5, "$(CTRL_NEG)Mtr.VAL PP")
+  field(LNK6, "$(CTRL_POS)Mtr.VAL PP")
   field(DLY5, "0.5")
+  field(DLY6, "0.5")
   field(FLNK, "$(P)$(R)UpdateCoordConv2")
 }
 
@@ -1244,6 +1284,7 @@ record(sseq, "$(P)$(R)UpdateCoordConv2"){
   field(DOL4, "$(P)$(R)UpdateCoordConvVal1")
   field(DOL5, "$(P)$(R)UpdateCoordConvVal2")
   field(STR6, "Move")
+  field(STR7, "Yes")
   field(LNK1, "$(P)$(R)SetMode-Sel PP")
   field(LNK2, "$(CTRL_NEG)Mtr.FOFF PP")
   field(LNK3, "$(CTRL_POS)Mtr.FOFF PP")
@@ -1288,7 +1329,8 @@ record(seq, "$(P)$(R)EnblProtect2"){
   field(DO6, "0")  # enable
   field(DO7, "0")  # enable
   field(DO8, "0")
-  field(DO9, "1")
+  field(DO9, "1")  # enable
+  field(DOA, "1")
   field(LNK1, "$(P)$(R)MinWidthProtect.DISV")            # Enable min width limit protection
   field(LNK2, "$(P)$(R)NegEdgeInnerLim-SP.PROC")         # Process neg edge inner limit
   field(LNK3, "$(P)$(R)PosEdgeInnerLim-SP.PROC")         # Process pos edge inner limit
@@ -1297,5 +1339,61 @@ record(seq, "$(P)$(R)EnblProtect2"){
   field(LNK6, "$(P)$(R)Center-SP.DISP")                  # Enable position set point records
   field(LNK7, "$(P)$(R)Width-SP.DISP")                   # Enable position set point records
   field(LNK8, "$(P)$(R)KeepEdgeCenterLocked.A PP")       # Unlock edges' center references
-  field(LNK9, "$(P)$(R)ForceComplete-Mon PP")            # Set force complete flag
+  field(LNK9, "$(P)$(R)EnblBacklashComp-Sel PP")         # Enable backlash compensation
+  field(LNKA, "$(P)$(R)ForceComplete-Mon PP")            # Set force complete flag
 }
+
+#####################################################################
+# HIGH LEVEL BACKLASH COMPENSATION
+#
+# Desc: High Level backlash compensation.
+
+# Monitored by sncDiffCtrl
+# Enable backlash compensation
+record(bo, "$(P)$(R)EnblBacklashComp-Sel"){
+  field(DESC, "Enable backlash compensation")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(FLNK, "$(P)$(R)EnblBacklashComp-Sts")
+}
+
+record(bi, "$(P)$(R)EnblBacklashComp-Sts"){
+  field(DESC, "Enable backlash compensation status")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(INP, "$(P)$(R)EnblBacklashComp-Sel")
+}
+
+# Backlash compensation distance
+record(ao, "$(P)$(R)NegativeEdgeBacklashDist-SP"){
+  field(DESC, "Neg edge backlash comp. distance")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVL, "-1000000")
+  field(DRVH, "1000000")
+  field(FLNK, "$(P)$(R)NegativeEdgeBacklashDist-RB")
+}
+
+record(ai, "$(P)$(R)NegativeEdgeBacklashDist-RB"){
+  field(DESC, "Neg edge backlash comp. distance RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)NegativeEdgeBacklashDist-SP")
+}
+
+record(ao, "$(P)$(R)PositiveEdgeBacklashDist-SP"){
+  field(DESC, "Pos edge backlash comp. distance")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(DRVL, "-1000000")
+  field(DRVH, "1000000")
+  field(FLNK, "$(P)$(R)PositiveEdgeBacklashDist-RB")
+}
+
+record(ai, "$(P)$(R)PositiveEdgeBacklashDist-RB"){
+  field(DESC, "Pos edge backlash comp. distance RB")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(INP, "$(P)$(R)PositiveEdgeBacklashDist-SP")
+}
+
