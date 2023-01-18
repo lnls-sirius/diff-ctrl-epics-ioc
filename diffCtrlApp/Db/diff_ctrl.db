@@ -1366,6 +1366,7 @@ record(bi, "$(P)$(R)EnblBacklashComp-Sts"){
 
 # Backlash compensation distance
 record(ao, "$(P)$(R)NegativeEdgeBacklashDist-SP"){
+  field(PINI, "YES")
   field(DESC, "Neg edge backlash comp. distance")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -1382,6 +1383,7 @@ record(ai, "$(P)$(R)NegativeEdgeBacklashDist-RB"){
 }
 
 record(ao, "$(P)$(R)PositiveEdgeBacklashDist-SP"){
+  field(PINI, "YES")
   field(DESC, "Pos edge backlash comp. distance")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
