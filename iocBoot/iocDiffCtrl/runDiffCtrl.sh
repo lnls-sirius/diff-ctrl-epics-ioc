@@ -55,6 +55,8 @@ case ${DEVICE} in
         CONV_FUNC_NEG_RB="slitConvFnc";              # negative edge readback conv function
         CONV_FUNC_POS_CMD="slitConvFnc";             # positive edge command conv function
         CONV_FUNC_POS_RB="slitConvFnc";              # positive edge readback conv function
+	NEGATIVE_EDGE_NAME="Negative";               # negative edge name
+	POSITIVE_EDGE_NAME="Positive";               # positive edge name
         ;;
 
     SCRAPER_V)
@@ -62,6 +64,8 @@ case ${DEVICE} in
         CONV_FUNC_NEG_RB="convFuncVScrapBottowRB";   # negative edge RB conv function
         CONV_FUNC_POS_CMD="convFuncVScrapTopCmd";    # positive edge cmd conv function
         CONV_FUNC_POS_RB="convFuncVScrapTopRB";      # positive edge RB conv function
+	NEGATIVE_EDGE_NAME="Bottom";                 # negative edge name
+	POSITIVE_EDGE_NAME="Top";                    # positive edge name
         ;;
 
     SCRAPER_H)
@@ -69,6 +73,8 @@ case ${DEVICE} in
         CONV_FUNC_NEG_RB="convFuncHScrapInRB";       # negative edge RB conv function
         CONV_FUNC_POS_CMD="convFuncHScrapOutCmd";    # positive edge cmd conv function
         CONV_FUNC_POS_RB="convFuncHScrapOutRB";      # positive edge RB conv function
+	NEGATIVE_EDGE_NAME="Inner";                  # negative edge name
+	POSITIVE_EDGE_NAME="Outer";                  # positive edge name
         ;;
 
     *)
@@ -88,6 +94,8 @@ EPICS_CA_MAX_ARRAY_BYTES="$EPICS_CA_MAX_ARRAY_BYTES" \
 	POS_LIM="$POS_LIM" \
 	CTRL_NEG="$CTRL_NEG" \
 	CTRL_POS="$CTRL_POS" \
+	NEGATIVE_EDGE_NAME="$NEGATIVE_EDGE_NAME" \
+	POSITIVE_EDGE_NAME="$POSITIVE_EDGE_NAME" \
 	CONV_FUNC_NEG_CMD="$CONV_FUNC_NEG_CMD" \
 	CONV_FUNC_POS_CMD="$CONV_FUNC_POS_CMD" \
 	CONV_FUNC_NEG_RB="$CONV_FUNC_NEG_RB" \

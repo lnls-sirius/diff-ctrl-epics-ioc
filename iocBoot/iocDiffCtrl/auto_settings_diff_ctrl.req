@@ -1,1 +1,1 @@
-file diff_ctrl.req       P=$(P), R=$(R)
+file diff_ctrl.req       P=$(P), R=$(R), NEGATIVE_EDGE_NAME=$(NEGATIVE_EDGE_NAME), POSITIVE_EDGE_NAME=$(POSITIVE_EDGE_NAME)
