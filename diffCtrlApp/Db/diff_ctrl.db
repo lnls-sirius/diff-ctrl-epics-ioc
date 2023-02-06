@@ -313,23 +313,13 @@ record(bi, "$(P)$(R)SetMode-Sts"){
   field(INP, "$(P)$(R)SetMode-Sel")
 }
 
+# read by sncDiffCtrl
 # Start homing of both window sides cmd
 record(bo, "$(P)$(R)Home-Cmd"){
   field(DESC, "Home both edges")
   field(ZNAM, "Off")
   field(ONAM, "On")
   field(HIGH, "0.5")
-  field(FLNK, "$(P)$(R)HomeSeq")
-}
-
-# Homing sequece
-record(seq, "$(P)$(R)HomeSeq"){
-  field(DESC, "Homing sequence")
-  field(SELM, "All")
-  field(DOL1, "$(P)$(R)Home-Cmd")
-  field(DOL2, "$(P)$(R)Home-Cmd")
-  field(LNK1, "$(CTRL_NEG)HomeToLimSw-Cmd")
-  field(LNK2, "$(CTRL_POS)HomeToLimSw-Cmd")
 }
 
 #####################################################################
