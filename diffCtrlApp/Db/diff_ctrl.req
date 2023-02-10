@@ -2,25 +2,25 @@
 
 # Position set points.
 # These records do not process at initialization.
-$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP
-$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP
+$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP
+$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP
 $(P)$(R)Center-SP
 $(P)$(R)Width-SP
 
 # Tweak step set points
-$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-SP
-$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-SP
+$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-SP
+$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-SP
 $(P)$(R)CenterStep-SP
 $(P)$(R)WidthStep-SP
 
 # Inner limits
-$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-SP
-$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-SP
+$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-SP
+$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-SP
 
 # Outer limits
-$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-SP
-$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-SP
+$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-SP
+$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-SP
 
 # High level backlash compensation
-$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeBacklashDist-SP
-$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeBacklashDist-SP
+$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitBacklashDist-SP
+$(P)$(R)$(POSITIVE_EDGE_NAME)SlitBacklashDist-SP

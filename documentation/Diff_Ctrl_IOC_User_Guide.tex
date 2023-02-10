@@ -480,19 +480,19 @@ function(<function name>)
                 Indicates when the \emph{positive edge} is done moving, i.e., when it has completely finished its motion.
             \end{tabular} \hypertarget{pv:negative-edge-pos}{}\\ \hline
         % --- row ---
-        NegativeEdgePos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeSlitPos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 Command the \emph{negative edge} to move to the specified distance, in engineering units, from the \emph{reference axis center}. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current edge position, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegativeEdgePos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeSlitPos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the \emph{negative edge} distance, in engineering units, from the \emph{reference axis center}. This value is updated whenever the edge encoder registers a movement.
             \end{tabular} \hypertarget{pv:positive-edge-pos}{}\\ \hline
         % --- row ---
-        PositiveEdgePos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveSlitPos-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 Command the \emph{positive edge} to move to the specified distance, in engineering units, from the \emph{reference axis center}. More information on the device reference frame convention can be found in section \nameref{sec:dev-reference-frame}. This PV does not necessarily indicate the current edge position, for that, the readback value should be used.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PositiveEdgePos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveSlitPos-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Shows the \emph{positive edge} distance, in engineering units, from the \emph{reference axis center}. This value is updated whenever the edge encoder registers a movement.
             \end{tabular} \hypertarget{pv:center}{}\\ \hline
         % --- row ---
@@ -516,19 +516,19 @@ function(<function name>)
                 Error status of the coordinate conversion between encoder reading and actual edge position. If the error status is 1, then the conversion function failed for the given commanded position or for the current encoder reading. This can be due to invalid input, for instance, an out of range position, or to some error in the function itself.
             \end{tabular} \hypertarget{pv:neg-edge-inner-lim}{}\\ \hline
         % --- row ---
-        NegEdgeInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+        NegSlitInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The inner limit associated to the \emph{negative edge}, in engineering units. This is the limit position when moving this edge toward the reference center from the retreat position. The \emph{negative edge} retreat position is usually negative, but if the edge keeps advancing, it eventually arrives at a positive position. Thus, if the \emph{negative edge} inner limit is positive, the \emph{negative edge} can move beyond the reference center, until it reaches the specified limit. If it is negative, the edge can move torwards the center until it reaches the specified limit.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegEdgeInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        NegSlitInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{negative edge} inner limit.
             \end{tabular} \hypertarget{pv:pos-edge-inner-lim}{}\\ \hline
         % --- row ---
-        PosEdgeInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+        PosSlitInnerLim-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
                 The inner limit associated to the \emph{positive edge}, in engineering units. This is the limit position when moving this edge toward the reference center from the retreat position. The \emph{positive edge} retreat position is usually positive, but if the edge keeps advancing, it eventually arrives at a negative position. Thus, if the \emph{positive edge} inner limit is negative, the \emph{positive edge} can move beyond the reference center, until it reaches the specified limit. If it is positive, the edge can move torwards the center until it reaches the specified limit.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PosEdgeInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        PosSlitInnerLim-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{positive edge} inner limit.
             \end{tabular} \hypertarget{pv:low-outer-lim}{}\\ \hline
         % --- row ---
@@ -564,11 +564,11 @@ function(<function name>)
                 The readback value of the distance between the \emph{negative edge} and the reference center.
             \end{tabular} \hypertarget{pv:force-negative-edge-pos-cmd}{}\\ \hline
         % --- row ---
-        ForceNegativeEdgePos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
+        ForceNegativeSlitPos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Force a given position reading, in engineering units, to the \emph{negative edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
             \end{tabular} \hypertarget{pv:force-positive-edge-pos-cmd}{}\\ \hline
         % --- row ---
-        ForcePositiveEdgePos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
+        ForcePositiveSlitPos-Cmd & Float & \begin{tabular}{@{}m{6cm}@{}}
                 Force a given position reading, in engineering units, to the \emph{positive edge} (does not move the edge). This is useful for calibration of the edge positions. For instance, if the change of an enconder shifts the absolute readings, but a known position can be restored (by other measurement or by a reference such as a limit switch), then the known position can be forced. The IOC does this by setting an offset to the motion controller's encoder readings.
             \end{tabular} \hypertarget{pv:force-complete-mon}{}\\ \hline
         % --- row ---
@@ -580,19 +580,19 @@ function(<function name>)
                 Command both edges to the retreat position. The \emph{positive edge} moves in the positive direction, until it hits a limit switch, while the \emph{negative edge} moves to the negative direction, until it hits a limit switch.
             \end{tabular} \hypertarget{pv:positive-edge-step}{}\\ \hline
         % --- row ---
-        PositiveEdgeStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
-                The step size, in engineering units, to use \emph{positive edge} when an increment or decrement \emph{positive edge} position command is issued. See \hyperlink{pv:inc-positive-edge-cmd}{IncPositiveEdge-Cmd} and \hyperlink{pv:dec-positive-edge-cmd}{DecPositiveEdge-Cmd}.
+        PositiveSlitStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+                The step size, in engineering units, to use \emph{positive edge} when an increment or decrement \emph{positive edge} position command is issued. See \hyperlink{pv:inc-positive-edge-cmd}{IncPositiveSlit-Cmd} and \hyperlink{pv:dec-positive-edge-cmd}{DecPositiveSlit-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        PositiveEdgeStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        PositiveSlitStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{positive edge} step.
             \end{tabular} \hypertarget{pv:negative-edge-step}{}\\ \hline
         % --- row ---
-        NegativeEdgeStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
-                The step size, in engineering units, to use when an increment or decrement \emph{negative edge} position command is issued. See \hyperlink{pv:inc-negative-edge-cmd}{IncNegativeEdge-Cmd} and \hyperlink{pv:dec-negative-edge-cmd}{DecNegativeEdge-Cmd}.
+        NegativeSlitStep-SP & Float: min -1e6, max 1e6 & \begin{tabular}{@{}m{6cm}@{}}
+                The step size, in engineering units, to use when an increment or decrement \emph{negative edge} position command is issued. See \hyperlink{pv:inc-negative-edge-cmd}{IncNegativeSlit-Cmd} and \hyperlink{pv:dec-negative-edge-cmd}{DecNegativeSlit-Cmd}.
             \end{tabular} \hypertarget{}{}\\ \hline
         % --- row ---
-        NegativeEdgeStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
+        NegativeSlitStep-RB & Float & \begin{tabular}{@{}m{6cm}@{}}
                 The readback value of the \emph{negative edge} step.
             \end{tabular} \hypertarget{pv:center-step}{}\\ \hline
         % --- row ---
@@ -612,20 +612,20 @@ function(<function name>)
                 The readback value of the \emph{width} step.
             \end{tabular} \hypertarget{pv:inc-positive-edge-cmd}{}\\ \hline
         % --- row ---
-        IncPositiveEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
-                Increment the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveEdgeStep-RB}.
+        IncPositiveSlit-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
+                Increment the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveSlitStep-RB}.
             \end{tabular} \hypertarget{pv:dec-positive-edge-cmd}{}\\ \hline
         % --- row ---
-        DecPositiveEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
-                Decrement the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveEdgeStep-RB}.
+        DecPositiveSlit-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
+                Decrement the \emph{positive edge} position by the step specified by \hyperlink{pv:positive-edge-step}{PositiveSlitStep-RB}.
             \end{tabular} \hypertarget{pv:inc-negative-edge-cmd}{}\\ \hline
         % --- row ---
-        IncNegativeEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
-                Increment the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeEdgeStep-RB}.
+        IncNegativeSlit-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
+                Increment the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeSlitStep-RB}.
             \end{tabular} \hypertarget{pv:dec-negative-edge-cmd}{}\\ \hline
         % --- row ---
-        DecNegativeEdge-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
-                Decrement the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeEdgeStep-RB}.
+        DecNegativeSlit-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}
+                Decrement the \emph{negative edge} position by the step specified by \hyperlink{pv:negative-edge-step}{NegativeSlitStep-RB}.
             \end{tabular} \hypertarget{pv:inc-center-cmd}{}\\ \hline
         % --- row ---
         IncCenter-Cmd & Enum: Off (0), On (1) & \begin{tabular}{@{}m{6cm}@{}}

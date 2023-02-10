@@ -13,13 +13,13 @@ float var_stored_positive_pos;
 %%//----------------------------------------
 
 float negative_edge_pos_rb;
-assign negative_edge_pos_rb to "{P}{R}{NEGATIVE_EDGE_NAME}EdgePos-RB";
+assign negative_edge_pos_rb to "{P}{R}{NEGATIVE_EDGE_NAME}SlitPos-RB";
 monitor negative_edge_pos_rb;
 evflag negative_edge_pos_rb_flg;
 sync negative_edge_pos_rb negative_edge_pos_rb_flg;
 
 float positive_edge_pos_rb;
-assign positive_edge_pos_rb to "{P}{R}{POSITIVE_EDGE_NAME}EdgePos-RB";
+assign positive_edge_pos_rb to "{P}{R}{POSITIVE_EDGE_NAME}SlitPos-RB";
 monitor positive_edge_pos_rb;
 evflag positive_edge_pos_rb_flg;
 sync positive_edge_pos_rb positive_edge_pos_rb_flg;
@@ -37,13 +37,13 @@ evflag width_rb_flg;
 sync width_rb width_rb_flg;
 
 float negative_edge_pos_sp;
-assign negative_edge_pos_sp to "{P}{R}{NEGATIVE_EDGE_NAME}EdgePos-SP";
+assign negative_edge_pos_sp to "{P}{R}{NEGATIVE_EDGE_NAME}SlitPos-SP";
 monitor negative_edge_pos_sp;
 evflag negative_edge_pos_sp_flg;
 sync negative_edge_pos_sp negative_edge_pos_sp_flg;
 
 float positive_edge_pos_sp;
-assign positive_edge_pos_sp to "{P}{R}{POSITIVE_EDGE_NAME}EdgePos-SP";
+assign positive_edge_pos_sp to "{P}{R}{POSITIVE_EDGE_NAME}SlitPos-SP";
 monitor positive_edge_pos_sp;
 evflag positive_edge_pos_sp_flg;
 sync positive_edge_pos_sp positive_edge_pos_sp_flg;
@@ -61,13 +61,13 @@ evflag width_sp_flg;
 sync width_sp width_sp_flg;
 
 float negative_edge_pos_sp_disp;
-assign negative_edge_pos_sp_disp to "{P}{R}{NEGATIVE_EDGE_NAME}EdgePos-SP.DISP";
+assign negative_edge_pos_sp_disp to "{P}{R}{NEGATIVE_EDGE_NAME}SlitPos-SP.DISP";
 monitor negative_edge_pos_sp_disp;
 evflag negative_edge_pos_sp_disp_flg;
 sync negative_edge_pos_sp_disp negative_edge_pos_sp_disp_flg;
 
 float positive_edge_pos_sp_disp;
-assign positive_edge_pos_sp_disp to "{P}{R}{POSITIVE_EDGE_NAME}EdgePos-SP.DISP";
+assign positive_edge_pos_sp_disp to "{P}{R}{POSITIVE_EDGE_NAME}SlitPos-SP.DISP";
 monitor positive_edge_pos_sp_disp;
 evflag positive_edge_pos_sp_disp_flg;
 sync positive_edge_pos_sp_disp positive_edge_pos_sp_disp_flg;
@@ -85,13 +85,13 @@ evflag width_sp_disp_flg;
 sync width_sp_disp width_sp_disp_flg;
 
 float negative_edge_pos_sp_drvh;
-assign negative_edge_pos_sp_drvh to "{P}{R}{NEGATIVE_EDGE_NAME}EdgePos-SP.DRVH";
+assign negative_edge_pos_sp_drvh to "{P}{R}{NEGATIVE_EDGE_NAME}SlitPos-SP.DRVH";
 monitor negative_edge_pos_sp_drvh;
 evflag negative_edge_pos_sp_drvh_flg;
 sync negative_edge_pos_sp_drvh negative_edge_pos_sp_drvh_flg;
 
 float positive_edge_pos_sp_drvh;
-assign positive_edge_pos_sp_drvh to "{P}{R}{POSITIVE_EDGE_NAME}EdgePos-SP.DRVH";
+assign positive_edge_pos_sp_drvh to "{P}{R}{POSITIVE_EDGE_NAME}SlitPos-SP.DRVH";
 monitor positive_edge_pos_sp_drvh;
 evflag positive_edge_pos_sp_drvh_flg;
 sync positive_edge_pos_sp_drvh positive_edge_pos_sp_drvh_flg;
@@ -109,13 +109,13 @@ evflag width_sp_drvh_flg;
 sync width_sp_drvh width_sp_drvh_flg;
 
 float negative_edge_pos_sp_drvl;
-assign negative_edge_pos_sp_drvl to "{P}{R}{NEGATIVE_EDGE_NAME}EdgePos-SP.DRVL";
+assign negative_edge_pos_sp_drvl to "{P}{R}{NEGATIVE_EDGE_NAME}SlitPos-SP.DRVL";
 monitor negative_edge_pos_sp_drvl;
 evflag negative_edge_pos_sp_drvl_flg;
 sync negative_edge_pos_sp_drvl negative_edge_pos_sp_drvl_flg;
 
 float positive_edge_pos_sp_drvl;
-assign positive_edge_pos_sp_drvl to "{P}{R}{POSITIVE_EDGE_NAME}EdgePos-SP.DRVL";
+assign positive_edge_pos_sp_drvl to "{P}{R}{POSITIVE_EDGE_NAME}SlitPos-SP.DRVL";
 monitor positive_edge_pos_sp_drvl;
 evflag positive_edge_pos_sp_drvl_flg;
 sync positive_edge_pos_sp_drvl positive_edge_pos_sp_drvl_flg;
@@ -151,13 +151,13 @@ evflag enbl_backlash_comp_sel_flg;
 sync enbl_backlash_comp_sel enbl_backlash_comp_sel_flg;
 
 float negative_edge_backlash_dist_sp;
-assign negative_edge_backlash_dist_sp to "{P}{R}{NEGATIVE_EDGE_NAME}EdgeBacklashDist-SP";
+assign negative_edge_backlash_dist_sp to "{P}{R}{NEGATIVE_EDGE_NAME}SlitBacklashDist-SP";
 monitor negative_edge_backlash_dist_sp;
 evflag negative_edge_backlash_dist_sp_flg;
 sync negative_edge_backlash_dist_sp negative_edge_backlash_dist_sp_flg;
 
 float positive_edge_backlash_dist_sp;
-assign positive_edge_backlash_dist_sp to "{P}{R}{POSITIVE_EDGE_NAME}EdgeBacklashDist-SP";
+assign positive_edge_backlash_dist_sp to "{P}{R}{POSITIVE_EDGE_NAME}SlitBacklashDist-SP";
 monitor positive_edge_backlash_dist_sp;
 evflag positive_edge_backlash_dist_sp_flg;
 sync positive_edge_backlash_dist_sp positive_edge_backlash_dist_sp_flg;

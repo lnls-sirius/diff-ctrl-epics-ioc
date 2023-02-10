@@ -1190,7 +1190,7 @@ $(pv_value)</tooltip>
     <name>Text Update_17</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgePos-RB</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1247,7 +1247,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgePos-SP</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -1302,7 +1302,7 @@ $(pv_value)</tooltip>
     <name>Text Input_5</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgeStep-SP</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-SP</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1364,7 +1364,7 @@ $(pv_value)</tooltip>
     <on_label>&gt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)$(R)IncNegativeEdge-Cmd</pv_name>
+    <pv_name>$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Slit-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1426,7 +1426,7 @@ $(pv_value)</tooltip>
     <on_label>&lt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)$(R)DecNegativeEdge-Cmd</pv_name>
+    <pv_name>$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Slit-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1478,7 +1478,7 @@ $(pv_value)</tooltip>
     <name>Text Update_18</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgeStep-RB</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1668,7 +1668,7 @@ $(pv_value)</tooltip>
     <name>Text Update_19</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgePos-RB</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1725,7 +1725,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgePos-SP</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -1780,7 +1780,7 @@ $(pv_value)</tooltip>
     <name>Text Input_6</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgeStep-SP</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-SP</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -1842,7 +1842,7 @@ $(pv_value)</tooltip>
     <on_label>&gt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)$(R)IncPositiveEdge-Cmd</pv_name>
+    <pv_name>$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Slit-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1904,7 +1904,7 @@ $(pv_value)</tooltip>
     <on_label>&lt;</on_label>
     <password></password>
     <push_action_index>0</push_action_index>
-    <pv_name>$(P)$(R)DecPositiveEdge-Cmd</pv_name>
+    <pv_name>$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Slit-Cmd</pv_name>
     <pv_value />
     <released_action_index>0</released_action_index>
     <rules />
@@ -1956,7 +1956,7 @@ $(pv_value)</tooltip>
     <name>Text Update_20</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgeStep-RB</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -2980,7 +2980,7 @@ $(pv_value)</tooltip>
     <name>Text Update_29</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveMotionCtrl-Cte</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)MotionCtrl-Cte</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3032,7 +3032,7 @@ $(pv_value)</tooltip>
     <name>Text Update_30</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeMotionCtrl-Cte</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)MotionCtrl-Cte</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3134,7 +3134,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(P)$(R)PositiveDoneMov-Mon</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)DoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3232,7 +3232,7 @@ $(pv_value)</tooltip>
       <color red="0" green="255" blue="0" />
     </on_color>
     <on_label>ON</on_label>
-    <pv_name>$(P)$(R)NegativeDoneMov-Mon</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)DoneMov-Mon</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3856,7 +3856,7 @@ $(pv_value)</tooltip>
     <name>Text Update_33</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)HighOuterLim-RB</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -3913,7 +3913,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)HighOuterLim-SP</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -3963,7 +3963,7 @@ $(pv_value)</tooltip>
     <name>Text Update_34</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)LowOuterLim-RB</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -4020,7 +4020,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)LowOuterLim-SP</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -4115,7 +4115,7 @@ $(pv_value)</tooltip>
     <name>Text Input</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)ForceNegativeEdgePos-Cmd</pv_name>
+    <pv_name>$(P)$(R)Force$(NEGATIVE_EDGE_NAME)SlitPos-Cmd</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -4252,7 +4252,7 @@ $(pv_value)</tooltip>
     <name>Text Input_12</name>
     <precision>0</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)ForcePositiveEdgePos-Cmd</pv_name>
+    <pv_name>$(P)$(R)Force$(POSITIVE_EDGE_NAME)SlitPos-Cmd</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -4402,7 +4402,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>High Outer Limit</text>
+    <text>$(POSITIVE_EDGE_NAME) Slit Outer Limit</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -4442,7 +4442,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Low Outer Limit</text>
+    <text>$(NEGATIVE_EDGE_NAME) Slit Outer Limit</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -4642,7 +4642,7 @@ $(pv_value)</tooltip>
     <name>Text Update_35</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PosEdgeInnerLim-RB</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -4699,7 +4699,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PosEdgeInnerLim-SP</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -4749,7 +4749,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Pos Side Inner Limit</text>
+    <text>$(POSITIVE_EDGE_NAME) Slit Inner Limit</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -4789,7 +4789,7 @@ $(pv_value)</tooltip>
     <name>Text Update_36</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegEdgeInnerLim-RB</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -4846,7 +4846,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegEdgeInnerLim-SP</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -4896,7 +4896,7 @@ $(pv_value)</tooltip>
       <keep_wh_ratio>false</keep_wh_ratio>
     </scale_options>
     <scripts />
-    <text>Neg Side Inner Limit</text>
+    <text>$(NEGATIVE_EDGE_NAME) Slit Inner Limit</text>
     <tooltip></tooltip>
     <transparent>true</transparent>
     <vertical_alignment>1</vertical_alignment>
@@ -5203,7 +5203,7 @@ $(pv_value)</tooltip>
     <name>Text Update_39</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgeCenter-RB</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeCenter-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -5260,7 +5260,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)PositiveEdgeCenter-SP</pv_name>
+    <pv_name>$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeCenter-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>
@@ -5350,7 +5350,7 @@ $(pv_value)</tooltip>
     <name>Text Update_40</name>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgeCenter-RB</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeCenter-RB</pv_name>
     <pv_value />
     <rotation_angle>0.0</rotation_angle>
     <rules />
@@ -5407,7 +5407,7 @@ $(pv_value)</tooltip>
     <page_increment>5.0</page_increment>
     <precision>3</precision>
     <precision_from_pv>true</precision_from_pv>
-    <pv_name>$(P)$(R)NegativeEdgeCenter-SP</pv_name>
+    <pv_name>$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeCenter-SP</pv_name>
     <pv_value />
     <rules />
     <scale_options>

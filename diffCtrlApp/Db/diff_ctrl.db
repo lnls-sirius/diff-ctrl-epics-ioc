@@ -134,9 +134,9 @@ record(sseq, "$(P)$(R)UpdateEdgeReference"){
   field(DO2, "1")
   field(LNK2, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeCenter-SP.DISP") # disable center ref changes
   field(DO3, "1")
-  field(LNK3, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DISP")    # disable movement
+  field(LNK3, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DISP")    # disable movement
   field(DO4, "1")
-  field(LNK4, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DISP")    # disable movement
+  field(LNK4, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DISP")    # disable movement
   field(DO5, "1")
   field(LNK5, "$(P)$(R)Center-SP.DISP")                          # disable movement
   field(DO6, "1")
@@ -144,14 +144,14 @@ record(sseq, "$(P)$(R)UpdateEdgeReference"){
   # wait for pos RB update in motion section
   # since center ref changed
   field(DLY7, "1")
-  field(DOL7, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
-  field(LNK7, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)EdgePos-Cmd PP")
+  field(DOL7, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
+  field(LNK7, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)SlitPos-Cmd PP")
 }
 
 # FORCE VIRTUAL POSITION TO NEGATIVE EDGE
 # (useful when using absolute encoders)
 
-record(ao, "$(P)$(R)Force$(NEGATIVE_EDGE_NAME)EdgePos-Cmd"){
+record(ao, "$(P)$(R)Force$(NEGATIVE_EDGE_NAME)SlitPos-Cmd"){
   field(DESC, "Force a virtual value to neg edge")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -182,8 +182,8 @@ record(calcout, "$(P)$(R)ForceNegativePosCheck2"){
 record(seq, "$(P)$(R)ForceNegativeSetVars"){
   field(DESC, "Set vars before neg pos forcing")
   field(SELM, "All")
-  field(DOL1, "$(P)$(R)Force$(NEGATIVE_EDGE_NAME)EdgePos-Cmd")
-  field(DOL2, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(DOL1, "$(P)$(R)Force$(NEGATIVE_EDGE_NAME)SlitPos-Cmd")
+  field(DOL2, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(DO3, "1") # disable
   field(DO4, "1") # disable
   field(DO5, "1") # disable
@@ -192,8 +192,8 @@ record(seq, "$(P)$(R)ForceNegativeSetVars"){
   field(LNK2, "$(P)$(R)UpdateCoordConvVal2 PP")
   field(LNK3, "$(P)$(R)Center-SP.DISP")
   field(LNK4, "$(P)$(R)Width-SP.DISP")
-  field(LNK5, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DISP")
-  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DISP")
+  field(LNK5, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DISP")
+  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DISP")
   field(DLY6, "0.5")
   field(FLNK, "$(P)$(R)DisableProtect")
 }
@@ -201,7 +201,7 @@ record(seq, "$(P)$(R)ForceNegativeSetVars"){
 # FORCE VIRTUAL POSITION TO POSITIVE EDGE
 # (useful when using absolute encoders)
 
-record(ao, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)EdgePos-Cmd"){
+record(ao, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)SlitPos-Cmd"){
   field(DESC, "Force a virtual value to pos edge")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -232,8 +232,8 @@ record(calcout, "$(P)$(R)ForcePositivePosCheck2"){
 record(seq, "$(P)$(R)ForcePositiveSetVars"){
   field(DESC, "Set vars before positive pos forcing")
   field(SELM, "All")
-  field(DOL1, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
-  field(DOL2, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)EdgePos-Cmd")
+  field(DOL1, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
+  field(DOL2, "$(P)$(R)Force$(POSITIVE_EDGE_NAME)SlitPos-Cmd")
   field(DO3, "1") # disable
   field(DO4, "1") # disable
   field(DO5, "1") # disable
@@ -242,8 +242,8 @@ record(seq, "$(P)$(R)ForcePositiveSetVars"){
   field(LNK2, "$(P)$(R)UpdateCoordConvVal2 PP")
   field(LNK3, "$(P)$(R)Center-SP.DISP")
   field(LNK4, "$(P)$(R)Width-SP.DISP")
-  field(LNK5, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DISP")
-  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DISP")
+  field(LNK5, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DISP")
+  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DISP")
   field(DLY6, "0.5")
   field(FLNK, "$(P)$(R)DisableProtect")
 }
@@ -264,10 +264,10 @@ record(seq, "$(P)$(R)DisableProtect"){
   field(DO6, "-1000000")
   field(LNK1, "$(P)$(R)NegativeEdgeProtect.DISV")             # Disable neg edge limit protection
   field(LNK2, "$(P)$(R)PositiveEdgeProtect.DISV")             # Disable pos edge limit protection
-  field(LNK3, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DRVH") # Set a relaxed high limit for the negative edge
-  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DRVL") # Set a relaxed low limit for the negative edge
-  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DRVH") # Set a relaxed high limit for the positive edge
-  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DRVL") # Set a relaxed low limit for the positive edge
+  field(LNK3, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DRVH") # Set a relaxed high limit for the negative edge
+  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DRVL") # Set a relaxed low limit for the negative edge
+  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DRVH") # Set a relaxed high limit for the positive edge
+  field(LNK6, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DRVL") # Set a relaxed low limit for the positive edge
   field(FLNK, "$(P)$(R)DelayAndUpdate")
 }
 
@@ -328,7 +328,7 @@ record(bo, "$(P)$(R)Home-Cmd"){
 # Desc: Motion control main parameters.
 
 # Position of slit/scraper negative edge
-record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP"){
+record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge position")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -339,7 +339,7 @@ record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP"){
 }
 
 # Position of slit/scraper pos edge
-record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP"){
+record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge position")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -562,10 +562,10 @@ record(aSub, "$(P)$(R)NegativeEdgeMovConvRB"){
 record(ai, "$(P)$(R)NegativeEdgePosRBAux"){
   field(DESC, "Auxiliar var for NegativeEdgePos RB")
   field(PREC, "$(PREC)")
-  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
+  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
 }
 
-record(calc, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB"){
+record(calc, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge position RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -614,10 +614,10 @@ record(aSub, "$(P)$(R)PositiveEdgeMovConvRB"){
 record(ai, "$(P)$(R)PositiveEdgePosRBAux"){
   field(DESC, "Auxiliar var for PositiveEdgePos RB")
   field(PREC, "$(PREC)")
-  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
 }
 
-record(calc, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB"){
+record(calc, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge position RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
@@ -634,8 +634,8 @@ record(calc, "$(P)$(R)Center-RB"){
   field(DESC, "Center RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(CALC, "(A+B)/2")
   field(FLNK, "$(P)$(R)Width-RB")
 }
@@ -645,8 +645,8 @@ record(calc, "$(P)$(R)Width-RB"){
   field(DESC, "Width RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")  
-  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(CALC, "B-A")
 }
 
@@ -677,59 +677,59 @@ record(bi, "$(P)$(R)CoordConvErr-Mon"){
 # Desc: Protect the slit edges from hitting each other
 #       or from hitting an inner limit.
 
-record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-SP"){
+record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-SP"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge inner limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
   field(VAL, "$(NEG_LIM)")
-  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-RB")
+  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB")
 }
 
-record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-RB"){
+record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge inner limit RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-SP")
+  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-SP")
   field(FLNK, "$(P)$(R)NegativeEdgeProtect")
 }
 
-record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-SP"){
+record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-SP"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge inner limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
   field(VAL, "$(POS_LIM)")
-  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-RB")
+  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB")
 }
 
-record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-RB"){
+record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge inner limit RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-SP")
+  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-SP")
   field(FLNK, "$(P)$(R)PositiveEdgeProtect")
 }
 
 # Limit neg edge motion
 record(calcout, "$(P)$(R)NegativeEdgeProtect"){
   field(DESC, "Auto set protection limit for neg edge")
-#  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB CPP") # Read pos edge position
-  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-RB") # Neg edge inner limit
+#  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB CPP") # Read pos edge position
+  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB") # Neg edge inner limit
   field(CALC, "A")
-  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DRVH")  # Set neg edge high limit, without processing
+  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DRVH")  # Set neg edge high limit, without processing
   field(DISV, "0")                                            # Record remains disabled until initialization enables it
 }
 
 # Limit pos edge motion
 record(calcout, "$(P)$(R)PositiveEdgeProtect"){
   field(DESC, "Auto set protection limit for pos edge")
-#  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB CPP") # Read neg edge position
-  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-RB") # Pos edge inner limit
+#  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB CPP") # Read neg edge position
+  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB") # Pos edge inner limit
   field(CALC, "A")
-  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DRVL")  # Set pos edge low limit, without processing
+  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DRVL")  # Set pos edge low limit, without processing
   field(DISV, "0")                                            # Record remains disabled until initialization enables it
 }
 
@@ -781,53 +781,53 @@ record(calcout, "$(P)$(R)AccProtect"){
 # Desc: Protect the slit edges from hitting their outer limit.
 
 # Negative edge outer limit
-record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-SP"){
+record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-SP"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge outer position limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "$(LOW_LIM)")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
-  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-RB")
+  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-RB")
 }
 
-record(calcout, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-RB"){
+record(calcout, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-RB"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge outer position limit RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-SP")
-  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DRVH")
+  field(INPA, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-SP")
+  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DRVH")
   field(CALC, "A>B?B:A")
-  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DRVL")
+  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DRVL")
 }
 
 # Positive edge outer limit
-record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-SP"){
+record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-SP"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge outer position limit")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(VAL, "$(HIGH_LIM)")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
-  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-RB")
+  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-RB")
 }
 
-record(calcout, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-RB"){
+record(calcout, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-RB"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge outer position limit RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-SP")
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DRVL")
+  field(INPA, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-SP")
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DRVL")
   field(CALC, "A<B?B:A")
-  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DRVH")
+  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DRVH")
 }
 
 # Limit center position
 record(calc, "$(P)$(R)CenterOuterProtect"){
   field(DESC, "Auto set protection limit for center")
   field(INPA, "$(P)$(R)CoordinateConv.D CPP")                     # Read width from virtual coordinates
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-RB CPP") # Read high outer limit
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-RB CPP") # Read low outer limit
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-RB CPP") # Read high outer limit
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-RB CPP") # Read low outer limit
   field(CALC, "F:=A/2;D:=B-F;E:=C+F;0")
   field(FLNK, "$(P)$(R)CenterInnerProtect")                       # Call center inner limits protection
   field(DISV, "0")                                                # Record remains disabled until initialization enables it
@@ -836,8 +836,8 @@ record(calc, "$(P)$(R)CenterOuterProtect"){
 record(calc, "$(P)$(R)CenterInnerProtect"){
   field(DESC, "Auto set protection limit for center")
   field(INPA, "$(P)$(R)CoordinateConv.D CPP")                     # Read width from virtual coordinates
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-RB CPP") # Read high inner limit
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-RB CPP") # Read low inner limit
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB CPP") # Read high inner limit
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB CPP") # Read low inner limit
   field(CALC, "F:=A/2;D:=C+F;E:=B-F;0")
   field(FLNK, "$(P)$(R)CenterProtectCalc")                        # Call record to select limits to use
 }
@@ -872,8 +872,8 @@ record(calcout, "$(P)$(R)CenterProtectCalc3"){     # Disable Center-SP if limits
 record(calcout, "$(P)$(R)MaxWidthProtect"){
   field(DESC, "Auto set max limit for width")
   field(INPA, "$(P)$(R)CoordinateConv.C CPP")                     # Read center from virtual coordinates
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-RB CPP") # Read high outer limit
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-RB CPP") # Read low outer limit
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-RB CPP") # Read high outer limit
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-RB CPP") # Read low outer limit
   field(CALC, "(A-C)<(B-A)?2*(A-C):2*(B-A)")
   field(OUT, "$(P)$(R)Width-SP.DRVH")                             # Set Width max size without processing
   field(DISV, "0")                                                # Record remains disabled until initialization enables it
@@ -883,8 +883,8 @@ record(calcout, "$(P)$(R)MaxWidthProtect"){
 record(calcout, "$(P)$(R)MinWidthProtect"){
   field(DESC, "Auto set min limit for width")
   field(INPA, "$(P)$(R)CoordinateConv.C CPP")                     # Read center from virtual coordinates
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-RB CPP") # Read high inner limit
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-RB CPP") # Read low inner limit
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-RB CPP") # Read high inner limit
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-RB CPP") # Read low inner limit
   field(CALC, "(A-C)>(B-A)?2*(A-C):2*(B-A)")
   field(OUT, "$(P)$(R)Width-SP.DRVL")                             # Set Width min size without processing
   field(DISV, "0")                                                # Record remains disabled until initialization enables it
@@ -897,7 +897,7 @@ record(calcout, "$(P)$(R)MinWidthProtect"){
 #       of the records defined in the SLIT MOTION CONTROL section.
 
 # Step for pos edge pos increment
-record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-SP"){
+record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-SP"){
   field(DESC, "Step for pos edge increment")
   field(PINI, "YES")
   field(PREC, "$(PREC)")
@@ -905,21 +905,21 @@ record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-SP"){
   field(VAL, "1")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
-  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-RB")
+  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-RB")
 }
 
 # Step for pos edge pos increment RB
-record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-RB"){
+record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-RB"){
   field(DESC, "Step for pos edge increment RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(ADEL, "-1")
   field(MDEL, "-1")
-  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-SP")
+  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-SP")
 }
 
 # Step for neg edge pos increment
-record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-SP"){
+record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-SP"){
   field(DESC, "Step for neg edge increment")
   field(PINI, "YES")
   field(PREC, "$(PREC)")
@@ -927,17 +927,17 @@ record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-SP"){
   field(VAL, "1")
   field(DRVH, "1000000")
   field(DRVL, "-1000000")
-  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-RB")
+  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-RB")
 }
 
 # Step for neg edge pos increment RB
-record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-RB"){
+record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-RB"){
   field(DESC, "Step for neg edge increment RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(ADEL, "-1")
   field(MDEL, "-1")
-  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-SP")
+  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-SP")
 }
 
 # Step for center pos increment
@@ -985,7 +985,7 @@ record(ai, "$(P)$(R)WidthStep-RB"){
 }
 
 # Increment pos edge pos by step
-record(bo, "$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Edge-Cmd"){
+record(bo, "$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Slit-Cmd"){
   field(DESC, "Increment pos edge pos by defined step")
   field(ZNAM, "Off")
   field(ONAM, "On")
@@ -996,20 +996,20 @@ record(bo, "$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Edge-Cmd"){
 # Calc to increment pos edge position
 record(calcout, "$(P)$(R)IncPositiveEdgeCalc"){
   field(DESC, "Increment pos edge by step calc")
-  field(INPA, "$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Edge-Cmd")
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-RB")
-  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)Inc$(POSITIVE_EDGE_NAME)Slit-Cmd")
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-RB")
+  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(INPD, "$(CTRL_NEG)Mtr.DMOV")
   field(INPE, "$(CTRL_POS)Mtr.DMOV")
   field(CALC, "A&&D&&E") # Increment command 'on' and motors not moving
   field(OCAL, "C+B")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP PP")
+  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP PP")
 }
 
 # Decrement pos edge pos by step
-record(bo, "$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Edge-Cmd"){
+record(bo, "$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Slit-Cmd"){
   field(DESC, "Decrement pos edge pos by defined step")
   field(ZNAM, "Off")
   field(ONAM, "On")
@@ -1020,20 +1020,20 @@ record(bo, "$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Edge-Cmd"){
 # Calc to decrement pos edge position
 record(calcout, "$(P)$(R)DecPositiveEdgeCalc"){
   field(DESC, "Decrement pos edge by step calc")
-  field(INPA, "$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Edge-Cmd")
-  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeStep-RB")
-  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)Dec$(POSITIVE_EDGE_NAME)Slit-Cmd")
+  field(INPB, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitStep-RB")
+  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(INPD, "$(CTRL_NEG)Mtr.DMOV")
   field(INPE, "$(CTRL_POS)Mtr.DMOV")
   field(CALC, "A&&D&&E") # Decrement command 'on' and motors not moving
   field(OCAL, "C-B")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP PP")
+  field(OUT, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP PP")
 }
 
 # Increment neg edge pos by step
-record(bo, "$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Edge-Cmd"){
+record(bo, "$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Slit-Cmd"){
   field(DESC, "Increment neg edge pos by defined step")
   field(ZNAM, "Off")
   field(ONAM, "On")
@@ -1044,20 +1044,20 @@ record(bo, "$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Edge-Cmd"){
 # Calc to increment neg edge position
 record(calcout, "$(P)$(R)IncNegativeEdgeCalc"){
   field(DESC, "Increment neg edge by step calc")
-  field(INPA, "$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Edge-Cmd")
-  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-RB")
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)Inc$(NEGATIVE_EDGE_NAME)Slit-Cmd")
+  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-RB")
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
   field(INPD, "$(CTRL_NEG)Mtr.DMOV")
   field(INPE, "$(CTRL_POS)Mtr.DMOV")
   field(CALC, "A&&D&&E")                                  # Increment command 'on' and motors not moving
   field(OCAL, "C+B")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP PP")
+  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP PP")
 }
 
 # Decrement neg edge pos by step
-record(bo, "$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Edge-Cmd"){
+record(bo, "$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Slit-Cmd"){
   field(DESC, "Decrement neg edge pos by defined step")
   field(ZNAM, "Off")
   field(ONAM, "On")
@@ -1068,16 +1068,16 @@ record(bo, "$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Edge-Cmd"){
 # Calc to decrement neg edge position
 record(calcout, "$(P)$(R)DecNegativeEdgeCalc"){
   field(DESC, "Decrement neg edge by step calc")
-  field(INPA, "$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Edge-Cmd")
-  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeStep-RB")
-  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
+  field(INPA, "$(P)$(R)Dec$(NEGATIVE_EDGE_NAME)Slit-Cmd")
+  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitStep-RB")
+  field(INPC, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
   field(INPD, "$(CTRL_NEG)Mtr.DMOV")
   field(INPE, "$(CTRL_POS)Mtr.DMOV")
   field(CALC, "A&&D&&E")                                  # Decrement command 'on' and motors not moving
   field(OCAL, "C-B")
   field(OOPT, "When Non-zero")
   field(DOPT, "Use OCAL")
-  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP PP")
+  field(OUT, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP PP")
 }
 
 # Increment center pos by step
@@ -1185,8 +1185,8 @@ record(calcout, "$(P)$(R)DecWidthCalc"){
 record(calcout, "$(P)$(R)OneShot"){
   field(DESC, "One shot operation")
   field(INPA, "1")
-  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB CPP") # Process when neg edge pos changes
-  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB CPP") # Process when pos edge pos changes
+  field(INPB, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB CPP") # Process when neg edge pos changes
+  field(INPC, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB CPP") # Process when pos edge pos changes
   field(CALC, "A;A:=0")                                      # Only process whole chain one time
   field(OOPT, "When Non-zero")
   field(ODLY, "10")                                          # Wait 10 sec, so that all low level initialization can finish
@@ -1199,7 +1199,7 @@ record(calcout, "$(P)$(R)OneShot"){
 # Store neg edge readback value
 record(ai, "$(P)$(R)GetNegativeEdgeRB"){
   field(DESC, "Get neg edge pos RB at init")
-  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-RB")
+  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-RB")
   field(ADEL, "-1")
   field(MDEL, "-1")
   field(FLNK, "$(P)$(R)GetPositiveEdgeRB")
@@ -1208,7 +1208,7 @@ record(ai, "$(P)$(R)GetNegativeEdgeRB"){
 # Store pos edge readback value
 record(ai, "$(P)$(R)GetPositiveEdgeRB"){
   field(DESC, "Get pos edge pos RB at init")
-  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-RB")
+  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-RB")
   field(ADEL, "-1")
   field(MDEL, "-1")
   field(FLNK, "$(P)$(R)UpdateCoordVars")
@@ -1278,8 +1278,8 @@ record(sseq, "$(P)$(R)UpdateCoordConv2"){
   field(LNK1, "$(P)$(R)SetMode-Sel PP")
   field(LNK2, "$(CTRL_NEG)Mtr.FOFF PP")
   field(LNK3, "$(CTRL_POS)Mtr.FOFF PP")
-  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP PP")
-  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP PP")
+  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP PP")
+  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP PP")
   field(LNK6, "$(P)$(R)SetMode-Sel PP")
   field(DLY4, "1")
   field(DLY5, "0.5")
@@ -1305,8 +1305,8 @@ record(seq, "$(P)$(R)EnblProtect"){
   field(LNK4, "$(P)$(R)MaxWidthProtect.DISV")                         # Enable max width limit protection
   field(LNK5, "$(P)$(R)NegativeEdgeProtect.PROC PP")                  # Process record so it can init limits
   field(LNK6, "$(P)$(R)PositiveEdgeProtect.PROC PP")                  # Process record so it can init limits
-  field(LNK7, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeOuterLim-SP.PROC PP") # Process low outer limit
-  field(LNK8, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeOuterLim-SP.PROC PP") # Process high outer limit
+  field(LNK7, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitOuterLim-SP.PROC PP") # Process low outer limit
+  field(LNK8, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitOuterLim-SP.PROC PP") # Process high outer limit
   field(FLNK, "$(P)$(R)EnblProtect2")
 }
 
@@ -1322,10 +1322,10 @@ record(seq, "$(P)$(R)EnblProtect2"){
   field(DO9, "1")  # enable
   field(DOA, "1")
   field(LNK1, "$(P)$(R)MinWidthProtect.DISV")                      # Enable min width limit protection
-  field(LNK2, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeInnerLim-SP.PROC") # Process neg edge inner limit
-  field(LNK3, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeInnerLim-SP.PROC") # Process pos edge inner limit
-  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgePos-SP.DISP")      # Enable position set point records
-  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgePos-SP.DISP")      # Enable position set point records
+  field(LNK2, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitInnerLim-SP.PROC") # Process neg edge inner limit
+  field(LNK3, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitInnerLim-SP.PROC") # Process pos edge inner limit
+  field(LNK4, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitPos-SP.DISP")      # Enable position set point records
+  field(LNK5, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitPos-SP.DISP")      # Enable position set point records
   field(LNK6, "$(P)$(R)Center-SP.DISP")                            # Enable position set point records
   field(LNK7, "$(P)$(R)Width-SP.DISP")                             # Enable position set point records
   field(LNK8, "$(P)$(R)KeepEdgeCenterLocked.A PP")                 # Unlock edges' center references
@@ -1355,37 +1355,37 @@ record(bi, "$(P)$(R)EnblBacklashComp-Sts"){
 }
 
 # Backlash compensation distance
-record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeBacklashDist-SP"){
+record(ao, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitBacklashDist-SP"){
   field(PINI, "YES")
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge backlash distance")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(DRVL, "-1000000")
   field(DRVH, "1000000")
-  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeBacklashDist-RB")
+  field(FLNK, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitBacklashDist-RB")
 }
 
-record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeBacklashDist-RB"){
+record(ai, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitBacklashDist-RB"){
   field(DESC, "$(NEGATIVE_EDGE_NAME) edge backlash distance RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)EdgeBacklashDist-SP")
+  field(INP, "$(P)$(R)$(NEGATIVE_EDGE_NAME)SlitBacklashDist-SP")
 }
 
-record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeBacklashDist-SP"){
+record(ao, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitBacklashDist-SP"){
   field(PINI, "YES")
   field(DESC, "$(POSITIVE_EDGE_NAME) edge backlash distance")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
   field(DRVL, "-1000000")
   field(DRVH, "1000000")
-  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeBacklashDist-RB")
+  field(FLNK, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitBacklashDist-RB")
 }
 
-record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeBacklashDist-RB"){
+record(ai, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitBacklashDist-RB"){
   field(DESC, "$(POSITIVE_EDGE_NAME) edge backlash distance RB")
   field(PREC, "$(PREC)")
   field(EGU, "$(EGU)")
-  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)EdgeBacklashDist-SP")
+  field(INP, "$(P)$(R)$(POSITIVE_EDGE_NAME)SlitBacklashDist-SP")
 }
 
