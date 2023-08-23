@@ -73,8 +73,8 @@ case ${DEVICE} in
         CONV_FUNC_NEG_RB="convFuncHScrapInRB";       # negative edge RB conv function
         CONV_FUNC_POS_CMD="convFuncHScrapOutCmd";    # positive edge cmd conv function
         CONV_FUNC_POS_RB="convFuncHScrapOutRB";      # positive edge RB conv function
-	NEGATIVE_EDGE_NAME="Inner";                  # negative edge name
-	POSITIVE_EDGE_NAME="Outer";                  # positive edge name
+	NEGATIVE_EDGE_NAME="Right";                  # negative edge name
+	POSITIVE_EDGE_NAME="Left";                   # positive edge name
         ;;
 
     *)
